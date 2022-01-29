@@ -1,0 +1,7 @@
+{
+  "name": "quick-training",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

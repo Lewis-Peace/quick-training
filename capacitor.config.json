@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "quick-training",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

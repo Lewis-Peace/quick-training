@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Cronometro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <p id="time" class="time">00:00:00</p>
+      </ion-item>
+      <ion-tab-bar class="buttons">
+        <ion-tab-button *ngIf="running == false" (click)="running = !running">Start</ion-tab-button>
+        <ion-tab-button *ngIf="running == true" (click)="running = !running">Stop</ion-tab-button>
+        <ion-tab-button *ngIf="running == false" (click)="reset()">Reset</ion-tab-button>
+        <ion-tab-button *ngIf="running == true" (click)="addGiro()">Giro</ion-tab-button>
+      </ion-tab-bar>
+      <ion-list id="giri" style="text-align: center">
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
