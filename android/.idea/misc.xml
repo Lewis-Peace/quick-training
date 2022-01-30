@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/GitHub/quick-training/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.17777777777777778" />
+        <entry key="..\:/GitHub/quick-training/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.17407407407407408" />
         <entry key="..\:/GitHub/quick-training/android/app/src/main/res/xml/network_security_config.xml" value="0.1" />
       </map>
     </option>
