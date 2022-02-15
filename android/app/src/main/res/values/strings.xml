@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Quick training</string>
-    <string name="title_activity_main">Quick training</string>
-    <string name="package_name">com.quick.training</string>
-    <string name="custom_url_scheme">com.quick.training</string>
+    <string name="app_name">Gym helper</string>
+    <string name="title_activity_main">Gym helper</string>
+    <string name="package_name">com.gym.helper</string>
+    <string name="custom_url_scheme">com.gym.helper</string>
 </resources>
