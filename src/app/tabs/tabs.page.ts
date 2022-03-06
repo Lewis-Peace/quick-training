@@ -20,7 +20,13 @@ export class TabsPage {
   }
 
   loadTranslatedWords(language: string) {
-    this.translate.use(language)
+    if (language.includes('en')) {
+      this.translate.use('en-US')
+    } else if (language.includes('it')) {
+      this.translate.use('it-IT')
+    } else {
+      this.translate.use(language)
+    }
   }
 
   ngOnInit() {
