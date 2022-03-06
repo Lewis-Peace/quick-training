@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Esercizio } from 'src/app/Tipi/esercizio';
@@ -15,9 +16,11 @@ export class AddMassimalePage implements OnInit {
   public type: string = ''
   public peso: number = 0
   public rep: number = 0
+  translate
 
-  constructor(modalController: ModalController) {
+  constructor(modalController: ModalController, translate: TranslateService) {
     this.modalController = modalController
+    this.translate = translate
   }
 
   ngOnInit() {
@@ -31,7 +34,6 @@ export class AddMassimalePage implements OnInit {
   public close(add: boolean) {
     if (add) {
       const es = new Esercizio(this.type, this.peso, this.rep)
-      console.log(es)
       this.modalController.dismiss(es)
     } else {
       this.modalController.dismiss(undefined)

@@ -7,11 +7,11 @@ android {
           keyPassword 'Kristyan99'
         }
     }
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion 31// rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId 'quick.training'
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion 31//rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

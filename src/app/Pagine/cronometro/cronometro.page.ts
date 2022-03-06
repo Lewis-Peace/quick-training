@@ -1,4 +1,6 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
+import { createAnimation } from '@ionic/angular';
 
 @Component({
   selector: 'app-cronometro',
@@ -13,8 +15,11 @@ export class CronometroPage implements OnInit {
   minutes = 0
   timeHolder: HTMLElement
   giri: HTMLElement
+  translate: TranslateService
 
-  constructor() { }
+  constructor(translate: TranslateService) {
+    this.translate = translate
+  }
 
   ngOnInit() {
     this.timeHolder = document.getElementById('time')
@@ -50,21 +55,42 @@ export class CronometroPage implements OnInit {
         }
         this.timeHolder.innerText = M + ':' + s + ':' + m
       }
-      
+
     }, 10);
 
-  reset() {
+  async reset() {
     this.milliseconds = 0
     this.seconds = 0
     this.minutes = 0
     this.timeHolder.innerText = '00:00:00'
+    const anim = createAnimation()
+      .addElement(this.giri)
+      .duration(500)
+      .fromTo('opacity', '0.5', '0')
+      .onFinish(async () => {
+        this.opacityAnimation(this.giri, '0', '1')
+      })
+    await anim.play()
     this.giri.innerHTML = ''
   }
 
   addGiro() {
-    const p = document.createElement('p')
-    p.innerText = this.timeHolder.innerText
-    this.giri.appendChild(p)
+    const item = document.createElement('ion-item')
+    const label = document.createElement('ion-label')
+    label.textContent = this.timeHolder.innerText
+    item.color = 'secondary'
+    item.appendChild(label)
+    item.classList.add('ion-text-center')
+    this.giri.appendChild(item)
+    this.opacityAnimation(item, '0.3', '1')
+  }
+
+  async opacityAnimation(element: HTMLElement, from: string, to: string, duration: number = 500) {
+    const animation = createAnimation()
+      .addElement(element)
+      .duration(duration)
+      .fromTo('opacity', from, to)
+    await animation.play()
   }
 
 }

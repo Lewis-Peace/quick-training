@@ -4,7 +4,7 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>
-      {{ currentFolder || 'Allenamento' }}
+      {{ currentFolder || 'Tabs.Tab1' | translate }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -14,15 +14,15 @@
   <input hidden type="file" #filepicker (change)="fileSelected($event)" />
 
   <!-- Info if the directory is empty -->
-  <ion-text color="medium" *ngIf="folderContent.length == 0" class="ion-padding ion-text-center">
-    <p>Nessun documento trovato</p>
+  <ion-text color="white" *ngIf="folderContent.length == 0" class="ion-padding ion-text-center">
+    <p>{{'TrainingPage.NoDocumentFound' | translate}}</p>
   </ion-text>
 
-  <ion-list>
+  <ion-list *ngIf="folderContent.length != 0" style="background-color: #606060;">
     <ion-item-sliding *ngFor="let f of folderContent">
       <!-- The actual file/folder item with click event -->
-      <ion-item (click)="itemClicked(f)">
-        <ion-icon [name]="f.isFile ? 'document-outline' : 'folder-outline'" slot="start"></ion-icon>
+      <ion-item (click)="itemClicked(f)" color="secondary">
+        <ion-icon [name]="f.isFile ? 'document-outline' : 'folder-outline'" slot="start" color="primary"></ion-icon>
         {{ f.name }}
       </ion-item>
 
@@ -35,7 +35,7 @@
 
       <ion-item-options side="end">
         <ion-item-option (click)="startCopy(f)" color="success">
-          Copy
+          {{'Buttons.copy' | translate}}
         </ion-item-option>
       </ion-item-options>
 

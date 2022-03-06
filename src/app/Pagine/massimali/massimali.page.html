@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Massimali</ion-title>
+    <ion-title>{{'Tabs.Tab1' | translate}}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="addMassimale(undefined)">
         <ion-icon name="add"></ion-icon>
@@ -10,16 +10,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-content>
       <ion-list>
 
         <ion-reorder-group (ionItemReorder)="reorder($event)" disabled="false">
           <ion-item-sliding *ngFor="let exercise of massimali">
             <ion-item-options side="start">
-              <ion-item-option (click)="delete(exercise)" color="danger">Elimina</ion-item-option>
+              <ion-item-option (click)="delete(exercise)" color="danger">{{'Buttons.delete' | translate}}</ion-item-option>
             </ion-item-options>
-            <ion-item (click)="presentAlert(exercise)">
+            <ion-item (click)="presentAlert(exercise)" color="secondary">
               <ion-reorder slot="end"></ion-reorder>
               <ion-label style="text-transform: uppercase;">
                 {{exercise.type}}
@@ -33,11 +31,9 @@
             </ion-item>
 
             <ion-item-options side="end">
-              <ion-item-option (click)="modify(exercise)" color="warning">Modifica</ion-item-option>
+              <ion-item-option (click)="modify(exercise)" color="warning">{{'Buttons.modify' | translate}}</ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
         </ion-reorder-group>
       </ion-list>
-    </ion-card-content>
-  </ion-card>
 </ion-content>

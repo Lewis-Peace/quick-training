@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { DatabaseHandler } from 'src/app/Tipi/DatabaseHandler';
@@ -17,10 +18,12 @@ export class MassimaliPage implements OnInit {
   modalController: ModalController;
   database: DatabaseHandler<Esercizio>
   public reorderState: boolean = true
+  translate: TranslateService
 
-  constructor(alertController: AlertController, modalController: ModalController) {
+  constructor(alertController: AlertController, modalController: ModalController, translate: TranslateService) {
     this.modalController = modalController
     this.alertController = alertController
+    this.translate = translate
   }
 
   ngOnInit() {
@@ -46,7 +49,7 @@ export class MassimaliPage implements OnInit {
       }
   }
   list.splice(to, 0, list.splice(from, 1)[0]);
-  return list; // for testing
+  return list;
   }
 
   public async addMassimale(esercizio: Esercizio) {

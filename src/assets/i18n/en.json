@@ -1,0 +1,30 @@
+{
+  "Tabs": {
+    "Tab1": "Results",
+    "Tab2": "Training",
+    "Tab3": "Timer"
+  },
+  "Buttons": {
+    "add": "add",
+    "close": "close",
+    "start": "Start",
+    "reset": "Reset",
+    "stop": "Stop",
+    "split": "Split",
+    "copy": "Copy",
+    "cancel": "Cancel",
+    "create": "Create",
+    "delete": "Delete",
+    "modify": "Modify"
+  },
+  "TrainingPage": {
+    "NoDocumentFound": "No document found",
+    "CreateFolder": "Create Folder",
+    "FolderName": "Folder Name"
+  },
+  "AddMassimalePage": {
+    "InsertExerciseName": "Insert exercise name",
+    "InsertNumberOfReps": "Insert number of reps",
+    "InsertWeightLifted": "Insert weight lifted"
+  }
+}

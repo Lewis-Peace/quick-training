@@ -1,0 +1,30 @@
+{
+  "Tabs": {
+    "Tab1": "Massimale",
+    "Tab2": "Allenamento",
+    "Tab3": "Cronometro"
+  },
+  "Buttons": {
+    "add": "Aggiungi",
+    "close": "Chiudi",
+    "start": "Start",
+    "reset": "Reset",
+    "stop": "Stop",
+    "split": "Giro",
+    "copy": "Copia",
+    "cancel": "Annulla",
+    "create": "Crea",
+    "delete": "Elimina",
+    "modify": "Modifica"
+  },
+  "TrainingPage": {
+    "NoDocumentFound": "Nessun documento trovato",
+    "CreateFolder": "Crea cartella",
+    "FolderName": "Nome cartella"
+  },
+  "AddMassimalePage": {
+    "InsertExerciseName": "Inserisci nome dell'esercizio",
+    "InsertNumberOfReps": "Inserisci numero di ripetizioni",
+    "InsertWeightLifted": "Inserisci massimale"
+  }
+}

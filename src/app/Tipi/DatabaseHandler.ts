@@ -103,7 +103,7 @@ export class DatabaseHandler<Type> {
             directory: this.directory
         })
     }
-    
+
     private getIndex(array: Type[], element: Type): number {
         for (let cont = 0; cont < array.length; cont++) {
             if (this.compareObjects(array[cont], element)) {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Filesystem } from '@capacitor/filesystem';
 import { DatabaseHandler } from '../Tipi/DatabaseHandler';
 import { Esercizio } from '../Tipi/esercizio';
+import {TranslateService} from '@ngx-translate/core'
 
 @Component({
   selector: 'app-tabs',
@@ -10,7 +11,17 @@ import { Esercizio } from '../Tipi/esercizio';
 })
 export class TabsPage {
 
-  constructor() {}
+  translate: TranslateService
+  Tab1
+
+  constructor(translate: TranslateService) {
+    this.translate = translate
+    this.loadTranslatedWords(navigator.language)
+  }
+
+  loadTranslatedWords(language: string) {
+    this.translate.use(language)
+  }
 
   ngOnInit() {
     this.isDatabaseReady()
@@ -22,7 +33,6 @@ export class TabsPage {
       path: database.filename,
       directory: database.directory
     })
-    .then(() => console.log('File exists'))
     .catch(() => {database.initDatabase()})
   }
 }

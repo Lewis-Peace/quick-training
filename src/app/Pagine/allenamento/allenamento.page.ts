@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Filesystem, Directory } from '@capacitor/filesystem';
@@ -17,10 +18,13 @@ export class AllenamentoPage implements OnInit {
   folderContent = [];
   currentFolder = '';
   copyFile = null;
+  translate: TranslateService
   @ViewChild('filepicker') uploader: ElementRef;
 
   constructor(private route: ActivatedRoute, private alertCtrl: AlertController, private router: Router,
-    private previewAnyFile: PreviewAnyFile, private toastCtrl: ToastController) { }
+    private previewAnyFile: PreviewAnyFile, private toastCtrl: ToastController, translate: TranslateService) {
+      this.translate = translate
+    }
 
   ngOnInit() {
     this.currentFolder = this.route.snapshot.paramMap.get('folder') || '';
@@ -43,24 +47,31 @@ export class AllenamentoPage implements OnInit {
     });
   }
 
+  translation(word) {
+    var translation
+    this.translate.get(word).subscribe((res: string) =>
+      {translation = res}
+    )
+    return translation
+  }
+
   async createFolder() {
     let alert = await this.alertCtrl.create({
-      header: 'Crea cartella',
-      message: 'Specifica il nome per la cartella',
+      header: this.translation('TrainingPage.CreateFolder'),
       inputs: [
         {
           name: 'name',
           type: 'text',
-          placeholder: 'Nome cartella'
+          placeholder: this.translation('TrainingPage.FolderName')
         }
       ],
       buttons: [
         {
-          text: 'Annulla',
+          text: this.translation('Buttons.cancel'),
           role: 'cancel'
         },
         {
-          text: 'Crea',
+          text: this.translation('Buttons.create'),
           handler: async data => {
             await Filesystem.mkdir({
               directory: APP_DIRECTORY,
