@@ -1,4 +1,4 @@
-# Quick Training
+# Lift Buddy
 
 Un'applicazione android principalmente sviluppata per tenere traccia dei massimali in palestra. Le sue funzionalità sono:
 
