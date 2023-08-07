@@ -1,0 +1,35 @@
+<div class="flex">
+  <div class="image-container">
+    <img width="100%" src="../../../assets/Logo.png"/>
+  </div>
+  <mat-card>
+      <mat-card-header>
+          <mat-card-title>Login</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="loginForm" class="loginForm">
+          <mat-form-field>
+            <mat-label>
+              Username
+            </mat-label>
+            <input matInput [formControl]="username">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>
+              Password
+            </mat-label>
+            <input [type]="passwordVisible ? 'text' : 'password'" matInput [formControl]="password">
+            <mat-icon matSuffix (click)="passwordVisible = !passwordVisible">{{passwordVisible ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-hint routerLink="forgot-password" *ngIf="forgotPasswordVisible" (click)="forgotPasswordVisible = !forgotPasswordVisible">Forgot password?</mat-hint>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button routerLink="register">Register</button>
+
+        <div style="width: 80%;"></div>
+
+        <button mat-button (click)="login()">Login</button>
+      </mat-card-actions>
+  </mat-card>
+</div>
