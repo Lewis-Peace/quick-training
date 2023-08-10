@@ -6,10 +6,11 @@ import { Response } from '../../Model/Response'
 })
 export class ApiCallsService {
 
-  public jwtToken: string | null = "";
+  public jwtToken: string = "";
+  public defaultUrl: string = "http://localhost:5200/";
 
-  public async apiGet(url: string) {
-    let response = new Response();
+  public async apiGet<T>(url: string): Promise<Response<T>> {
+    let response = new Response<T>();
     try {
       const response = await fetch(url,
         {
@@ -21,7 +22,7 @@ export class ApiCallsService {
       if (!response.ok) {
         throw new Error(`Error on post call: ${response.status}`);
       }
-      const result = (await response.json()) as Response;
+      const result = (await response.json()) as Response<T>;
       return result;
     } catch (error) {
 
@@ -38,10 +39,10 @@ export class ApiCallsService {
     }
   }
 
-  public async apiPost(url: string, body: object) {
-    let response = new Response();
+  public async apiPost<T>(url: string, body: object): Promise<Response<T>> {
+    let apiResponse = new Response<T>();
     try {
-      const response = await fetch(url,
+      const response = await fetch(this.defaultUrl + url,
         {
           method: 'POST',
           body: JSON.stringify(body),
@@ -51,22 +52,22 @@ export class ApiCallsService {
           }
         });
       if (!response.ok) {
-        throw new Error(`Error on post call: ${response.status}`);
+        throw new Error(`Error on post call: ${response.statusText} ${response.status}`);
       }
-      const result = (await response.json()) as Response;
+      // TODO: add handling for empty body
+      const result = (await response.json()) as Response<T>;
       return result;
     } catch (error) {
 
-      response.result = false;
+      apiResponse.result = false;
       if (error instanceof Error) {
         console.error(`Error ${error.message}`)
-        response.notes = error.message;
-        return response;
+        apiResponse.notes = error.message;
       } else {
         console.error(`Unexpected error: `, error)
-        response.notes = 'Unexpected error';
-        return response;
+        apiResponse.notes = 'Unexpected error';
       }
     }
+    return apiResponse;
   }
 }

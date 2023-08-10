@@ -23,13 +23,20 @@ namespace Lift.Buddy.API.Controllers
             _loginService = loginService;
         }
 
+        [HttpPost("security-questions")]
+        public async Task< IActionResult> GetSecurityQuestions([FromBody] LoginCredentials loginCredentials)
+        {
+            var response = await _loginService.GetSecurityQuestions(loginCredentials.Username);
+            return Ok(response);
+        }
+
         [HttpPost]
         public IActionResult Login([FromBody] LoginCredentials loginCredentials) {
             if (loginCredentials == null || !_loginService.CheckCredentials(loginCredentials))
             {
                 return Unauthorized();
             }
-            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Authentication:SecretForKey"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Authentication:SecretForKey"] ?? ""));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claimsForToken = new List<Claim>();
@@ -46,22 +53,37 @@ namespace Lift.Buddy.API.Controllers
 
             var tokenToReturn = new JwtSecurityTokenHandler()
                 .WriteToken(jwtSecurityToken);
-            var loginResp = new Response
+            var tokens = new List<string>();
+            tokens.Add(tokenToReturn);
+            var loginResp = new Response<string>
             {
                 result = true,
-                body = tokenToReturn,
+                body = tokens,
                 notes = ""
             };
             return Ok(loginResp);
         }
 
-        [Authorize]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegistrationCredentials registrationCredentials) {
+            var response = await _loginService.RegisterUser(registrationCredentials);
+            if (!response.result)
+            {
+                return Ok(response);
+            }
+            return NoContent();
+        }
+
         [HttpPost("changePassword")]
-        public IActionResult ChangePassword([FromBody] LoginCredentials loginCredentials)
+        public async Task<IActionResult> ChangePassword([FromBody] LoginCredentials loginCredentials)
         {
-            var username = loginCredentials.Username;
-            var newPassowrd = loginCredentials.Password;
-            return Ok();
+            var response = await _loginService.ChangePassword(loginCredentials);
+
+            if (!response.result)
+            {
+                return Ok(response);
+            }
+            return NoContent();
         }
     }
 }
