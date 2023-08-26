@@ -1,20 +1,42 @@
 using Lift.Buddy.API.Interfaces;
 using Lift.Buddy.API.Services;
 using Lift.Buddy.Core.DB;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSwaggerGen(setupAction =>
 {
-    setupAction.AddSecurityDefinition("", new Microsoft.OpenApi.Models.OpenApiSecurityScheme()
+    setupAction.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
+    setupAction.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
+        BearerFormat = "JWT",
         Description = "Input a valid token to access this API"
+    });
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
     });
 });
 
@@ -48,13 +70,17 @@ builder.Services.AddAuthentication("Bearer")
     });
 
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IWorkoutScheduleService, WorkoutScheduleService>();
+builder.Services.AddScoped<IPRService, PRService>();
 
 builder.Services.AddDbContext<DBContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("TestDatabase"));
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(
+    opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+    );
 
 var app = builder.Build();
 
@@ -66,11 +92,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.RoutePrefix = "";
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseCors(anyCors);

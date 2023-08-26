@@ -19,46 +19,137 @@ namespace Lift.Buddy.Core.Migrations
             modelBuilder.Entity("Lift.Buddy.Core.DB.Models.User", b =>
                 {
                     b.Property<string>("UserName")
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "username");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Answers")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "answers");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "email");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsAdmin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
-                        .HasDefaultValue(false)
-                        .HasAnnotation("Relational:JsonPropertyName", "isAdmin");
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsTrainer")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "name");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "password");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Questions")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "questions");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Surname")
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "surname");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserName");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.UserPR", b =>
+                {
+                    b.Property<string>("Username")
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "username");
+
+                    b.Property<string>("PersonalRecords")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "personalRecords");
+
+                    b.HasKey("Username");
+
+                    b.ToTable("UserPRs");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutAssignment", b =>
+                {
+                    b.Property<string>("WorkoutUser")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("WorkoutId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("WorkoutUser");
+
+                    b.HasIndex("WorkoutId");
+
+                    b.ToTable("WorkoutAssignments");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "name");
+
+                    b.Property<string>("WorkoutDays")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "workoutDays");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkoutSchedules");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.UserPR", b =>
+                {
+                    b.HasOne("Lift.Buddy.Core.DB.Models.User", "User")
+                        .WithOne("UserPR")
+                        .HasForeignKey("Lift.Buddy.Core.DB.Models.UserPR", "Username")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutAssignment", b =>
+                {
+                    b.HasOne("Lift.Buddy.Core.DB.Models.WorkoutSchedule", "WorkoutSchedule")
+                        .WithMany("WorkoutAssignments")
+                        .HasForeignKey("WorkoutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lift.Buddy.Core.DB.Models.User", "User")
+                        .WithMany("WorkoutAssignments")
+                        .HasForeignKey("WorkoutUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("WorkoutSchedule");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.User", b =>
+                {
+                    b.Navigation("UserPR")
+                        .IsRequired();
+
+                    b.Navigation("WorkoutAssignments");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutSchedule", b =>
+                {
+                    b.Navigation("WorkoutAssignments");
                 });
 #pragma warning restore 612, 618
         }
