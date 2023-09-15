@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PersonalRecord } from 'src/app/Model/PersonalRecord';
 import { UserPR } from 'src/app/Model/UserPR';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
-import { LoginService } from 'src/app/Services/login.service';
 import { PrService } from 'src/app/Services/pr.service';
 
 @Component({
@@ -15,8 +14,7 @@ export class PrComponent implements OnInit {
 
   constructor(
     private prService: PrService,
-    private snackbarService: SnackBarService,
-    private loginService: LoginService
+    private snackbarService: SnackBarService
   ) { }
 
   public prForm: FormGroup = new FormGroup({
@@ -29,8 +27,7 @@ export class PrComponent implements OnInit {
 
   private isUpdate: boolean = false;
   private async initUserPR() {
-    const username = this.loginService.currentUsername;
-    const prResp = await this.prService.get(username);
+    const prResp = await this.prService.get();
 
     if (!prResp.result) {
       this.snackbarService.operErrorSnackbar(`Failed to load PR. Error ${prResp.notes}`)
@@ -53,7 +50,6 @@ export class PrComponent implements OnInit {
     let userPR = new UserPR();
 
     userPR.personalRecords = this.prForm.controls['exercizes'].value;
-    userPR.username = this.loginService.currentUsername;
 
     const saveResp = await this.prService.savePR(userPR, this.isUpdate);
 

@@ -41,11 +41,23 @@ export class ApiCallsService {
   }
 
   public async apiPost<T>(url: string, body: object): Promise<Response<T>> {
+    return await this.apiGeneralPost(url, body, "POST");
+  }
+
+  public async apiPut<T>(url: string, body: object): Promise<Response<T>> {
+    return await this.apiGeneralPost(url, body, "PUT");
+  }
+
+  public async apiDelete<T>(url: string, body: object): Promise<Response<T>> {
+    return await this.apiGeneralPost(url, body, "DELETE");
+  }
+
+  private async apiGeneralPost<T>(url: string, body: object, type: string): Promise<Response<T>> {
     let apiResponse = new Response<T>();
     try {
       const response = await fetch(this.defaultUrl + url,
         {
-          method: 'POST',
+          method: type,
           body: JSON.stringify(body),
           headers: {
             'Content-Type': 'application/json',
@@ -54,40 +66,6 @@ export class ApiCallsService {
         });
       if (!response.ok) {
         throw new Error(`Error on post call: ${response.statusText} ${response.status}`);
-      }
-      if (response.status != 204) {
-        const result = (await response.json()) as Response<T>;
-        return result;
-      }
-      apiResponse.result = true;
-    } catch (error) {
-
-      apiResponse.result = false;
-      if (error instanceof Error) {
-        console.error(`Error ${error.message}`)
-        apiResponse.notes = error.message;
-      } else {
-        console.error(`Unexpected error: `, error)
-        apiResponse.notes = 'Unexpected error';
-      }
-    }
-    return apiResponse;
-  }
-
-  public async apiPut<T>(url: string, body: object): Promise<Response<T>> {
-    let apiResponse = new Response<T>();
-    try {
-      const response = await fetch(this.defaultUrl + url,
-        {
-          method: 'PUT',
-          body: JSON.stringify(body),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ApiCallsService.jwtToken}`
-          }
-        });
-      if (!response.ok) {
-        throw new Error(`Error on put call: ${response.statusText} ${response.status}`);
       }
       if (response.status != 204) {
         const result = (await response.json()) as Response<T>;

@@ -25,14 +25,14 @@ export class ExerciseRowComponent implements OnInit {
 
   private initFormValues() {
     this.exerciseForm.controls['name'].setValue(this.exercise?.name ?? '');
-    this.exerciseForm.controls['reps'].setValue(this.exercise?.repetitions ?? 1);
+    this.exerciseForm.controls['reps'].setValue(this.exercise?.reps ?? 1);
     this.exerciseForm.controls['series'].setValue(this.exercise?.series ?? 1);
     this.exerciseForm.controls['rest'].setValue(this.exercise?.rest ?? 0);
     this.exerciseForm.controls['name'].valueChanges.pipe(
       tap((name: string) => this.exercise!.name = name)
     ).subscribe();
     this.exerciseForm.controls['reps'].valueChanges.pipe(
-      tap((repetitions: number) => this.exercise!.repetitions = repetitions)
+      tap((repetitions: number) => this.exercise!.reps = repetitions)
     ).subscribe();
     this.exerciseForm.controls['series'].valueChanges.pipe(
       tap((series: number) => this.exercise!.series = series)
@@ -55,7 +55,7 @@ export class ExerciseRowComponent implements OnInit {
     const series = this.exerciseForm.controls['series'].value
     const rest = this.exerciseForm.controls['rest'].value
     this.exercise!.name = name;
-    this.exercise!.repetitions = reps;
+    this.exercise!.reps = reps;
     this.exercise!.series = series;
     this.exercise!.rest = rest;
 

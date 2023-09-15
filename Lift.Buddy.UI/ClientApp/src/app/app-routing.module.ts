@@ -12,6 +12,7 @@ import { DailyWorkoutComponent } from './Pages/WorkoutPlans/Components/create-up
 import { UserDataComponent } from './Pages/UserData/user-data.component';
 import { AuthGuard } from './Services/Guards/AuthGuard';
 import { PrComponent } from './Pages/PR/pr.component';
+import { MyWorkoutsComponent } from './Pages/WorkoutPlans/Components/my-workouts/my-workouts.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -28,19 +29,17 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'workouts',
+    path: 'workout',
     component: WorkoutPlansComponent,
     children: [
-      {path: 'home', component: YourWorkoutsPageComponent},
+      {path: 'training', component: YourWorkoutsPageComponent},
       {
         path: 'add/:workoutId',
-        component: CreateUpdateWorkoutplanPageComponent,
-        children: [
-
-          {path: ':workoutId', component: DailyWorkoutComponent}
-        ]
+        component: CreateUpdateWorkoutplanPageComponent
       },
-    ]
+      {path: 'my-workouts', component: MyWorkoutsComponent,}
+    ],
+    canActivate: [AuthGuard]
   },
 ];
 

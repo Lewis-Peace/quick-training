@@ -1,10 +1,12 @@
 ﻿using Lift.Buddy.Core.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Lift.Buddy.Core.DB.Models
 {
     public class UserPR
     {
+        [Key]
         [JsonPropertyName("username")]
         public string Username { get; set; } = string.Empty;
         [JsonPropertyName("personalRecords")]

@@ -1,6 +1,6 @@
 import { WorkoutDay } from 'src/app/Model/WorkoutDay';
 import { Component, OnInit } from '@angular/core';
-import { WorkoutSchedule } from 'src/app/Model/WorkoutSchedule';
+import { WorkoutPlan } from 'src/app/Model/WorkoutPlan';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
 import { WorkoutplanService } from 'src/app/Services/workoutplan.service';
 
@@ -20,7 +20,7 @@ export class YourWorkoutsPageComponent implements OnInit {
     await this.initUserWorkouts()
   }
 
-  public workouts: WorkoutSchedule[] | undefined;
+  public workouts: WorkoutPlan[] | undefined;
   public dailyWorkouts: {workout: WorkoutDay, name: string}[]  = []
 
   private async initUserWorkouts() {

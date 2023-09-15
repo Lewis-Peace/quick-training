@@ -29,7 +29,6 @@ export class UserDataComponent implements OnInit {
     }
 
     this.userData = userDataResp.body[0];
-    this.snackbarService.openSuccessSnackbar('User data successfully retrieved');
   }
 
   public async save() {

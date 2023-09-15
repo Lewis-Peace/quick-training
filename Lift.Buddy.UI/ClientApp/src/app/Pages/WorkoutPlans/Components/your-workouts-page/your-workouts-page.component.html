@@ -1,26 +1,31 @@
-<div class="flex-column col h-100 d-flex">
-  <mat-card class="row flex-grow-1">
+<div class="container">
+  <mat-card class="row">
     <mat-card-title>
       Today
     </mat-card-title>
     <mat-card-content>
-      <p>{{dailyWorkouts | json}}</p>
+        <div class="row g-0">
+          <app-training-card
+            class="col-3 training-card"
+            *ngFor="let dailyWorkout of dailyWorkouts"
+            [workoutDay]="dailyWorkout.workout"
+            [name]="dailyWorkout.name"
+          ></app-training-card>
+        </div>
     </mat-card-content>
   </mat-card>
-  <mat-card class="row flex-grow-1">
+  <mat-card class="row">
     <mat-card-title>
       My week
     </mat-card-title>
     <mat-card-content>
-
     </mat-card-content>
   </mat-card>
-  <mat-card class="row flex-grow-1">
+  <mat-card class="row">
     <mat-card-title>
       Old plans
     </mat-card-title>
     <mat-card-content>
-
     </mat-card-content>
   </mat-card>
 </div>

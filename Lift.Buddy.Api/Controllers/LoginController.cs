@@ -24,11 +24,12 @@ namespace Lift.Buddy.API.Controllers
         }
 
         #region User Data
-        [HttpPost("user-data")]
+        [HttpGet("user-data")]
         [Authorize]
-        public async Task<IActionResult> GetUserData([FromBody] UserData userData)
+        public async Task<IActionResult> GetUserData()
         {
-            var response = await _loginService.GetUserData(userData);
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+            var response = await _loginService.GetUserData(username);
             return Ok(response);
         }
 
@@ -58,7 +59,7 @@ namespace Lift.Buddy.API.Controllers
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claimsForToken = new List<Claim>();
-            claimsForToken.Add(new Claim("sub", loginCredentials.Username!));
+            claimsForToken.Add(new Claim("sub", loginCredentials.Username));
 
             var jwtSecurityToken = new JwtSecurityToken(
                 _configuration["Authentication:Issuer"],

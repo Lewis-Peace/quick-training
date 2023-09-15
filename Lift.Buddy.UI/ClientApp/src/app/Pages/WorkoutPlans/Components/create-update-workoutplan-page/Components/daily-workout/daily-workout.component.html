@@ -8,7 +8,7 @@
     <span class="col-2">Rest</span>
     <span class="col-1"></span>
   </div>
-  <div style="overflow-y: scroll;height: 70vh;overflow-x: hidden;">
+  <div class="daily-exercise-container">
     <app-exercise-row
       *ngFor="let exercise of exercises?.value; let idx = index"
       [exercise]="exercise"

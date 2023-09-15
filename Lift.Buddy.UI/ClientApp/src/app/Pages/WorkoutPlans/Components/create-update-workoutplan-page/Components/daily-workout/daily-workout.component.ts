@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Exercize } from 'src/app/Model/Exercise';
 import { WorkoutDay } from 'src/app/Model/WorkoutDay';
-import { WorkoutSchedule } from 'src/app/Model/WorkoutSchedule';
+import { WorkoutPlan } from 'src/app/Model/WorkoutPlan';
 
 @Component({
   selector: 'app-daily-workout',
@@ -14,7 +14,7 @@ export class DailyWorkoutComponent implements OnInit {
   constructor() { }
 
   @Input() day: number = 0;
-  @Input() workschedule: WorkoutSchedule | undefined;
+  @Input() workoutPlan: WorkoutPlan | undefined;
   @Input() exercises: FormControl<Exercize[] | null> | undefined;
   @Output() onSave: EventEmitter<any> = new EventEmitter();
 
@@ -23,7 +23,7 @@ export class DailyWorkoutComponent implements OnInit {
   }
 
   private initExercizes() {
-    if (this.workschedule?.workoutDays[this.day]?.exercises?.length == 0) {
+    if (this.workoutPlan?.workoutDays[this.day]?.exercises?.length == 0) {
       return;
     }
   }
@@ -35,7 +35,7 @@ export class DailyWorkoutComponent implements OnInit {
       let exerciseList = [new Exercize()];
       workout.day = this.day;
       workout.exercises = exerciseList;
-      this.workschedule?.workoutDays.push(workout);
+      this.workoutPlan?.workoutDays.push(workout);
       this.exercises?.setValue(exerciseList);
     } else {
       this.exercises?.value?.push(new Exercize());
@@ -50,11 +50,11 @@ export class DailyWorkoutComponent implements OnInit {
     this.exercises?.value?.splice(index, 1);
 
     if (this.exercises?.value?.length == 0) {
-      const idx = this.workschedule?.workoutDays.findIndex(x => x.day == this.day);
+      const idx = this.workoutPlan?.workoutDays.findIndex(x => x.day == this.day);
       if (idx == -1) {
         return;
       }
-      this.workschedule?.workoutDays.splice(idx!, 1);
+      this.workoutPlan?.workoutDays.splice(idx!, 1);
     }
   }
 }

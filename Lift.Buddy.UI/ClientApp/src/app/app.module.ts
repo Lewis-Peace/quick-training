@@ -19,6 +19,8 @@ import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatListModule } from '@angular/material/list'
 import { MatTreeModule } from '@angular/material/tree'
 import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatChipsModule } from '@angular/material/chips'
+import { MatAutocompleteModule } from '@angular/material/autocomplete'
 //#endregion
 
 import { ScrollingModule } from '@angular/cdk/scrolling'
@@ -51,6 +53,10 @@ import { PrComponent } from './Pages/PR/pr.component';
 import { PrMenuComponent } from './Pages/PR/Components/pr-menu/pr-menu.component';
 import { PrExerciseComponent } from './Pages/PR/Components/pr-exercise/pr-exercise.component';
 import { PrService } from './Services/pr.service';
+import { TrainingCardComponent } from './Pages/WorkoutPlans/Components/your-workouts-page/Components/training-card/training-card.component';
+import { MyWorkoutsComponent } from './Pages/WorkoutPlans/Components/my-workouts/my-workouts.component';
+import { WorkoutNavigationMenuComponent } from './Pages/Components/workout-navigation-menu/workout-navigation-menu.component';
+import { NavigationMenuComponent } from './Pages/Components/navigation-menu/navigation-menu.component';
 //#endregion
 
 @NgModule({
@@ -75,7 +81,11 @@ import { PrService } from './Services/pr.service';
     UserDataFormComponent,
     PrComponent,
     PrMenuComponent,
-    PrExerciseComponent
+    PrExerciseComponent,
+    TrainingCardComponent,
+    MyWorkoutsComponent,
+    WorkoutNavigationMenuComponent,
+    NavigationMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -96,7 +106,9 @@ import { PrService } from './Services/pr.service';
     MatTreeModule,
     WorkoutPlansModule,
     ScrollingModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule,
+    MatAutocompleteModule,
   ],
   providers: [LoginService, ApiCallsService, PrService],
   bootstrap: [AppComponent]

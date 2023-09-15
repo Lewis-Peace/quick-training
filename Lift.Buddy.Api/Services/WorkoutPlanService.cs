@@ -7,23 +7,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lift.Buddy.API.Services
 {
-    public class WorkoutScheduleService : IWorkoutScheduleService
+    public class WorkoutPlanService : IWorkoutPlanService
     {
         private readonly DBContext _context;
 
-        public WorkoutScheduleService(DBContext context)
+        public WorkoutPlanService(DBContext context)
         {
             _context = context;
         }
 
         #region Get
-        public async Task<Response<WorkoutSchedule>> GetWorkoutSchedule(int id)
+        public async Task<Response<WorkoutPlan>> GetWorkoutPlan(int id)
         {
-            var response = new Response<WorkoutSchedule>();
+            var response = new Response<WorkoutPlan>();
 
             try
             {
-                List<WorkoutSchedule> workoutSchedules;
+                List<WorkoutPlan> workoutSchedules;
                 if (id > 0)
                 {
                     workoutSchedules = await _context.WorkoutSchedules.Where(x => x.Id == id).ToListAsync();
@@ -38,28 +38,28 @@ namespace Lift.Buddy.API.Services
             catch (Exception ex)
             {
                 response.result = false;
-                response.notes = Utils.ErrorMessage(nameof(GetWorkoutSchedule), ex);
+                response.notes = Utils.ErrorMessage(nameof(GetWorkoutPlan), ex);
             }
 
             return response;
         }
 
-        public async Task<Response<WorkoutSchedule>> GetWorkoutScheduleByUser(string username)
+        public async Task<Response<WorkoutPlan>> GetWorkoutPlanAssignedToUsername(string username)
         {
-            var response = new Response<WorkoutSchedule>();
+            var response = new Response<WorkoutPlan>();
 
             try
             {
                 if (username == String.Empty)
                 {
-                    throw new Exception("No user given.");
+                    throw new Exception("No username given.");
                 }
                  
                 var workoutAssignments = await _context.WorkoutAssignments
                     .Where(x => x.WorkoutUser == username)
                     .ToListAsync();
 
-                List<WorkoutSchedule> workoutSchedules;
+                List<WorkoutPlan> workoutSchedules;
                 foreach (var workoutAssignment in workoutAssignments)
                 {
                     workoutSchedules = await _context.WorkoutSchedules
@@ -74,7 +74,34 @@ namespace Lift.Buddy.API.Services
             catch (Exception ex)
             {
                 response.result = false;
-                response.notes = Utils.ErrorMessage(nameof(GetWorkoutSchedule), ex);
+                response.notes = Utils.ErrorMessage(nameof(GetWorkoutPlan), ex);
+            }
+
+            return response;
+        }
+
+        public async Task<Response<WorkoutPlan>> GetWorkoutPlanCreatedByUsername(string username)
+        {
+            var response = new Response<WorkoutPlan>();
+
+            try
+            {
+                if (username == String.Empty)
+                {
+                    throw new Exception("No username given.");
+                }
+
+                var workoutSchedules = await _context.WorkoutSchedules
+                    .Where(x => x.CreatedBy == username)
+                    .ToListAsync();
+
+                response.body = workoutSchedules;
+                response.result = true;
+            }
+            catch (Exception ex)
+            {
+                response.result = false;
+                response.notes = Utils.ErrorMessage(nameof(GetWorkoutPlan), ex);
             }
 
             return response;
@@ -82,9 +109,9 @@ namespace Lift.Buddy.API.Services
         #endregion
 
         #region Add
-        public async Task<Response<WorkoutSchedule>> AddWorkoutSchedule(WorkoutSchedule schedule)
+        public async Task<Response<WorkoutPlan>> AddWorkoutPlan(WorkoutPlan schedule)
         {
-            var response = new Response<WorkoutSchedule>();
+            var response = new Response<WorkoutPlan>();
 
             try
             {
@@ -95,12 +122,12 @@ namespace Lift.Buddy.API.Services
                     throw new Exception("Failed to save changes in database");
                 }
                 response.result = true;
-                response.body = new List<WorkoutSchedule> { schedule };
+                response.body = new List<WorkoutPlan> { schedule };
             }
             catch (Exception ex)
             {
                 response.result = false;
-                response.notes = Utils.ErrorMessage(nameof(AddWorkoutSchedule), ex);
+                response.notes = Utils.ErrorMessage(nameof(AddWorkoutPlan), ex);
             }
 
             return response;
@@ -108,9 +135,9 @@ namespace Lift.Buddy.API.Services
         #endregion
 
         #region Delete
-        public async Task<Response<WorkoutSchedule>> DeleteWorkoutSchedule(WorkoutSchedule schedule)
+        public async Task<Response<WorkoutPlan>> DeleteWorkoutPlan(WorkoutPlan schedule)
         {
-            var response = new Response<WorkoutSchedule>();
+            var response = new Response<WorkoutPlan>();
 
             try
             {
@@ -122,12 +149,12 @@ namespace Lift.Buddy.API.Services
                 }
 
                 response.result = true;
-                response.body = new List<WorkoutSchedule> { schedule };
+                response.body = new List<WorkoutPlan> { schedule };
             }
             catch (Exception ex)
             {
                 response.result = false;
-                response.notes = Utils.ErrorMessage(nameof(DeleteWorkoutSchedule), ex);
+                response.notes = Utils.ErrorMessage(nameof(DeleteWorkoutPlan), ex);
             }
 
             return response;
@@ -135,9 +162,9 @@ namespace Lift.Buddy.API.Services
         #endregion
 
         #region Update
-        public async Task<Response<WorkoutSchedule>> UpdateWorkoutSchedule(WorkoutSchedule schedule)
+        public async Task<Response<WorkoutPlan>> UpdateWorkoutPlan(WorkoutPlan schedule)
         {
-            var response = new Response<WorkoutSchedule>();
+            var response = new Response<WorkoutPlan>();
 
             try
             {
@@ -149,12 +176,12 @@ namespace Lift.Buddy.API.Services
                 }
 
                 response.result = true;
-                response.body = new List<WorkoutSchedule> { schedule };
+                response.body = new List<WorkoutPlan> { schedule };
             }
             catch (Exception ex)
             {
                 response.result = false;
-                response.notes = Utils.ErrorMessage(nameof(UpdateWorkoutSchedule), ex);
+                response.notes = Utils.ErrorMessage(nameof(UpdateWorkoutPlan), ex);
             }
 
             return response;

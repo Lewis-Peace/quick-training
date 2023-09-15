@@ -1,13 +1,14 @@
 ﻿using Lift.Buddy.API.Interfaces;
 using Lift.Buddy.Core.DB.Models;
-using Lift.Buddy.Core.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Lift.Buddy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PRController : ControllerBase
     {
         private readonly IPRService _prService;
@@ -16,9 +17,10 @@ namespace Lift.Buddy.API.Controllers
             _prService = prSservice;
         }
 
-        [HttpGet("{username}")]
-        public async Task<IActionResult> Get(string username)
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
             var response = await _prService.GetByUser(username);
             return Ok(response);
         }

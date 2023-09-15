@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Lift.Buddy.Core.DB.Models
@@ -10,9 +11,9 @@ namespace Lift.Buddy.Core.DB.Models
         [Key]
         public string WorkoutUser { get; set; } = "";
 
-        [JsonIgnore]
+        [JsonIgnore, ForeignKey(nameof(WorkoutUser))]
         public virtual User User { get; set; }
-        [JsonIgnore]
-        public virtual WorkoutSchedule WorkoutSchedule { get; set;}
+        [JsonIgnore, ForeignKey(nameof(WorkoutId))]
+        public virtual WorkoutPlan WorkoutSchedule { get; set;}
     }
 }

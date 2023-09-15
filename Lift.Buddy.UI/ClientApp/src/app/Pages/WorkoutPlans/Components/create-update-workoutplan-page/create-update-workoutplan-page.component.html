@@ -11,7 +11,7 @@
         <div class="col-6">
           <mat-form-field>
             <mat-label>Training day</mat-label>
-            <mat-select formControlName="trainingDay" (valueChange)="onDayChange($event)">
+            <mat-select formControlName="trainingDay">
               <mat-option *ngFor="let day of days; let idx = index" [value]="idx">{{day}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -19,7 +19,7 @@
       </div>
       <div class="row">
         <app-daily-workout
-          [workschedule]="workschedule"
+          [workoutPlan]="workoutPlan"
           [day]="workoutDayForm.controls['trainingDay'].value"
           [exercises]="exercises"
           (onSave)="save()"

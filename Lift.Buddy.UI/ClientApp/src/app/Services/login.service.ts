@@ -21,7 +21,7 @@ export class LoginService {
   public async getUserData() {
     let userData = new UserData();
     userData.username = this.currentUsername;
-    const response = await this.apiCalls.apiPost<UserData>(this.defaultUrl + '/user-data', userData);
+    const response = await this.apiCalls.apiGet<UserData>(this.defaultUrl + '/user-data');
 
     return response;
   }

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Lift.Buddy.Core.DB.Models
 {
-    public class WorkoutSchedule
+    public class WorkoutPlan
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,6 +18,12 @@ namespace Lift.Buddy.Core.DB.Models
 
         [JsonPropertyName("workoutDays")]
         public List<WorkoutDay> WorkoutDays { get; set; } = new List<WorkoutDay>();
+
+        [JsonPropertyName("createdBy")]
+        public string CreatedBy { get; set; }
+
+        [JsonIgnore]
+        public virtual User? Creator { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<WorkoutAssignment>? WorkoutAssignments { get; set; }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiCallsService } from './Utils/api-calls.service';
-import { WorkoutSchedule } from '../Model/WorkoutSchedule';
+import { WorkoutPlan } from '../Model/WorkoutPlan';
 import { BehaviorSubject } from 'rxjs';
 import { SnackBarService } from './Utils/snack-bar.service';
 import { LoginService } from './login.service';
@@ -31,28 +31,34 @@ public setDay(day: number) {
 }
 //#endregion
 
-private defaultUrl: string = 'api/WorkoutSchedule';
+private defaultUrl: string = 'api/WorkoutPlan';
 
 public async getWorkoutPlanById(id: number) {
-  const response = await this.apiService.apiGet<WorkoutSchedule>(this.defaultUrl + `/id/${id}`);
+  const response = await this.apiService.apiGet<WorkoutPlan>(this.defaultUrl + `/${id}`);
   return response;
 }
 
 public async getWorkoutPlanByUser() {
-  const response = await this.apiService.apiGet<WorkoutSchedule>(this.defaultUrl + `/${this.loginService.currentUsername}`);
+  const response = await this.apiService.apiGet<WorkoutPlan>(this.defaultUrl);
   return response;
 }
 
-public async saveWorkoutPlan(workout: WorkoutSchedule) {
+public async getWorkoutPlansCreatedByUsername() {
+  const response = await this.apiService.apiGet<WorkoutPlan>(this.defaultUrl + `/CreatedBy/${this.loginService.currentUsername}`);
+  return response;
+}
+
+public async saveWorkoutPlan(workout: WorkoutPlan) {
   try {
     if (!workout) {
       throw new Error('No workout to save');
     }
     let saveResp;
     if (!workout.id) {
-      saveResp = await this.apiService.apiPost('api/WorkoutSchedule', workout);
+      workout.createdBy = this.loginService.currentUsername;
+      saveResp = await this.apiService.apiPost('api/WorkoutPlan', workout);
     } else {
-      saveResp = await this.apiService.apiPut('api/WorkoutSchedule', workout);
+      saveResp = await this.apiService.apiPut('api/WorkoutPlan', workout);
     }
     if (!saveResp.result) {
       throw new Error(`${saveResp.notes}`);
@@ -61,6 +67,11 @@ public async saveWorkoutPlan(workout: WorkoutSchedule) {
   } catch (e) {
     this.snackbarService.operErrorSnackbar(`Failed to save workout schedule. Error: ${e}`);
   }
+}
+
+public async deleteWorkoutPlan(workout: WorkoutPlan) {
+  const response = await this.apiService.apiDelete(this.defaultUrl, workout);
+  return response;
 }
 
 }

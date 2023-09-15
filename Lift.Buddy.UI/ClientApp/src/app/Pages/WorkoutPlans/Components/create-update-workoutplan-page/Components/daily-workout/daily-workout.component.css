@@ -1,0 +1,5 @@
+.daily-exercise-container {
+ overflow-y: auto;
+ height: 70vh;
+ overflow-x: hidden;
+}

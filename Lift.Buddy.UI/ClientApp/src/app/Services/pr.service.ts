@@ -11,17 +11,19 @@ export class PrService {
     private apiService: ApiCallsService
   ) { }
 
-  public get(username: string) {
-    const response = this.apiService.apiGet<UserPR>(`api/PR/${username}`);
+  private defaultUrl: string = "api/PR";
+
+  public get() {
+    const response = this.apiService.apiGet<UserPR>(this.defaultUrl);
     return response;
   }
 
   public savePR(userPR: UserPR, isUpdate: boolean) {
     let response;
     if (isUpdate) {
-      response = this.apiService.apiPut<UserPR>('api/PR', userPR);
+      response = this.apiService.apiPut<UserPR>(this.defaultUrl, userPR);
     } else {
-      response = this.apiService.apiPost<UserPR>('api/PR', userPR);
+      response = this.apiService.apiPost<UserPR>(this.defaultUrl, userPR);
     }
     return response;
   }

@@ -70,7 +70,7 @@ builder.Services.AddAuthentication("Bearer")
     });
 
 builder.Services.AddScoped<ILoginService, LoginService>();
-builder.Services.AddScoped<IWorkoutScheduleService, WorkoutScheduleService>();
+builder.Services.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
 builder.Services.AddScoped<IPRService, PRService>();
 
 builder.Services.AddDbContext<DBContext>(options =>

@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Exercize } from 'src/app/Model/Exercise';
-import { WorkoutSchedule } from 'src/app/Model/WorkoutSchedule';
+import { WorkoutPlan } from 'src/app/Model/WorkoutPlan';
 import { ApiCallsService } from 'src/app/Services/Utils/api-calls.service';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
 
@@ -24,12 +24,34 @@ export class CreateUpdateWorkoutplanPageComponent implements OnInit {
    async ngOnInit() {
     this.initDates();
     await this.initWorkschedule();
-    this.initFormData();
+    this.initFormDataBinding();
   }
 
-  private initFormData() {
+  private initFormDataBinding() {
     this.workoutDayForm.controls['name'].valueChanges.subscribe(name => {
-      this.workschedule.name = name;
+      this.workoutPlan.name = name;
+    })
+    this.workoutDayForm.controls['exercises'].valueChanges.subscribe(exercises => {
+      const day = this.workoutDayForm.controls['trainingDay'].value;
+      let workschedDay = this.workoutPlan.workoutDays.find(x => x.day == day);
+      if (workschedDay == null) {
+        workschedDay = new WorkoutDay();
+        workschedDay.day = day;
+      }
+      workschedDay.exercises = exercises;
+    })
+    this.workoutDayForm.controls['trainingDay'].valueChanges.subscribe(day => {
+      const workoutDay = this.workoutPlan.workoutDays.find(x => x.day == day);
+      let exercises;
+      if (workoutDay == undefined) {
+        let newWorkoutDay = new WorkoutDay();
+        newWorkoutDay.day = day;
+        this.workoutPlan.workoutDays.push(newWorkoutDay)
+        exercises = newWorkoutDay.exercises;
+      } else {
+        exercises = workoutDay.exercises;
+      }
+      this.workoutDayForm.controls['exercises'].setValue(exercises);
     })
   }
 
@@ -47,35 +69,27 @@ export class CreateUpdateWorkoutplanPageComponent implements OnInit {
 
   //#endregion
 
-  public workschedule: WorkoutSchedule = new WorkoutSchedule();
+  public workoutPlan: WorkoutPlan = new WorkoutPlan();
   private async initWorkschedule() {
-    try {
-      const workoutId = +(this.activatedRoute.snapshot.paramMap.get('workoutId') ?? -1);
-      if (workoutId < 0) {
-        this.workschedule = new WorkoutSchedule();
-        return;
-      }
-      const workplanResp = await this.workoutPlanSerivice.getWorkoutPlanById(workoutId);
-      if (!workplanResp.result) {
-        this.snackbarService.operErrorSnackbar("Failed to load workout plan");
-        return;
-      }
-
-      if (workplanResp.body.length == 0) {
-        this.workschedule = new WorkoutSchedule();
-      } else {
-        let worksched = workplanResp.body[0];
-        this.workschedule = worksched;
-        worksched.workoutDays.sort((x: any, y: any) => x.day! - y.day!);
-        const day: number = worksched.workoutDays[0].day!;
-        const exercises = worksched.workoutDays.find((x: any) => x.day == day)?.exercises;
-        this.workoutDayForm.controls['name'].setValue(this.workschedule.name);
-        this.workoutDayForm.controls['trainingDay'].setValue(day);
-        this.workoutDayForm.controls['exercises'].setValue(exercises);
-      }
-    } catch (ex) {
+    const workoutId = +(this.activatedRoute.snapshot.paramMap.get('workoutId') ?? -1);
+    if (workoutId < 0) {
+      this.workoutPlan = new WorkoutPlan();
+      return;
     }
 
+    const workplanResp = await this.workoutPlanSerivice.getWorkoutPlanById(workoutId);
+    if (!workplanResp.result || workplanResp.body.length == 0) {
+      this.snackbarService.operErrorSnackbar("Failed to load workout plan");
+      return;
+    }
+
+    this.workoutPlan = workplanResp.body[0];
+    this.workoutPlan.workoutDays.sort((x: any, y: any) => x.day! - y.day!);
+    const day: number = this.workoutPlan.workoutDays[0].day!;
+    const exercises = this.workoutPlan.workoutDays.find((x: any) => x.day == day)?.exercises;
+    this.workoutDayForm.controls['name'].setValue(this.workoutPlan.name);
+    this.workoutDayForm.controls['trainingDay'].setValue(day);
+    this.workoutDayForm.controls['exercises'].setValue(exercises);
   }
 
   public exercises = new FormControl<Exercize[]>([]);
@@ -85,14 +99,17 @@ export class CreateUpdateWorkoutplanPageComponent implements OnInit {
     exercises: this.exercises
   });
 
-  public onDayChange(day: number) {
-    const exercises = this.workschedule?.workoutDays.find(x => x.day == day)?.exercises;
-    this.workoutDayForm.controls['exercises'].setValue(exercises);
-  }
-
-
   public async save() {
-    this.workoutPlanSerivice.saveWorkoutPlan(this.workschedule!);
+    this.deleteEmptyDays();
+    this.workoutPlanSerivice.saveWorkoutPlan(this.workoutPlan);
+  }
+  /** Deletes empty days from object to save space on DB */
+  private deleteEmptyDays() {
+    this.workoutPlan.workoutDays.forEach((x, idx) => {
+      if (x.exercises.length == 0) {
+        this.workoutPlan.workoutDays.splice(idx, 1);
+      }
+    })
   }
 
 }

@@ -19,6 +19,8 @@ namespace Lift.Buddy.Core.DB.Models
         [JsonIgnore]
         public virtual ICollection<WorkoutAssignment>? WorkoutAssignments { get; set; }
         [JsonIgnore]
+        public virtual ICollection<WorkoutPlan>? WorkoutSchedules { get; set; }
+        [JsonIgnore]
         public virtual UserPR UserPR { get; set; }
     }
 }

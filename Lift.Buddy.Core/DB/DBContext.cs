@@ -9,7 +9,7 @@ namespace Lift.Buddy.Core.DB
     {
 
         public DbSet<User> Users { get; set; }
-        public DbSet<WorkoutSchedule> WorkoutSchedules { get; set; }
+        public DbSet<WorkoutPlan> WorkoutSchedules { get; set; }
         public DbSet<WorkoutAssignment> WorkoutAssignments { get; set; }
         public DbSet<UserPR> UserPRs { get; set; }
 
@@ -34,27 +34,32 @@ namespace Lift.Buddy.Core.DB
                 entity.Property(e => e.IsAdmin).IsRequired()
                     .HasDefaultValue(false);
 
-                entity.Property(e => e.IsAdmin).IsRequired();
-
-                entity.Property(e => e.IsAdmin).IsRequired();
+                entity.Property(e => e.IsTrainer).IsRequired();
             });
 
-            modelBuilder.Entity<WorkoutSchedule>(entity =>
+            modelBuilder.Entity<WorkoutPlan>(entity =>
             {
                 entity.HasKey(e => e.Id);
 
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired();
+
                 entity.Property(e => e.WorkoutDays)
                     .HasConversion<string>(exercises => TrainingToString(exercises), dbExercises => StringToTraining(dbExercises));
+
+                entity.HasOne(e => e.Creator)
+                    .WithMany(e => e.WorkoutSchedules)
+                    .HasForeignKey(e => e.CreatedBy)
+                    .HasPrincipalKey(e => e.UserName);
             });
 
             modelBuilder.Entity<WorkoutAssignment>(entity =>
             {
-                entity.HasKey(e => e.WorkoutId);
-                entity.HasKey(e => e.WorkoutUser);
+                entity.HasKey(e => new { e.WorkoutId, e.WorkoutUser });
 
             });
 
-            modelBuilder.Entity<WorkoutSchedule>()
+            modelBuilder.Entity<WorkoutPlan>()
                 .HasMany(e => e.WorkoutAssignments)
                 .WithOne(e => e.WorkoutSchedule)
                 .HasForeignKey(e => e.WorkoutId)
@@ -78,9 +83,36 @@ namespace Lift.Buddy.Core.DB
                 .HasForeignKey<UserPR>(e => e.Username)
                 .HasPrincipalKey<User>(e => e.UserName);
             });
+
+            modelBuilder.Entity<UserAssociation>(entity =>
+            {
+                entity.HasKey(e => new { e.TrainerUsername, e.AthleteUsername });
+
+                entity.HasOne(e => e.Athlete)
+                .WithOne()
+                .HasForeignKey<UserAssociation>(e => e.AthleteUsername)
+                .HasPrincipalKey<User>(e => e.UserName);
+
+                entity.HasOne(e => e.Trainer)
+                .WithOne()
+                .HasForeignKey<UserAssociation>(e => e.TrainerUsername)
+                .HasPrincipalKey<User>(e => e.UserName);
+            });
         }
 
         #region Methods
+
+        #region Trainer conversion
+        public string UsersToString(ICollection<User> users)
+        {
+            return users.ToArray().ToString() ?? "";
+        }
+
+        public List<User> StringToUsers(string str)
+        {
+            return JsonSerializer.Deserialize<User[]>(str)?.ToList() ?? new List<User>();
+        }
+        #endregion
 
         #region Training conversion
         private string TrainingToString(List<WorkoutDay> exercises)

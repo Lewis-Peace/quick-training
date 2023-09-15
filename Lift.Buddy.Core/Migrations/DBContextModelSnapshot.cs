@@ -56,6 +56,25 @@ namespace Lift.Buddy.Core.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.UserAssociation", b =>
+                {
+                    b.Property<string>("TrainerUsername")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AthleteUsername")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TrainerUsername", "AthleteUsername");
+
+                    b.HasIndex("AthleteUsername")
+                        .IsUnique();
+
+                    b.HasIndex("TrainerUsername")
+                        .IsUnique();
+
+                    b.ToTable("UserAssociation");
+                });
+
             modelBuilder.Entity("Lift.Buddy.Core.DB.Models.UserPR", b =>
                 {
                     b.Property<string>("Username")
@@ -74,25 +93,30 @@ namespace Lift.Buddy.Core.Migrations
 
             modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutAssignment", b =>
                 {
-                    b.Property<string>("WorkoutUser")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("WorkoutId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("WorkoutUser");
+                    b.Property<string>("WorkoutUser")
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("WorkoutId");
+                    b.HasKey("WorkoutId", "WorkoutUser");
+
+                    b.HasIndex("WorkoutUser");
 
                     b.ToTable("WorkoutAssignments");
                 });
 
-            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutSchedule", b =>
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutPlan", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasAnnotation("Relational:JsonPropertyName", "id");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "createdBy");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -106,7 +130,28 @@ namespace Lift.Buddy.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedBy");
+
                     b.ToTable("WorkoutSchedules");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.UserAssociation", b =>
+                {
+                    b.HasOne("Lift.Buddy.Core.DB.Models.User", "Athlete")
+                        .WithOne()
+                        .HasForeignKey("Lift.Buddy.Core.DB.Models.UserAssociation", "AthleteUsername")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lift.Buddy.Core.DB.Models.User", "Trainer")
+                        .WithOne()
+                        .HasForeignKey("Lift.Buddy.Core.DB.Models.UserAssociation", "TrainerUsername")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("Lift.Buddy.Core.DB.Models.UserPR", b =>
@@ -122,7 +167,7 @@ namespace Lift.Buddy.Core.Migrations
 
             modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutAssignment", b =>
                 {
-                    b.HasOne("Lift.Buddy.Core.DB.Models.WorkoutSchedule", "WorkoutSchedule")
+                    b.HasOne("Lift.Buddy.Core.DB.Models.WorkoutPlan", "WorkoutSchedule")
                         .WithMany("WorkoutAssignments")
                         .HasForeignKey("WorkoutId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -139,15 +184,28 @@ namespace Lift.Buddy.Core.Migrations
                     b.Navigation("WorkoutSchedule");
                 });
 
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutPlan", b =>
+                {
+                    b.HasOne("Lift.Buddy.Core.DB.Models.User", "Creator")
+                        .WithMany("WorkoutSchedules")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+                });
+
             modelBuilder.Entity("Lift.Buddy.Core.DB.Models.User", b =>
                 {
                     b.Navigation("UserPR")
                         .IsRequired();
 
                     b.Navigation("WorkoutAssignments");
+
+                    b.Navigation("WorkoutSchedules");
                 });
 
-            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutSchedule", b =>
+            modelBuilder.Entity("Lift.Buddy.Core.DB.Models.WorkoutPlan", b =>
                 {
                     b.Navigation("WorkoutAssignments");
                 });

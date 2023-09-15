@@ -1,6 +1,7 @@
 <app-page-structure
   [left-menu]="leftMenu"
   [main]="main"
+  [right-menu]="rightMenu"
 >
 </app-page-structure>
 
@@ -10,4 +11,8 @@
 
 <ng-template #main>
   <router-outlet></router-outlet>
+</ng-template>
+
+<ng-template #rightMenu>
+  <app-workout-navigation-menu/>
 </ng-template>

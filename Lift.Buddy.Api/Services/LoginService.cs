@@ -127,17 +127,18 @@ namespace Lift.Buddy.API.Services
         }
 
         #region User Data
-        public async Task<Response<UserData>> GetUserData(UserData userData)
+        public async Task<Response<UserData>> GetUserData(string username)
         {
             var response = new Response<UserData>();
+            var userData = new UserData();
 
             try
             {
-                var user = (await _context.Users.Where(x => x.UserName == userData.Username).ToListAsync()).FirstOrDefault();
+                var user = (await _context.Users.Where(x => x.UserName == username).ToListAsync()).FirstOrDefault();
 
                 if (user == null)
                 {
-                    throw new Exception($"No user was found with username {userData.Username}.");
+                    throw new Exception($"No user was found with username {username}.");
                 }
                 userData.Username = user.UserName ?? "";
                 userData.Name = user.Name ?? "";
