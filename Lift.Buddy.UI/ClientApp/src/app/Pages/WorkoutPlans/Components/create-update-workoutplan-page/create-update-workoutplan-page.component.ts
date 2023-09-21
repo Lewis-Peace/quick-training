@@ -1,11 +1,10 @@
 import { WorkoutplanService } from './../../../../Services/workoutplan.service';
 import { WorkoutDay } from './../../../../Model/WorkoutDay';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Exercize } from 'src/app/Model/Exercise';
 import { WorkoutPlan } from 'src/app/Model/WorkoutPlan';
-import { ApiCallsService } from 'src/app/Services/Utils/api-calls.service';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
 
 @Component({
@@ -14,6 +13,8 @@ import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
   styleUrls: ['./create-update-workoutplan-page.component.css']
 })
 export class CreateUpdateWorkoutplanPageComponent implements OnInit {
+
+  @Input() isReadOnly: boolean = false
 
   constructor(
     private activatedRoute: ActivatedRoute,

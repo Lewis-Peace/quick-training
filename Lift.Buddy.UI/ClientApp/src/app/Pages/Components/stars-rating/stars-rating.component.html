@@ -1,0 +1,8 @@
+<div class="grid">
+  <span for="rating">Rating</span>
+  <div #rating class="row">
+    <div class="col-1"></div>
+    <img class="col-2 star" (click)="setRating(item)" *ngFor="let item of [1,2,3,4,5]" [src]="getImage(item)">
+    <div class="col-1"></div>
+  </div>
+</div>

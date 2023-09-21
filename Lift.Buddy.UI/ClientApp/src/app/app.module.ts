@@ -32,19 +32,16 @@ import { ApiCallsService } from './Services/Utils/api-calls.service';
 
 //#region Components
 import { LoginPageComponent } from './Pages/login/Components/login-page/login-page.component';
-import { LoginContainerComponent } from './Pages/login/login-container.component';
+import { LoginContainerComponent } from './Pages/login/login.component';
 import { RegisterPageComponent } from './Pages/login/Components/register-page/register-page.component';
 import { ForgotPasswordPageComponent } from './Pages/login/Components/forgot-password-page/forgot-password-page.component';
 import { HomePageComponent } from './Pages/Home/home-page.component';
 import { UserInformationComponent } from './Pages/login/Components/register-page/Components/user-information/user-information.component';
 import { SecurityQuestionsComponent } from './Pages/login/Components/register-page/Components/security-questions/security-questions.component';
-import { LeftMenuComponent } from './Pages/Components/left-menu/left-menu.component';
 import { WorkoutPlansModule } from './Pages/WorkoutPlans/workout-plans.module';
-import { HeaderComponent } from './Pages/Components/header/header.component';
 import { WorkoutPlansComponent } from './Pages/WorkoutPlans/workout-plans.component';
 import { CreateUpdateWorkoutplanPageComponent } from './Pages/WorkoutPlans/Components/create-update-workoutplan-page/create-update-workoutplan-page.component';
 import { YourWorkoutsPageComponent } from './Pages/WorkoutPlans/Components/your-workouts-page/your-workouts-page.component';
-import { PageStructureComponent } from './Pages/Components/page-structure/page-structure.component';
 import { ExerciseRowComponent } from './Pages/WorkoutPlans/Components/create-update-workoutplan-page/Components/daily-workout/Components/exercise-row/exercise-row.component';
 import { DailyWorkoutComponent } from './Pages/WorkoutPlans/Components/create-update-workoutplan-page/Components/daily-workout/daily-workout.component';
 import { UserDataComponent } from './Pages/UserData/user-data.component';
@@ -55,37 +52,24 @@ import { PrExerciseComponent } from './Pages/PR/Components/pr-exercise/pr-exerci
 import { PrService } from './Services/pr.service';
 import { TrainingCardComponent } from './Pages/WorkoutPlans/Components/your-workouts-page/Components/training-card/training-card.component';
 import { MyWorkoutsComponent } from './Pages/WorkoutPlans/Components/my-workouts/my-workouts.component';
-import { WorkoutNavigationMenuComponent } from './Pages/Components/workout-navigation-menu/workout-navigation-menu.component';
-import { NavigationMenuComponent } from './Pages/Components/navigation-menu/navigation-menu.component';
+import { DialogService } from './Services/Utils/dialog.service';
+import { DeleteWorkoutPlanConfirmationPopupComponent } from './Pages/WorkoutPlans/Components/my-workouts/Components/delete-workout-plan-confirmation-popup/delete-workout-plan-confirmation-popup.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { SettingsModule } from './Pages/Settings/settings.module';
+import { UIElementsModule } from './Pages/Components/UI.Elements.module';
+import { LoginModule } from './Pages/login/login.module';
+import { PageNotFoundModule } from './Pages/PageNotFound/page-not-found.module';
 //#endregion
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginPageComponent,
-    LoginContainerComponent,
-    RegisterPageComponent,
     HomePageComponent,
-    ForgotPasswordPageComponent,
-    UserInformationComponent,
-    SecurityQuestionsComponent,
-    LeftMenuComponent,
-    HeaderComponent,
-    WorkoutPlansComponent,
-    CreateUpdateWorkoutplanPageComponent,
-    YourWorkoutsPageComponent,
-    PageStructureComponent,
-    ExerciseRowComponent,
-    DailyWorkoutComponent,
     UserDataComponent,
     UserDataFormComponent,
     PrComponent,
     PrMenuComponent,
     PrExerciseComponent,
-    TrainingCardComponent,
-    MyWorkoutsComponent,
-    WorkoutNavigationMenuComponent,
-    NavigationMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -104,13 +88,18 @@ import { NavigationMenuComponent } from './Pages/Components/navigation-menu/navi
     MatToolbarModule,
     MatListModule,
     MatTreeModule,
-    WorkoutPlansModule,
     ScrollingModule,
     MatCheckboxModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatDialogModule,
+    WorkoutPlansModule,
+    SettingsModule,
+    UIElementsModule,
+    LoginModule,
+    PageNotFoundModule
   ],
-  providers: [LoginService, ApiCallsService, PrService],
+  providers: [LoginService, ApiCallsService, PrService, DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

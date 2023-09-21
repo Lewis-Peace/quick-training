@@ -8,6 +8,7 @@ namespace Lift.Buddy.API.Interfaces
         Task<Response<WorkoutPlan>> GetWorkoutPlan(int id);
         Task<Response<WorkoutPlan>> GetWorkoutPlanCreatedByUsername(string username);
         Task<Response<WorkoutPlan>> GetWorkoutPlanAssignedToUsername(string username);
+        Task<Response<int>> GetWorkoutPlanSubscribersNumber(int workoutPlanId);
         Task<Response<WorkoutPlan>> AddWorkoutPlan(WorkoutPlan schedule);
         Task<Response<WorkoutPlan>> DeleteWorkoutPlan(WorkoutPlan schedule);
         Task<Response<WorkoutPlan>> UpdateWorkoutPlan(WorkoutPlan schedule);

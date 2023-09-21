@@ -49,6 +49,14 @@ namespace Lift.Buddy.API.Controllers
             return Ok(response);
         }
 
+
+        [HttpGet("subscribers/{id}")]
+        public async Task<IActionResult> GetWorkoutPlanSubscribers(int id)
+        {
+            var response = await _workoutScheduleService.GetWorkoutPlanSubscribersNumber(id);
+            return Ok(response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] WorkoutPlan workoutSchedule)
         {

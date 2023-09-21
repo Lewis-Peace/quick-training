@@ -9,9 +9,11 @@ export class PageStructureComponent implements OnInit {
 
   constructor() { }
 
-  @Input('right-menu') rightMenu: TemplateRef<any> | null = null
-  @Input('left-menu') leftMenu: TemplateRef<any> | null = null
-  @Input('main') main: TemplateRef<any> | null = null
+  @Input('right-menu') rightMenu: TemplateRef<any> | null = null;
+  @Input('left-menu') leftMenu: TemplateRef<any> | null = null;
+  @Input('main') main: TemplateRef<any> | null = null;
+
+  @Input('header') header: boolean = true;
 
   ngOnInit() {
   }

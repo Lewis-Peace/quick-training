@@ -106,6 +106,26 @@ namespace Lift.Buddy.API.Services
 
             return response;
         }
+
+        public async Task<Response<int>> GetWorkoutPlanSubscribersNumber(int workoutPlanId)
+        {
+            var response = new Response<int>();
+            var subscribersCount = new List<int>();
+            try
+            {
+                var workoutPlanSubscribers = await _context.WorkoutAssignments.Where(x => x.WorkoutId == workoutPlanId).ToListAsync();
+
+                response.result = true;
+                subscribersCount.Add(workoutPlanSubscribers.Count);
+                response.body = subscribersCount;
+            }
+            catch (Exception ex)
+            {
+                response.result = false;
+                response.notes = Utils.ErrorMessage(nameof(GetWorkoutPlanSubscribersNumber), ex);
+            }
+            return response;
+        }
         #endregion
 
         #region Add

@@ -48,6 +48,11 @@ public async getWorkoutPlansCreatedByUsername() {
   return response;
 }
 
+public async getWorkoutPlanSubscribersCount(workoutPlan: WorkoutPlan) {
+  const response = await this.apiService.apiGet<number>(this.defaultUrl + `/subscribers/${workoutPlan.id}`);
+  return response;
+}
+
 public async saveWorkoutPlan(workout: WorkoutPlan) {
   try {
     if (!workout) {
