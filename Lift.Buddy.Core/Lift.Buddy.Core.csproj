@@ -17,6 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="PDFsharp-MigraDoc" Version="1.50.5147" />
 	<None Update="appsettings.Development.json">
 	  <DependentUpon>appsettings.json</DependentUpon>
 	</None>

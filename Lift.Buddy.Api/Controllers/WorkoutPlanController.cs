@@ -49,6 +49,13 @@ namespace Lift.Buddy.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("pdf/{id}")]
+        public async Task<IActionResult> GetWorkplanPdf(int id)
+        {
+            var response = await _workoutScheduleService.GetWorkplanPdf(id);
+            return Ok(response);
+        }
+
 
         [HttpGet("subscribers/{id}")]
         public async Task<IActionResult> GetWorkoutPlanSubscribers(int id)

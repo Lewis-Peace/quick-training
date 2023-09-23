@@ -17,5 +17,12 @@ namespace Lift.Buddy.Core.Models
 
         public Exercise() { }
 
+        public override string ToString()
+        {
+            base.ToString();
+
+            return $"{Name}: {Repetitions}x{Series}\n";
+        }
+
     }
 }

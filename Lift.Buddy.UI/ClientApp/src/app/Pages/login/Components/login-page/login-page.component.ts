@@ -1,3 +1,4 @@
+import { AuthGuard } from './../../../../Services/Guards/AuthGuard';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/Services/login.service';
@@ -15,7 +16,8 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private loginService: LoginService,
     private snackBarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private authGuard: AuthGuard
   ) { }
 
   public forgotPasswordVisible: boolean = false;
@@ -48,7 +50,8 @@ export class LoginPageComponent implements OnInit {
     } else {
       this.snackBarService.openSuccessSnackbar("Login successfull")
       this.loginService.currentUsername = this.loginForm.controls['username'].value!;
-      this.router.navigate(['home']);
+      const previousPage = this.authGuard.previousPage?.initialUrl ?? '';
+      this.router.navigateByUrl(previousPage);
     }
   }
 

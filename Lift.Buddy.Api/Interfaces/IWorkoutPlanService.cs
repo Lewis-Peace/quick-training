@@ -1,5 +1,6 @@
 ﻿using Lift.Buddy.Core.DB.Models;
 using Lift.Buddy.Core.Models;
+using MigraDoc.DocumentObjectModel;
 
 namespace Lift.Buddy.API.Interfaces
 {
@@ -9,6 +10,7 @@ namespace Lift.Buddy.API.Interfaces
         Task<Response<WorkoutPlan>> GetWorkoutPlanCreatedByUsername(string username);
         Task<Response<WorkoutPlan>> GetWorkoutPlanAssignedToUsername(string username);
         Task<Response<int>> GetWorkoutPlanSubscribersNumber(int workoutPlanId);
+        Task<Response<Document>> GetWorkplanPdf(int workoutPlanId);
         Task<Response<WorkoutPlan>> AddWorkoutPlan(WorkoutPlan schedule);
         Task<Response<WorkoutPlan>> DeleteWorkoutPlan(WorkoutPlan schedule);
         Task<Response<WorkoutPlan>> UpdateWorkoutPlan(WorkoutPlan schedule);

@@ -4,6 +4,7 @@ import {
   RouterStateSnapshot,
   Router,
   UrlTree,
+  Navigation,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LoginService } from '../login.service';
@@ -18,12 +19,15 @@ export class AuthGuard {
     private snackbarService: SnackBarService
   ) {}
 
+  public previousPage: Navigation | null = null;
+
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
     if (this.loginService.currentUsername == '') {
       this.snackbarService.operErrorSnackbar('Access denied, login is required');
+      this.previousPage = this.router.getCurrentNavigation();
       this.router.navigate(['login']);
     }
     return true;

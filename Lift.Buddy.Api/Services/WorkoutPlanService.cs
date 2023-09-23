@@ -4,6 +4,9 @@ using Lift.Buddy.Core.DB;
 using Lift.Buddy.Core.DB.Models;
 using Lift.Buddy.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
+using PdfSharp.Pdf;
 
 namespace Lift.Buddy.API.Services
 {
@@ -126,6 +129,40 @@ namespace Lift.Buddy.API.Services
             }
             return response;
         }
+
+        public async Task<Response<Document>> GetWorkplanPdf(int workplanId)
+        {
+            var response = new Response<Document>();
+
+            try
+            {
+                var workoutPlan = _context.WorkoutSchedules.Where(x => x.Id == workplanId).FirstOrDefault();
+
+                if (workoutPlan == null)
+                {
+                    throw new Exception("There workplan does not exist in the database.");
+                }
+
+                var doc = workoutPlan.WorkoutDays[0].GetPDF();
+                doc.UseCmykColor = true;
+                PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(false);
+                pdfRenderer.Document = doc;
+
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+                pdfRenderer.RenderDocument();
+
+                const string filename = "HelloWorld.pdf";
+                pdfRenderer.PdfDocument.Save(filename);
+            }
+            catch (Exception ex)
+            {
+                response.result = false;
+                response.notes = Utils.ErrorMessage(nameof(GetWorkplanPdf), ex);
+            }
+
+            return response;
+        } 
         #endregion
 
         #region Add

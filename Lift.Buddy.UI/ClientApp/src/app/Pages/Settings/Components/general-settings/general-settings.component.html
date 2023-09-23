@@ -1,3 +1,8 @@
-<p>
-  general-settings works!
-</p>
+<form class="mt-3" [formGroup]="generalSettingsForm">
+  <div class="row">
+    <mat-form-field class="col-10" >
+      <input class="col-7" readonly="true" matInput [value]="'Unit of measure: ' + (generalSettingsForm.controls['UOM'].value ? 'KG' : 'LB')"/>
+    </mat-form-field>
+    <mat-slide-toggle class="col-2" formControlName="UOM"></mat-slide-toggle>
+  </div>
+</form>
