@@ -75,6 +75,17 @@ namespace Lift.Buddy.API.Controllers
             return NoContent();
         }
 
+        [HttpPut("review")]
+        public async Task<IActionResult> ReviewWorkouPlan([FromBody] WorkoutPlan workoutPlan)
+        {
+            var response = await _workoutScheduleService.ReviewWorkoutPlan(workoutPlan);
+            if (!response.result)
+            {
+                return Ok(response);
+            }
+            return NoContent();
+        }
+
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] WorkoutPlan workoutSchedule)
         {

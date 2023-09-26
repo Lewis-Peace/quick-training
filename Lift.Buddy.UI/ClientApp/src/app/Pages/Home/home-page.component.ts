@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../Services/login.service';
 import { ApiCallsService } from 'src/app/Services/Utils/api-calls.service';
+import { generalNavigationMenu } from 'src/app/routes';
 
 @Component({
   selector: 'app-home-page',
@@ -10,13 +11,14 @@ import { ApiCallsService } from 'src/app/Services/Utils/api-calls.service';
 export class HomePageComponent implements OnInit {
 
   constructor(
-    private loginService: LoginService,
-    private apiService: ApiCallsService
+    private loginService: LoginService
   ) { }
 
   ngOnInit() {
     this.initUserData();
   }
+
+  public routes = generalNavigationMenu;
 
   public usernameLoggedIn: string | undefined = this.loginService.currentUsername;
   public isLoggedIn: boolean = false;
@@ -24,10 +26,6 @@ export class HomePageComponent implements OnInit {
     if (ApiCallsService.jwtToken) {
       this.isLoggedIn = true;
     }
-  }
-
-  public changePage() {
-
   }
 
 }

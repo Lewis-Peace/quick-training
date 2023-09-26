@@ -5,4 +5,5 @@ export class WorkoutPlan {
   public name: string = '';
   public createdBy: string = '';
   public workoutDays: WorkoutDay[] = [];
+  public reviewAverage: number = 0;
 }

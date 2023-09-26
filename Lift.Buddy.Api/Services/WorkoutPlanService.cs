@@ -243,6 +243,46 @@ namespace Lift.Buddy.API.Services
 
             return response;
         }
+
+        public async Task<Response<WorkoutPlan>> ReviewWorkoutPlan(WorkoutPlan schedule)
+        {
+            var response = new Response<WorkoutPlan>();
+
+            try
+            {
+                if (schedule == null)
+                {
+                    throw new Exception("Cannot review with empty data.");
+                }
+
+                var oldSchedule = await _context.WorkoutSchedules.FirstOrDefaultAsync(x => x.Id == schedule.Id);
+
+                if (oldSchedule == null)
+                {
+                    throw new Exception($"Trying to review non existing workout plan with id {schedule.Id}.");
+                }
+
+                oldSchedule.ReviewAverage = (schedule.ReviewAverage + (oldSchedule.ReviewAverage * oldSchedule.ReviewersAmount)) / (oldSchedule.ReviewersAmount + 1);
+                oldSchedule.ReviewersAmount++;
+
+                _context.WorkoutSchedules.Update(oldSchedule);
+
+                if ((await _context.SaveChangesAsync()) < 1)
+                {
+                    throw new Exception("Failed to save changes in database");
+                }
+
+                response.result = true;
+                response.body = new List<WorkoutPlan> { schedule };
+            }
+            catch (Exception ex)
+            {
+                response.result = false;
+                response.notes = Utils.ErrorMessage(nameof(UpdateWorkoutPlan), ex);
+            }
+
+            return response;
+        }
         #endregion
 
     }

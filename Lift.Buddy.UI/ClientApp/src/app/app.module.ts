@@ -59,6 +59,7 @@ import { SettingsModule } from './Pages/Settings/settings.module';
 import { UIElementsModule } from './Pages/Components/UI.Elements.module';
 import { LoginModule } from './Pages/login/login.module';
 import { PageNotFoundModule } from './Pages/PageNotFound/page-not-found.module';
+import { NavigationPageCardComponent } from './Pages/Home/Components/navigation-page-card/navigation-page-card.component';
 //#endregion
 
 @NgModule({
@@ -70,6 +71,7 @@ import { PageNotFoundModule } from './Pages/PageNotFound/page-not-found.module';
     PrComponent,
     PrMenuComponent,
     PrExerciseComponent,
+    NavigationPageCardComponent
   ],
   imports: [
     BrowserModule,

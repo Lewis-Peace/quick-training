@@ -22,6 +22,12 @@ namespace Lift.Buddy.Core.DB.Models
         [JsonPropertyName("createdBy")]
         public string CreatedBy { get; set; }
 
+        [JsonPropertyName("reviewAverage")]
+        public int ReviewAverage { get; set; } = 0;
+
+        [JsonIgnore]
+        public int ReviewersAmount { get; set; } = 0;
+
         [JsonIgnore]
         public virtual User? Creator { get; set; }
 

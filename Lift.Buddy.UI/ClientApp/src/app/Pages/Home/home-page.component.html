@@ -1,9 +1,16 @@
 <app-page-structure
-  [left-menu]="leftMenu"
+  [main]="main"
 >
 </app-page-structure>
 
-<ng-template #leftMenu>
-  <app-left-menu/>
+<ng-template #main>
+  <div class="row">
+    <app-navigation-page-card
+      *ngFor="let route of routes; let idx = index"
+      class="col-6"
+      [route]="route"
+      [index]="idx"
+    ></app-navigation-page-card>
+  </div>
 </ng-template>
 

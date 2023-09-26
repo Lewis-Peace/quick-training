@@ -47,6 +47,15 @@ namespace Lift.Buddy.Core.DB
                 entity.Property(e => e.WorkoutDays)
                     .HasConversion<string>(exercises => TrainingToString(exercises), dbExercises => StringToTraining(dbExercises));
 
+                entity.Property<string>(e => e.Name)
+                    .IsRequired();
+
+                entity.Property<int>(e => e.ReviewersAmount)
+                    .HasDefaultValue(0);
+
+                entity.Property<int>(e => e.ReviewAverage)
+                    .HasDefaultValue(0);
+
                 entity.HasOne(e => e.Creator)
                     .WithMany(e => e.WorkoutSchedules)
                     .HasForeignKey(e => e.CreatedBy)

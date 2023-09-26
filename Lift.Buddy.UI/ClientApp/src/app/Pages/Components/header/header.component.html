@@ -1,9 +1,11 @@
 <mat-toolbar class="header">
   <span class="col-11">
-    <img class="col-1" src="../../../../assets/Logo-no-bg.png"/>
-    <span class="col-1">
-      LiftBuddy
-    </span>
+    <div [routerLink]="['', 'home']">
+      <img class="col-1" src="../../../../assets/Logo-no-bg.png"/>
+      <span class="col-1">
+        LiftBuddy
+      </span>
+    </div>
   </span>
   <button class="col-1" *ngIf="!isLoggedIn" mat-button routerLink="../login">Login</button>
   <button class="col-1" *ngIf="isLoggedIn" mat-button (click)="logout()">

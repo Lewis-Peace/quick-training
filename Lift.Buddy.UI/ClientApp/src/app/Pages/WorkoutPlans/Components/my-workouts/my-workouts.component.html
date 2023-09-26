@@ -21,9 +21,8 @@
           </mat-form-field>
           <div class="grid">
             <app-stars-rating
-              [rating]="ratings[idx]"
+              [rating]="workout.reviewAverage"
               [readonly]="true"
-              (onChange)="ratings[idx] = $event"
             ></app-stars-rating>
           </div>
         </form>

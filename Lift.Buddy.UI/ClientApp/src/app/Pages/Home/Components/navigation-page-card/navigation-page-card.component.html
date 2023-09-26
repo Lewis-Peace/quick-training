@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row">
+    <div [class]="'col-' + (2 - index % 2)"></div>
+    <mat-card
+      [class]="'m-3 col-' + (9 - index % 2)"
+      [routerLink]="getRoutePath()"
+    >
+      <mat-card-title>
+        <i [class]="isLoggedIn || !isLoginRequired() ? 'fa fa-' + route?.icon : 'fa fa-lock'"></i>
+        {{route?.name | uppercase}}
+      </mat-card-title>
+      <mat-card-content>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti, temporibus cum ullam quas nostrum, sint iusto quibusdam assumenda amet harum voluptate omnis iste quisquam numquam vero, beatae ex distinctio repudiandae.
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
