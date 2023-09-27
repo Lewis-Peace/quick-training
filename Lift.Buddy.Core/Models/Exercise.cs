@@ -6,23 +6,19 @@ namespace Lift.Buddy.Core.Models
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }
+
         [JsonPropertyName("reps")]
         public int? Repetitions { get; set; }
+
         [JsonPropertyName("series")]
         public int? Series { get; set; }
+
         [JsonPropertyName("time")]
         public DateTime? Time { get; set; }
+
         [JsonPropertyName("rest")]
         public DateTime? Rest { get; set; }
 
-        public Exercise() { }
-
-        public override string ToString()
-        {
-            base.ToString();
-
-            return $"{Name}: {Repetitions}x{Series}\n";
-        }
-
+        public override string ToString() => $"{Name}: {Repetitions}x{Series}";
     }
 }
