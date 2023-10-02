@@ -1,6 +1,4 @@
-﻿using Lift.Buddy.Core.DB.Models;
-using System.Net;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace Lift.Buddy.Core

@@ -1,13 +1,11 @@
 using Lift.Buddy.API.Interfaces;
 using Lift.Buddy.API.Services;
-using Lift.Buddy.Core.DB;
-using Microsoft.AspNetCore.Http.Json;
-using Microsoft.Data.Sqlite;
+using Lift.Buddy.Core;
+using Lift.Buddy.Core.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -73,8 +71,9 @@ builder.Services.AddAuthentication("Bearer")
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
 builder.Services.AddScoped<IPersonalRecordService, PersonalRecordService>();
+builder.Services.AddSingleton<IDatabaseMapper, DatabaseMapper>();
 
-builder.Services.AddDbContext<DBContext>(options =>
+builder.Services.AddDbContext<LiftBuddyContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("TestDatabase"));
 });

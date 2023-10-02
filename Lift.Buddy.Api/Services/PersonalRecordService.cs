@@ -1,7 +1,6 @@
 ﻿using Lift.Buddy.API.Interfaces;
 using Lift.Buddy.Core;
-using Lift.Buddy.Core.DB;
-using Lift.Buddy.Core.DB.Models;
+using Lift.Buddy.Core.Database;
 using Lift.Buddy.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,44 +8,56 @@ namespace Lift.Buddy.API.Services
 {
     public class PersonalRecordService : IPersonalRecordService
     {
-        private readonly DBContext _context;
+        private readonly LiftBuddyContext _context;
+        private readonly IDatabaseMapper _mapper;
 
-        public PersonalRecordService(DBContext context)
+        public PersonalRecordService(LiftBuddyContext context, IDatabaseMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<Response<UserPersonalRecord>> GetByUser(string username)
+        public async Task<Response<PersonalRecordDTO>> GetByUserId(Guid userId)
         {
-            var response = new Response<UserPersonalRecord>();
+            var response = new Response<PersonalRecordDTO>();
 
             try
             {
-                if (string.IsNullOrEmpty(username)) throw new Exception("No username received");
+                var records = await _context.PersonalRecords
+                    .Where(r => r.UserId == userId)
+                    .Select(pr => _mapper.Map(pr))
+                    .ToArrayAsync();
 
-                var userPR = await _context.UserPRs.Where(x => x.Username == username).ToListAsync();
-
-                response.Body = userPR;
+                response.Body = records;
                 response.Result = true;
             }
             catch (Exception ex)
             {
-                response.Notes = Utils.ErrorMessage(nameof(GetByUser), ex);
+                response.Notes = Utils.ErrorMessage(nameof(GetByUserId), ex);
                 response.Result = false;
             }
 
             return response;
         }
 
-        public async Task<Response<UserPersonalRecord>> AddPersonalRecord(UserPersonalRecord userPR)
+        public async Task<Response<PersonalRecordDTO>> AddPersonalRecord(
+            Guid userId,
+            IEnumerable<PersonalRecordDTO> records)
         {
-            var response = new Response<UserPersonalRecord>();
+            var response = new Response<PersonalRecordDTO>();
 
             try
             {
-                if (userPR == null) throw new Exception("No data received");
+                if (!records.Any()) throw new Exception("No data received");
 
-                _context.UserPRs.Add(userPR);
+                var personalRecords = records.Select(r =>
+                {
+                    var record = _mapper.Map(r);
+                    record.UserId = userId;
+                    return record;
+                });
+
+                await _context.PersonalRecords.AddRangeAsync(personalRecords);
 
                 if ((await _context.SaveChangesAsync()) < 1)
                 {
@@ -64,15 +75,24 @@ namespace Lift.Buddy.API.Services
             return response;
         }
 
-        public async Task<Response<UserPersonalRecord>> UpdatePersonalRecord(UserPersonalRecord userPR)
+        public async Task<Response<PersonalRecordDTO>> UpdatePersonalRecord(
+            Guid userId,
+            IEnumerable<PersonalRecordDTO> records)
         {
-            var response = new Response<UserPersonalRecord>();
+            var response = new Response<PersonalRecordDTO>();
 
             try
             {
-                if (userPR == null) throw new Exception("No data received");
+                if (!records.Any()) throw new Exception("No data received");
 
-                _context.UserPRs.Update(userPR);
+                var personalRecords = records.Select(r =>
+                {
+                    var record = _mapper.Map(r);
+                    record.UserId = userId;
+                    return record;
+                });
+
+                _context.PersonalRecords.UpdateRange(personalRecords);
 
                 if ((await _context.SaveChangesAsync()) < 1)
                 {

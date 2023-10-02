@@ -1,8 +1,8 @@
-﻿using Lift.Buddy.API.Interfaces;
-using Lift.Buddy.Core.DB.Models;
+﻿using System.Security.Claims;
+using Lift.Buddy.API.Interfaces;
+using Lift.Buddy.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Lift.Buddy.API.Controllers
 {
@@ -19,24 +19,39 @@ namespace Lift.Buddy.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetByUserId()
         {
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
-            var response = await _recordService.GetByUser(username);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                return NotFound();
+
+            var response = await _recordService.GetByUserId(Guid.Parse(userId));
             return Ok(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] UserPersonalRecord userRecord)
+        public async Task<IActionResult> Add([FromBody] IEnumerable<PersonalRecordDTO> userRecord)
         {
-            var response = await _recordService.AddPersonalRecord(userRecord);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                return NotFound();
+
+            var response = await _recordService.AddPersonalRecord(Guid.Parse(userId), userRecord);
+
             return Ok(response);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UserPersonalRecord userRecord)
+        public async Task<IActionResult> Update([FromBody] IEnumerable<PersonalRecordDTO> userRecords)
         {
-            var response = await _recordService.UpdatePersonalRecord(userRecord);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                return NotFound();
+
+            var response = await _recordService.UpdatePersonalRecord(Guid.Parse(userId), userRecords);
             return Ok(response);
         }
     }

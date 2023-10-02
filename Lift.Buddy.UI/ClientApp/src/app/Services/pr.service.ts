@@ -1,31 +1,32 @@
 import { Injectable } from '@angular/core';
 import { ApiCallsService } from './Utils/api-calls.service';
-import { UserPR } from '../Model/UserPR';
+import { PersonalRecord } from '../Model/PersonalRecord';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
-export class PrService {
 
-  constructor(
-    private apiService: ApiCallsService
-  ) { }
+export class PersonalRecordService {
 
-  private defaultUrl: string = "api/PR";
+    private defaultUrl: string = 'api/PersonalRecord';
 
-  public get() {
-    const response = this.apiService.apiGet<UserPR>(this.defaultUrl);
-    return response;
-  }
+    constructor(private apiService: ApiCallsService) { }
 
-  public savePR(userPR: UserPR, isUpdate: boolean) {
-    let response;
-    if (isUpdate) {
-      response = this.apiService.apiPut<UserPR>(this.defaultUrl, userPR);
-    } else {
-      response = this.apiService.apiPost<UserPR>(this.defaultUrl, userPR);
+    public get() {
+        return this.apiService.apiGet<PersonalRecord>(this.defaultUrl);
     }
-    return response;
-  }
 
+    public addPersonalRecord(userId: string, personalRecords: PersonalRecord[]) {
+        return this.apiService.apiPost<PersonalRecord>(this.defaultUrl, {
+            userId,
+            personalRecords,
+        });
+    }
+
+    public updatePersonalRecord(userId: string, personalRecords: PersonalRecord[]) {
+        return this.apiService.apiPut<PersonalRecord>(this.defaultUrl, {
+            userId,
+            personalRecords,
+        });
+    }
 }

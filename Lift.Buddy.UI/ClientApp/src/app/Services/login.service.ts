@@ -1,79 +1,69 @@
 import { ApiCallsService } from './Utils/api-calls.service';
-import { LoginCredetials } from '../Model/LoginCredentials';
 import { Injectable, inject } from '@angular/core';
-import { RegistrationCredentials } from 'src/app/Model/RegistraitonCredentials';
-import { SecurityQuestions } from 'src/app/Model/SecurityQuestions';
+import { Credentials } from 'src/app/Model/Credentials';
 import { CanActivateFn, Router } from '@angular/router';
 import { SnackBarService } from './Utils/snack-bar.service';
-import { UserData } from '../Model/UserData';
+import { User } from '../Model/User';
+import { SecurityQuestion } from '../Model/SecurityQuestions';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
+
 export class LoginService {
 
-  constructor (
-    private apiCalls: ApiCallsService
-  ) { }
+    private defaultUrl: string = "api/Auth";
+    public currentUsername: string = "";
+    public user: User | undefined;
 
-  private defaultUrl: string = "api/Login";
+    constructor(private apiCalls: ApiCallsService) { }
 
-  public async getUserData() {
-    let userData = new UserData();
-    userData.username = this.currentUsername;
-    const response = await this.apiCalls.apiGet<UserData>(this.defaultUrl + '/user-data');
-
-    return response;
-  }
-
-  public async updateUserData(userData: UserData) {
-    const response = await this.apiCalls.apiPut<UserData>(this.defaultUrl + '/user-data', userData);
-
-    return response;
-  }
-
-  public async login(loginCredentials: LoginCredetials) {
-    const response = await this.apiCalls.apiPost<string>(this.defaultUrl, loginCredentials);
-
-    if (response.result) {
-      ApiCallsService.jwtToken = response.body[0];
+    public async getUserData() {
+        return await this.apiCalls.apiGet<User>(this.defaultUrl + '/user-data');
     }
-    return response;
-  }
 
-  public registrationCredentials: RegistrationCredentials | undefined;
-  public async register(registrationCredentials: RegistrationCredentials) {
-    const response = await this.apiCalls.apiPost<RegistrationCredentials>(this.defaultUrl + '/register', registrationCredentials);
-    return response;
-  }
+    public async updateUserData(userData: User) {
+        return await this.apiCalls.apiPut<User>(this.defaultUrl + '/user-data', userData);
+    }
 
-  public logout() {
-    this.currentUsername = '';
-    ApiCallsService.jwtToken = '';
-    return true;
-  }
+    public async login(credentials: Credentials) {
+        const response = await this.apiCalls.apiPost<string>(this.defaultUrl, credentials);
 
-  public currentUsername: string = "";
-  public async changePassword(loginCredential: LoginCredetials) {
-    const response = await this.apiCalls.apiPost<LoginCredetials>(this.defaultUrl + '/changePassword', loginCredential);
-    return response;
-  }
+        if (response.result) {
+            ApiCallsService.jwtToken = response.body[0];
+        }
 
-  public async getSecurityQuestions(loginCredential: LoginCredetials) {
-    const response = await this.apiCalls.apiPost<SecurityQuestions>(this.defaultUrl + `/security-questions`, loginCredential);
-    return response;
-  }
+        return response;
+    }
 
-  public static isLoggedInGuard(): CanActivateFn {
-    return () => {
-      if (ApiCallsService.jwtToken != undefined) {
+    public async register(user: User) {
+        return await this.apiCalls.apiPost<User>(this.defaultUrl + '/register', user);
+    }
+
+    public logout() {
+        ApiCallsService.jwtToken = '';
         return true;
-      }
-      const router: Router = inject(Router);
-      const snackbarService: SnackBarService = inject(SnackBarService);
-      snackbarService.operErrorSnackbar('You have to login first')
-      router.navigate(['login'])
-      return false;
     }
-  }
+
+    public async changePassword(credential: Credentials) {
+        return await this.apiCalls.apiPost<Credentials>(this.defaultUrl + '/change-password', credential);
+    }
+
+    public async getSecurityQuestions() {
+        return await this.apiCalls.apiGet<SecurityQuestion>(this.defaultUrl + `/security-questions`);
+    }
+
+    public static isLoggedInGuard(): CanActivateFn {
+        return () => {
+            if (ApiCallsService.jwtToken != undefined) {
+                return true;
+            }
+
+            const router: Router = inject(Router);
+            const snackbarService: SnackBarService = inject(SnackBarService);
+            snackbarService.operErrorSnackbar('You have to login first')
+            router.navigate(['login'])
+            return false;
+        }
+    }
 }
