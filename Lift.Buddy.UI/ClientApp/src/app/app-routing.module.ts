@@ -8,13 +8,13 @@ import { PersonalRecordComponent } from './Pages/PersonalRecords/pr.component';
 import { SettingsComponent } from './Pages/Settings/settings.component';
 import { SettingsRoutingModule } from './Pages/Settings/setings-routing.module';
 import { WorkoutPlansRoutingModule } from './Pages/WorkoutPlans/workout-plans-routing.module';
-import { LoginRoutingModule } from './Pages/Login/login-routing.module';
+import { LoginRoutingModule } from './Pages/login/login-routing.module';
 import { PageNotFoundComponent } from './Pages/PageNotFound/page-not-found.component';
 import { SearchRoutingModule } from './Pages/Search/search-routing.module';
 import { SearchComponent } from './Pages/Search/search.component';
 import { MyAthletesComponent } from './Pages/My-athletes/my-athletes.component';
 import { MyAthletesRoutingModule } from './Pages/My-athletes/my-athletes-routing.module';
-import { LoginComponent } from './Pages/Login/login.component';
+import { LoginComponent } from './Pages/login/login.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},

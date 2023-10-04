@@ -41,9 +41,6 @@ import { LoginPageComponent } from './Components/login-page/login-page.component
         UserInformationComponent,
         SecurityQuestionsComponent
     ],
-    exports: [
-      LoginComponent
-    ],
     bootstrap: []
 })
 export class LoginModule { }
