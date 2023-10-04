@@ -11,7 +11,6 @@ import { LoginService } from './login.service';
 
 export class WorkoutplanService {
 
-
     private defaultUrl: string = 'api/WorkoutPlan';
     private _day: number | undefined
     private day = new BehaviorSubject<number>(0);
@@ -35,7 +34,7 @@ export class WorkoutplanService {
     //#endregion
 
 
-    public async getWorkoutPlanById(id: number) {
+    public async getWorkoutPlanById(id: string) {
         return await this.apiService.apiGet<WorkoutPlan>(this.defaultUrl + `/${id}`);
     }
 
@@ -56,9 +55,9 @@ export class WorkoutplanService {
             if (!workout) {
                 throw new Error('No workout to save');
             }
-            console.log(workout)
-            workout.createdBy = this.loginService.currentUsername;
-            let response = await this.apiService.apiPost(this.defaultUrl + '/add', workout);
+
+            workout.createdBy = this.loginService.userId;
+            let response = await this.apiService.apiPost(this.defaultUrl, workout);
 
             if (!response.result) {
                 throw new Error(`${response.notes}`);
@@ -89,7 +88,6 @@ export class WorkoutplanService {
     }
 
     public async deleteWorkoutPlan(workoutId: string) {
-        const response = await this.apiService.apiDelete(this.defaultUrl, { workoutId });
-        return response;
+        return this.apiService.apiDelete(this.defaultUrl, { workoutId });
     }
 }

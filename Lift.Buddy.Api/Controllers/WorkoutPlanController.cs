@@ -1,6 +1,7 @@
 ﻿using Lift.Buddy.API.Interfaces;
 using Lift.Buddy.Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using PdfSharp.Pdf.Content.Objects;
 using System.Security.Claims;
 
 namespace Lift.Buddy.API.Controllers
@@ -28,7 +29,7 @@ namespace Lift.Buddy.API.Controllers
             return Ok(res);
         }
 
-        [HttpGet("created-by/{username}")]
+        [HttpGet("created-by/{userId}")]
         public async Task<IActionResult> GetWorkoutsCreatedBy(Guid userId)
         {
             var response = await _workoutScheduleService.GetWorkoutPlanCreatedByUser(userId);
@@ -60,11 +61,19 @@ namespace Lift.Buddy.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] WorkoutPlanDTO workoutSchedule)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId is null)
+                return NotFound();
+
+            workoutSchedule.CreatorId = Guid.Parse(userId);
+
             var response = await _workoutScheduleService.AddWorkoutPlan(workoutSchedule);
             if (!response.Result)
             {
                 return Ok(response);
             }
+
             return NoContent();
         }
 
@@ -76,6 +85,7 @@ namespace Lift.Buddy.API.Controllers
             {
                 return Ok(response);
             }
+
             return NoContent();
         }
 
@@ -87,18 +97,25 @@ namespace Lift.Buddy.API.Controllers
             {
                 return Ok(response);
             }
+
             return NoContent();
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] Guid workoutScheduleId)
+        public async Task<IActionResult> Delete([FromBody] WorkoutIdModel workoutId)
         {
-            var response = await _workoutScheduleService.DeleteWorkoutPlan(workoutScheduleId);
+            var response = await _workoutScheduleService.DeleteWorkoutPlan(workoutId.WorkoutId);
             if (!response.Result)
             {
                 return Ok(response);
             }
+
             return NoContent();
         }
+
+        public class WorkoutIdModel
+        {
+            public Guid WorkoutId { get; set; }
+        };
     }
 }

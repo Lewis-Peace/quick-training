@@ -40,59 +40,25 @@ namespace Lift.Buddy.API.Services
             return response;
         }
 
-        public async Task<Response<PersonalRecordDTO>> AddPersonalRecord(
-            Guid userId,
-            IEnumerable<PersonalRecordDTO> records)
-        {
-            var response = new Response<PersonalRecordDTO>();
-
-            try
-            {
-                if (!records.Any()) throw new Exception("No data received");
-
-                var personalRecords = records.Select(r =>
-                {
-                    var record = _mapper.Map(r);
-                    record.UserId = userId;
-                    return record;
-                });
-
-                await _context.PersonalRecords.AddRangeAsync(personalRecords);
-
-                if ((await _context.SaveChangesAsync()) < 1)
-                {
-                    throw new Exception("No changes to the database done");
-                }
-
-                response.Result = true;
-            }
-            catch (Exception ex)
-            {
-                response.Notes = Utils.ErrorMessage(nameof(AddPersonalRecord), ex);
-                response.Result = false;
-            }
-
-            return response;
-        }
-
         public async Task<Response<PersonalRecordDTO>> UpdatePersonalRecord(
             Guid userId,
-            IEnumerable<PersonalRecordDTO> records)
+            PersonalRecords records)
         {
             var response = new Response<PersonalRecordDTO>();
 
             try
             {
-                if (!records.Any()) throw new Exception("No data received");
+                var toUpdate = records.ToUpdate.Select(r => _mapper.Map(r));
 
-                var personalRecords = records.Select(r =>
+                var toAdd = records.ToAdd.Select(r =>
                 {
                     var record = _mapper.Map(r);
                     record.UserId = userId;
                     return record;
                 });
 
-                _context.PersonalRecords.UpdateRange(personalRecords);
+                _context.PersonalRecords.UpdateRange(toUpdate);
+                await _context.PersonalRecords.AddRangeAsync(toAdd);
 
                 if ((await _context.SaveChangesAsync()) < 1)
                 {

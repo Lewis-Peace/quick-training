@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { PersonalRecord } from 'src/app/Model/PersonalRecord';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
 import { LoginService } from 'src/app/Services/login.service';
@@ -16,43 +16,51 @@ export class PersonalRecordComponent implements OnInit {
     constructor(
         private loginService: LoginService,
         private personalRecordService: PersonalRecordService,
-        private snackbarService: SnackBarService
+        private snackbarService: SnackBarService,
     ) { }
 
     async ngOnInit() {
         await this.initUserPersonalRecord();
     }
 
+    private updateCount: number = 0
+
     public prForm: FormGroup = new FormGroup({
         exercises: new FormControl<PersonalRecord[]>([])
     });
 
     private async initUserPersonalRecord() {
-        const prResp = await this.personalRecordService.get();
+        const response = await this.personalRecordService.get();
 
-        if (!prResp.result) {
-            this.snackbarService.operErrorSnackbar(`Failed to load PR. Error ${prResp.notes}`)
+        if (!response.result) {
+            this.snackbarService.operErrorSnackbar(`Failed to load PR. Error ${response.notes}`)
             return;
         }
 
-        if (prResp.body.length == 0) {
+        if (response.body.length == 0) {
             return;
         }
 
-        this.prForm.controls['exercises'].setValue(prResp.body[0]);
+        this.prForm.controls['exercises'].setValue(response.body);
+        this.updateCount = response.body.length;
     }
 
     public addExercise() {
-        this.prForm.controls['exercises'].value.push(new PersonalRecord());
+        let record = new PersonalRecord();
+        record.userId = this.loginService.userId;
+
+        this.prForm.controls['exercises'].value.push(record);
     }
 
-    public async update() {
-        let records = this.prForm.controls['exercises'].value;
+    public async save() {
+        const records = this.prForm.controls['exercises'].value;
+        const toUpdate = records.slice(0, this.updateCount)
+        const toAdd = records.slice(this.updateCount)
 
-        const saveResp = await this.personalRecordService.updatePersonalRecord(this.loginService.user?.username!, records);
+        const response = await this.personalRecordService.savePersonalRecord({ toUpdate, toAdd });
 
-        if (!saveResp.result) {
-            this.snackbarService.operErrorSnackbar(`An exception occurred during save. Ex ${saveResp.notes}`);
+        if (!response.result) {
+            this.snackbarService.operErrorSnackbar(`An exception occurred during save. Ex ${response.notes}`);
             return;
         }
 

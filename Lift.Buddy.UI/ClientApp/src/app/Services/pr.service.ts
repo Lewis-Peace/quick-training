@@ -16,17 +16,7 @@ export class PersonalRecordService {
         return this.apiService.apiGet<PersonalRecord>(this.defaultUrl);
     }
 
-    public addPersonalRecord(userId: string, personalRecords: PersonalRecord[]) {
-        return this.apiService.apiPost<PersonalRecord>(this.defaultUrl, {
-            userId,
-            personalRecords,
-        });
-    }
-
-    public updatePersonalRecord(userId: string, personalRecords: PersonalRecord[]) {
-        return this.apiService.apiPut<PersonalRecord>(this.defaultUrl, {
-            userId,
-            personalRecords,
-        });
+    public savePersonalRecord(personalRecords: { toUpdate: PersonalRecord[], toAdd: PersonalRecord[] }) {
+        return this.apiService.apiPut<PersonalRecord[]>(this.defaultUrl, personalRecords);
     }
 }

@@ -72,7 +72,8 @@ export class ApiCallsService {
             }
 
             if (response.status != 204) {
-                const result = (await response.json()) as Response<T>;
+                const data = await response.json();
+                const result = data as Response<T>;
                 return result;
             }
 

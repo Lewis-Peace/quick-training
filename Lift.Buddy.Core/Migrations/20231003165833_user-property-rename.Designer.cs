@@ -3,6 +3,7 @@ using System;
 using Lift.Buddy.Core.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lift.Buddy.Core.Migrations
 {
     [DbContext(typeof(LiftBuddyContext))]
-    partial class LiftBuddyContextModelSnapshot : ModelSnapshot
+    [Migration("20231003165833_user-property-rename")]
+    partial class userpropertyrename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -208,8 +211,7 @@ namespace Lift.Buddy.Core.Migrations
                 {
                     b.HasOne("Lift.Buddy.Core.Database.Entities.WorkoutDay", "WorkoutDay")
                         .WithMany("Exercises")
-                        .HasForeignKey("WorkoutDayId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("WorkoutDayId");
 
                     b.Navigation("WorkoutDay");
                 });
@@ -229,8 +231,7 @@ namespace Lift.Buddy.Core.Migrations
                 {
                     b.HasOne("Lift.Buddy.Core.Database.Entities.User", "User")
                         .WithMany("SecurityQuestions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -239,8 +240,7 @@ namespace Lift.Buddy.Core.Migrations
                 {
                     b.HasOne("Lift.Buddy.Core.Database.Entities.WorkoutPlan", "WorkoutPlan")
                         .WithMany("WorkoutDays")
-                        .HasForeignKey("WorkoutPlanId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("WorkoutPlanId");
 
                     b.Navigation("WorkoutPlan");
                 });
