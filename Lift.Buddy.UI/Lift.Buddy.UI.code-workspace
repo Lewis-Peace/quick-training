@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "ClientApp"
+		},
+		{
+			"name": "Root",
+			"path": ".."
+		}
+	],
+	"files": [
+		"../CHANGELOG.md"
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			".vs": true,
+			"Lift.Buddy.**": true,
+		},
+	}
+}
