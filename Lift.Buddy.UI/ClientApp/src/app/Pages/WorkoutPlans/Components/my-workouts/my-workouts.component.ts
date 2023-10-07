@@ -41,12 +41,12 @@ export class MyWorkoutsComponent implements OnInit {
 
         this.workouts = response.body;
         this.workouts.forEach(async workoutPlan => {
-            const response = await this.workoutplanService.getWorkoutPlanSubscribersCount(workoutPlan);
+            const response = await this.workoutplanService.getWorkoutPlanSubscribers(workoutPlan);
             if (!response.result) {
                 this.snackbarService.operErrorSnackbar(`Failed to load number of people subscribed to ${workoutPlan.name}. Error ${response.notes}`)
             }
 
-            const subscribersQuantity = response.body.pop() ?? 0;
+            const subscribersQuantity = response.body.length ?? 0;
             this.workoutPlanSubscribers.push(subscribersQuantity);
         });
     }

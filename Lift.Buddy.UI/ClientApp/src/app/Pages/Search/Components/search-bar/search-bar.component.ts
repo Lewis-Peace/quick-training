@@ -1,18 +1,20 @@
-import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { User } from 'src/app/Model/User';
 
 @Component({
-  selector: 'app-empty-search',
-  templateUrl: './empty-search.component.html',
-  styleUrls: ['./empty-search.component.css']
+  selector: 'app-search-bar',
+  templateUrl: './search-bar.component.html',
+  styleUrls: ['./search-bar.component.css']
 })
-export class EmptySearchComponent implements OnInit {
+export class SearchBarComponent implements OnInit {
 
   public originalSuggested: User[] = [];
   public suggested: User[] = [];
   public searchValue: any = "";
 
   @ViewChild('input') input: ElementRef<HTMLInputElement> | undefined
+
+  @Output() result: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 

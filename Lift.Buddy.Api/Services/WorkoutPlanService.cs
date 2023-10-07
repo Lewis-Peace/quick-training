@@ -1,6 +1,7 @@
 ﻿using Lift.Buddy.API.Interfaces;
 using Lift.Buddy.Core;
 using Lift.Buddy.Core.Database;
+using Lift.Buddy.Core.Database.Entities;
 using Lift.Buddy.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using MigraDoc.DocumentObjectModel;
@@ -120,22 +121,27 @@ namespace Lift.Buddy.API.Services
             return response;
         }
 
-        public async Task<Response<int>> GetWorkoutPlanSubscribersNumber(Guid workoutPlanId)
+        public async Task<Response<UserDTO>> GetWorkoutPlanSubscribers(Guid workoutPlanId)
         {
-            var response = new Response<int>();
+            var response = new Response<UserDTO>();
             try
             {
-                var workoutPlanSubscribers = await _context.WorkoutPlans
-                    .Where(x => x.WorkoutPlanId == workoutPlanId)
-                    .ToArrayAsync();
+                var workoutPlan = await _context.WorkoutPlans
+                    .Include(x => x.Users)
+                    .FirstOrDefaultAsync(x => x.WorkoutPlanId == workoutPlanId);
+
+                if (workoutPlan == null)
+                {
+                    throw new Exception("Workout plan does not exist.");
+                }
 
                 response.Result = true;
-                response.Body = new int[] { workoutPlanSubscribers.Length };
+                response.Body = workoutPlan.Users.Select(x => _mapper.Map(x));
             }
             catch (Exception ex)
             {
                 response.Result = false;
-                response.Notes = Utils.ErrorMessage(nameof(GetWorkoutPlanSubscribersNumber), ex);
+                response.Notes = Utils.ErrorMessage(nameof(GetWorkoutPlanSubscribers), ex);
             }
             return response;
         }
@@ -303,9 +309,54 @@ namespace Lift.Buddy.API.Services
 
             return response;
         }
+
+        public async Task<Response<UserDTO>> SetWorkoutPlanAssignment(Guid id, UserDTO[] userDTO)
+        {
+            var response = new Response<UserDTO>();
+
+            try
+            {
+                var workoutPlan = await _context.WorkoutPlans
+                    .Where(x => x.WorkoutPlanId.Equals(id))
+                    .Include(x => x.Users)
+                    .FirstOrDefaultAsync();
+
+                if (workoutPlan == null) throw new Exception($"Workout plan {id} doesn't exist.");
+
+                if (userDTO == null) throw new Exception();
+
+                List<User> users = new List<User>();
+                foreach (var user in userDTO)
+                {
+                    var userFromDb = await _context.Users
+                            .Where(x => x.UserId == user.UserId)
+                            .FirstOrDefaultAsync();
+                    if (userFromDb != null)
+                    {
+                        users.Add(userFromDb);
+                    }
+                }
+
+                workoutPlan.Users = users;
+
+                _context.Update(workoutPlan);
+
+                if (await _context.SaveChangesAsync() < 1) throw new Exception("Failed to save change into database.");
+
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                response.Notes = Utils.ErrorMessage(nameof(SetWorkoutPlanAssignment), ex);
+            }
+
+            return response;
+        }
         #endregion
 
         private int CalculateMean(double currentMean, int count, double value)
             => (int)(value + (currentMean * count)) / (count + 1);
+
     }
 }

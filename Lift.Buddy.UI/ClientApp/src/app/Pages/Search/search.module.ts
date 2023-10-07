@@ -4,7 +4,7 @@ import { SearchComponent } from './search.component';
 import { SearchRoutingModule } from './search-routing.module';
 import { UIElementsModule } from '../Components/UI.Elements.module';
 import { SearchResultComponent } from './Components/search-result/search-result.component';
-import { EmptySearchComponent } from './Components/empty-search/empty-search.component';
+import { SearchBarComponent } from './Components/search-bar/search-bar.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatButtonModule } from '@angular/material/button';
@@ -28,7 +28,7 @@ import { MatCardModule } from '@angular/material/card';
   declarations: [
     SearchComponent,
     SearchResultComponent,
-    EmptySearchComponent
+    SearchBarComponent
   ]
 })
 export class SearchModule { }

@@ -95,6 +95,7 @@ public class DatabaseMapper : IDatabaseMapper
     {
         return new UserDTO
         {
+            UserId = user.UserId,
             Name = user.Name,
             Surname = user.Surname,
             Email = user.Email,

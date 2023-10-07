@@ -1,0 +1,9 @@
+.assignments-container {
+  height: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.actions {
+  padding: 10px;
+}

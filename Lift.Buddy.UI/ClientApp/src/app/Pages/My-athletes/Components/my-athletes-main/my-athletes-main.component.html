@@ -1,3 +1,11 @@
-<p>
-  my-athletes-main works!
-</p>
+<div class="grid">
+
+  <div *ngFor="let athlete of athletes;let idx = index" [class]="'row' + (idx == 0 ? ' mt-3' : '')">
+    <mat-form-field class="col-5">
+      <input matInput [value]="athlete.credentials.username"/>
+    </mat-form-field>
+    <button mat-icon-button (click)="removeFollower(athlete)">
+      <i class="fa fa-xmark"></i>
+    </button>
+  </div>
+</div>

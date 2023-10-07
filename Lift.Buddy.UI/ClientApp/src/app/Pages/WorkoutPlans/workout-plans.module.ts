@@ -1,7 +1,7 @@
 import { CreateUpdateWorkoutplanPageComponent } from './Components/create-update-workoutplan-page/create-update-workoutplan-page.component';
 import { YourWorkoutsPageComponent } from './Components/your-workouts-page/your-workouts-page.component';
 import { MyWorkoutsComponent } from './Components/my-workouts/my-workouts.component';
-import { WorkoutNavigationMenuComponent } from '../Components/workout-navigation-menu/workout-navigation-menu.component';
+import { WorkoutNavigationMenuComponent } from './Components/workout-navigation-menu/workout-navigation-menu.component';
 import { UIElementsModule } from '../Components/UI.Elements.module';
 import { WorkoutPlansComponent } from './workout-plans.component';
 import { DeleteWorkoutPlanConfirmationPopupComponent } from './Components/my-workouts/Components/delete-workout-plan-confirmation-popup/delete-workout-plan-confirmation-popup.component';
@@ -22,6 +22,8 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { AthletesWorkoutAssignmentsComponent } from './Components/my-workouts/Components/athletes-workout-assignments/athletes-workout-assignments.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -38,7 +40,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
-    WorkoutPlansRoutingModule
+    WorkoutPlansRoutingModule,
+    MatAutocompleteModule
   ],
   declarations: [
     WorkoutPlansComponent,
@@ -49,7 +52,8 @@ import { MatSelectModule } from '@angular/material/select';
     DeleteWorkoutPlanConfirmationPopupComponent,
     TrainingCardComponent,
     ExerciseRowComponent,
-    DailyWorkoutComponent
+    DailyWorkoutComponent,
+    AthletesWorkoutAssignmentsComponent,
   ],
   exports: [
 

@@ -22,7 +22,6 @@ import { SettingRowComponent } from './Components/general-settings/Components/se
     CommonModule,
     UIElementsModule,
     BrowserAnimationsModule,
-    RouterModule,
     SettingsRoutingModule,
     RouterModule,
     ReactiveFormsModule,

@@ -1,0 +1,35 @@
+
+<div class="h-100 w-100">
+  <div class="assignments-container">
+    <div
+      [class]="'row' + (idx == 0 ? ' pt-3' : '')"
+      *ngFor="let subscriber of athletesAssigned; let idx = index"
+    >
+      <mat-form-field class="col-5">
+        <mat-label>Inser athlete username</mat-label>
+        <input matInput placeholder="placeholder"
+          [readonly]="readonlySubscribers > idx"
+          [matAutocomplete]="autocomplete"
+          placeholder=""
+          [value]="subscriber.credentials.username"
+          (input)="getUsersByUsername($event)"
+        >
+
+        <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="displayFn" (optionSelected)="optionSelected($event, idx)">
+          <mat-option *ngFor="let atleteSubscribed of athletesSuggested" [value]="atleteSubscribed">
+            {{atleteSubscribed.credentials.username}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button mat-icon-button (click)="removeAssignation(idx)" class="col-2">
+        <i class="fa fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+  <div class="actions row">
+    <button class="col-3" mat-raised-button (click)="assignWorkout()">Assign</button>
+    <div class="col-6"></div>
+    <button class="col-3" mat-raised-button color="primary" (click)="save()">Save</button>
+  </div>
+</div>
+

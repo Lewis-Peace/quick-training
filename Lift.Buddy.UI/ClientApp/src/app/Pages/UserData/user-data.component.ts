@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/Model/User';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
-import { LoginService } from 'src/app/Services/login.service';
+import { UserService } from 'src/app/Services/user.service';
 
 @Component({
     selector: 'app-user-data',
@@ -14,7 +14,7 @@ export class UserDataComponent implements OnInit {
     public userData: User | undefined;
 
     constructor(
-        private loginService: LoginService,
+        private userService: UserService,
         private snackbarService: SnackBarService
     ) { }
 
@@ -23,7 +23,7 @@ export class UserDataComponent implements OnInit {
     }
 
     private async getUserData() {
-        const response = await this.loginService.getUserData();
+        const response = await this.userService.getUserData();
         if (!response.result) {
             this.snackbarService.operErrorSnackbar(`Not able to retrieve user data due to: ${response.notes}`)
         }
@@ -36,7 +36,7 @@ export class UserDataComponent implements OnInit {
             return;
         }
 
-        const response = await this.loginService.updateUserData(this.userData);
+        const response = await this.userService.updateUserData(this.userData);
 
         if (!response.result) {
             this.snackbarService.operErrorSnackbar(`Failed to update user data due to: ${response.notes}`)

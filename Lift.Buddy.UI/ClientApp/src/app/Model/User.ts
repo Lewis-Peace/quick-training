@@ -8,5 +8,5 @@ export class User {
     public surname: string = "";
     public email: string = "";
     public credentials: Credentials = new Credentials("", "");
-    public securityQuestions: SecurityQuestion[] = []
+    public securityQuestions: SecurityQuestion[] = [];
 }

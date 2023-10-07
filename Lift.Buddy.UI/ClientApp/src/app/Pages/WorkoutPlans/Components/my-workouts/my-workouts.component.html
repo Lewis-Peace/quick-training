@@ -9,7 +9,7 @@
           </button>
         </mat-card-title-group>
       </mat-card-header>
-      <mat-card-content [routerLink]="['..', 'add', workout.id]">
+      <mat-card-content>
         <form>
           <mat-form-field>
             <mat-label>Workout plan subscribers</mat-label>
@@ -27,6 +27,10 @@
           </div>
         </form>
       </mat-card-content>
+      <mat-card-actions slot="start">
+        <button mat-button [routerLink]="['..', 'assign', workout.id]">Assign</button>
+        <button mat-button [routerLink]="['..', 'add', workout.id]">Modify</button>
+      </mat-card-actions>
     </mat-card>
   </div>
 </div>

@@ -54,8 +54,15 @@ namespace Lift.Buddy.API.Controllers
         [HttpGet("subscribers/{id}")]
         public async Task<IActionResult> GetWorkoutPlanSubscribers(Guid id)
         {
-            var response = await _workoutScheduleService.GetWorkoutPlanSubscribersNumber(id);
+            var response = await _workoutScheduleService.GetWorkoutPlanSubscribers(id);
             return Ok(response);
+        }
+
+        [HttpPost("subscribers/{id}")]
+        public async Task<IActionResult> SetAssignments([FromRoute] Guid id, [FromBody] UserDTO[] assignments)
+        {
+            var response = await _workoutScheduleService.SetWorkoutPlanAssignment(id, assignments);
+            return NoContent();
         }
 
         [HttpPost]
