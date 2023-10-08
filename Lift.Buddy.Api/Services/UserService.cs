@@ -42,7 +42,7 @@ namespace Lift.Buddy.API.Services
             return response;
         }
 
-        public async Task<Response<UserDTO>> GetUsersByUsername(string username)
+        public async Task<Response<UserDTO>> GetUsersByUsername(string username, int amount = 10)
         {
             var response = new Response<UserDTO>();
 
@@ -54,7 +54,7 @@ namespace Lift.Buddy.API.Services
                     .ToArrayAsync();
 
                 response.Result = true;
-                response.Body = users.Take(10);
+                response.Body = users.Take(amount);
             }
             catch (Exception ex) 
             { 

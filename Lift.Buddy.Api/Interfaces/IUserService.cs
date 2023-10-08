@@ -6,6 +6,6 @@ namespace Lift.Buddy.API.Interfaces
     {
         Task<Response<UserDTO>> GetUserData(Guid userId);
         Task<Response<UserDTO>> UpdateUserData(UserDTO userData);
-        Task<Response<UserDTO>> GetUsersByUsername(string username);
+        Task<Response<UserDTO>> GetUsersByUsername(string username, int amount = 10);
     }
 }
