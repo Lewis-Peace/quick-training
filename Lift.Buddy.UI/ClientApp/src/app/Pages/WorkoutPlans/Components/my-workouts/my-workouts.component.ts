@@ -7,83 +7,99 @@ import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
 import { DialogService } from 'src/app/Services/Utils/dialog.service';
 import { DeleteWorkoutPlanConfirmationPopupComponent } from './Components/delete-workout-plan-confirmation-popup/delete-workout-plan-confirmation-popup.component';
 import { LoginService } from 'src/app/Services/login.service';
+import { LoadingVisualizationService } from 'src/app/Services/loading-visualization.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-my-workouts',
-    templateUrl: './my-workouts.component.html',
-    styleUrls: ['./my-workouts.component.css']
+	selector: 'app-my-workouts',
+	templateUrl: './my-workouts.component.html',
+	styleUrls: ['./my-workouts.component.css']
 })
 
 export class MyWorkoutsComponent implements OnInit {
 
-    public separatorKeyCodes = [COMMA, ENTER, SPACE];
-    public workouts: WorkoutPlan[] = [];
-    public items: string[] = [];
-    public ratings: number[] = [2, 5];
-    public workoutPlanSubscribers: number[] = [];
+	public separatorKeyCodes = [COMMA, ENTER, SPACE];
+	public workouts: WorkoutPlan[] = [];
+	public items: string[] = [];
+	public ratings: number[] = [];
+	public workoutPlanSubscribers: number[] = [];
+	public isLoading: boolean = false;
+	public loadingSubscription: Subscription | undefined;
 
-    constructor(
-        private loginService: LoginService,
-        private workoutplanService: WorkoutplanService,
-        private snackbarService: SnackBarService,
-        private dialogService: DialogService
-    ) { }
+	constructor(
+		private loginService: LoginService,
+		private workoutplanService: WorkoutplanService,
+		private snackbarService: SnackBarService,
+		private dialogService: DialogService,
+		private loadingVisualizationService: LoadingVisualizationService
+	) { }
 
-    async ngOnInit() {
-        await this.initWorkouts();
-    }
+	async ngOnInit() {
+		this.initLoadingVisualizaton()
+		await this.initWorkouts();
+	}
 
-    private async initWorkouts() {
-        const response = await this.workoutplanService.getWorkoutPlansCreatedByUser(this.loginService.userId);
-        if (!response.result) {
-            this.snackbarService.operErrorSnackbar(`Failed ot load workouts due to: ${response.notes}`)
-        }
+	ngOnDestroy() {
+		this.loadingSubscription?.unsubscribe();
+	}
 
-        this.workouts = response.body;
-        this.workouts.forEach(async workoutPlan => {
-            const response = await this.workoutplanService.getWorkoutPlanSubscribers(workoutPlan);
-            if (!response.result) {
-                this.snackbarService.operErrorSnackbar(`Failed to load number of people subscribed to ${workoutPlan.name}. Error ${response.notes}`)
-            }
+	private initLoadingVisualizaton() {
+		this.loadingSubscription = this.loadingVisualizationService.$isLoading.subscribe(loading => this.isLoading = loading);
+	}
 
-            const subscribersQuantity = response.body.length ?? 0;
-            this.workoutPlanSubscribers.push(subscribersQuantity);
-        });
-    }
+	private async initWorkouts() {
+		this.loadingVisualizationService.setIsLoading(true);
+		const response = await this.workoutplanService.getWorkoutPlansCreatedByUser(this.loginService.userId);
+		if (!response.result) {
+			this.snackbarService.operErrorSnackbar(`Failed ot load workouts due to: ${response.notes}`)
+		}
 
-    public add(event: MatChipInputEvent) {
-        const value = (event.value || '').trim();
+		this.workouts = response.body;
+		this.workouts.forEach(async workoutPlan => {
+			const response = await this.workoutplanService.getWorkoutPlanSubscribers(workoutPlan);
+			if (!response.result) {
+				this.snackbarService.operErrorSnackbar(`Failed to load number of people subscribed to ${workoutPlan.name}. Error ${response.notes}`)
+			}
 
-        if (value) {
-            this.items.push(value);
-        }
+			const subscribersQuantity = response.body.length ?? 0;
+			this.workoutPlanSubscribers.push(subscribersQuantity);
+		});
+		this.loadingVisualizationService.setIsLoading(false);
+	}
 
-        event.chipInput!.clear();
-    }
+	public add(event: MatChipInputEvent) {
+		const value = (event.value || '').trim();
 
-    public remove(item: any) {
-        const idx = this.items.indexOf(item);
+		if (value) {
+			this.items.push(value);
+		}
 
-        if (idx >= 0) {
-            this.items.splice(idx, 1);
-        }
-    }
+		event.chipInput!.clear();
+	}
 
-    public async deleteWorkout(workout: WorkoutPlan) {
-        const dialogRef = this.dialogService.openCenterDialog(
-            DeleteWorkoutPlanConfirmationPopupComponent,
-            {
-                data: { workout: workout }
-            }
-        );
+	public remove(item: any) {
+		const idx = this.items.indexOf(item);
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                const deletedWorkoutIdx = this.workouts.indexOf(workout);
-                if (deletedWorkoutIdx != -1) {
-                    this.workouts.splice(deletedWorkoutIdx, 1)
-                }
-            }
-        })
-    }
+		if (idx >= 0) {
+			this.items.splice(idx, 1);
+		}
+	}
+
+	public async deleteWorkout(workout: WorkoutPlan) {
+		const dialogRef = this.dialogService.openCenterDialog(
+			DeleteWorkoutPlanConfirmationPopupComponent,
+			{
+				data: { workout: workout }
+			}
+		);
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				const deletedWorkoutIdx = this.workouts.indexOf(workout);
+				if (deletedWorkoutIdx != -1) {
+					this.workouts.splice(deletedWorkoutIdx, 1)
+				}
+			}
+		})
+	}
 }

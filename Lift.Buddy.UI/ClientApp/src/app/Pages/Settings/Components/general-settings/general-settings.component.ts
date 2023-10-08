@@ -4,6 +4,7 @@ import { DialogService } from 'src/app/Services/Utils/dialog.service';
 import { LoginService } from 'src/app/Services/login.service';
 import { SwapRoleConfirmationDialogComponent } from './Components/swap-role-confirmation-dialog/swap-role-confirmation-dialog.component';
 import { LoadingVisualizationService } from 'src/app/Services/loading-visualization.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-general-settings',
@@ -19,13 +20,18 @@ export class GeneralSettingsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadingVisService.$isLoading.subscribe(loading => {
+    this.loadingSubscription = this.loadingVisService.$isLoading.subscribe(loading => {
       this.isLoading = loading;
     })
   }
 
+  ngOnDestroy() {
+    this.loadingSubscription?.unsubscribe();
+  }
+
   public isTrainer = this.loginService.isTrainer;
   public isLoading: boolean = false;
+	public loadingSubscription: Subscription | undefined;
 
   public language = 'en';
   public languages = [
