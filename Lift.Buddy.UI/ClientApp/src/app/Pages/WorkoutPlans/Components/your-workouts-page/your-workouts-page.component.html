@@ -1,31 +1,14 @@
-<div class="container">
-  <mat-card class="row">
-    <mat-card-title>
-      Today
-    </mat-card-title>
-    <mat-card-content>
-        <div class="row g-0">
-          <app-training-card
-            class="col-3 training-card"
-            *ngFor="let dailyWorkout of dailyWorkouts"
-            [workoutDay]="dailyWorkout.workout"
-            [name]="dailyWorkout.name"
-          ></app-training-card>
-        </div>
-    </mat-card-content>
-  </mat-card>
-  <mat-card class="row">
-    <mat-card-title>
-      My week
-    </mat-card-title>
-    <mat-card-content>
-    </mat-card-content>
-  </mat-card>
-  <mat-card class="row">
-    <mat-card-title>
-      Old plans
-    </mat-card-title>
-    <mat-card-content>
-    </mat-card-content>
-  </mat-card>
+<div class="page">
+  <mat-tab-group  *ngIf="dailyWorkouts.length != 0">
+    <mat-tab
+      *ngFor="let workout of dailyWorkouts"
+      [label]="workout.name"
+    >
+      <app-training-card [exercises]="workout.workout.exercises"></app-training-card>
+    </mat-tab>
+  </mat-tab-group>
+  <div *ngIf="dailyWorkouts.length == 0">
+    <h1 class="mt-3 text-center">No trainig for today</h1>
+  </div>
 </div>
+

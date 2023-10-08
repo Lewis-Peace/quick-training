@@ -11,13 +11,13 @@ export const generalNavigationMenu: NavigationMenu[] = [
 ]
 
 export const workoutNavigationMenu: NavigationMenu[] = [
-  { name: 'home', icon: 'calendar', path: 'workout/training' },
+  { name: 'todays workout', icon: 'calendar', path: 'workout/training' },
   { name: 'my workouts', icon: 'calendar', path: 'workout/my-workouts' },
   { name: 'create workout', icon: 'calendar-plus', path: 'workout/add/new' }
 ]
 
 export const trainerNavigationMenu: NavigationMenu[] = [
   { name: 'home', icon: 'people-group', path: 'my-athletes' },
-  { name: 'requests', icon: 'clipboard', path: 'my-athletes' },
-  { name: 'frontpage', icon: 'people-group', path: 'my-athletes' },
+  { name: 'requests', icon: 'clipboard', path: 'requests' },
+  { name: 'frontpage', icon: 'file', path: 'frontpage' },
 ]

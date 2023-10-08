@@ -1,5 +1,6 @@
 import { WorkoutDay } from 'src/app/Model/WorkoutDay';
 import { Component, Input, OnInit } from '@angular/core';
+import { Exercise } from 'src/app/Model/Exercise';
 
 @Component({
     selector: 'app-training-card',
@@ -9,7 +10,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 export class TrainingCardComponent implements OnInit {
 
-    @Input() workoutDay: WorkoutDay = new WorkoutDay();
+    @Input() exercises: Exercise[] = [];
     @Input() name: string = '';
 
     constructor() { }

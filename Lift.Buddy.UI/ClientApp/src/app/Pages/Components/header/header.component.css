@@ -1,5 +1,8 @@
 .header {
   height: 5%;
+  .pointer {
+    cursor: pointer;
+  }
 }
 
 img {

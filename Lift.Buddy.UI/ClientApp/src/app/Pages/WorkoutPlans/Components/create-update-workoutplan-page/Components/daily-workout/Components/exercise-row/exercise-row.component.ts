@@ -13,6 +13,7 @@ export class ExerciseRowComponent implements OnInit {
 
     @Input() exercise: Exercise | undefined
     @Input() index: number | undefined
+    @Input() readonly: boolean = false;
     @Output() onDelete: EventEmitter<any> = new EventEmitter();
     @Output() onChange: EventEmitter<any> = new EventEmitter();
 

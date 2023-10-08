@@ -7,6 +7,7 @@ export class User {
     public name: string = "";
     public surname: string = "";
     public email: string = "";
+    public isTrainer: boolean = false;
     public credentials: Credentials = new Credentials("", "");
     public securityQuestions: SecurityQuestion[] = [];
 }

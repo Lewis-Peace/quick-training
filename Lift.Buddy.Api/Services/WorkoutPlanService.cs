@@ -80,6 +80,7 @@ namespace Lift.Buddy.API.Services
                 var user = await _context.Users
                     .Include(u => u.CreatedPlans)
                         .ThenInclude(p => p.WorkoutDays)
+                        .ThenInclude(p => p.Exercises)
                     .SingleOrDefaultAsync(x => x.UserId == userId);
 
                 if (user == null) throw new Exception($"User with user ID '{userId} doesn't exists.");

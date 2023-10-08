@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { NavigationMenu } from 'src/app/Model/NavigationMenu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -9,10 +10,13 @@ import { NavigationMenu } from 'src/app/Model/NavigationMenu';
   styleUrls: ['./navigation-menu.component.css']
 })
 export class NavigationMenuComponent implements OnInit {
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   @Output() onClick: EventEmitter<any> = new EventEmitter();
   @Input() navigationMenuData: NavigationMenu[] = [];
+  @Input() menuLevel: number = 0;
 
   ngOnInit() {
     this.initTreeObject()
@@ -48,5 +52,13 @@ export class NavigationMenuComponent implements OnInit {
     node => !!node && node.children.length > 0
   )
   //#endregion
+
+  public isRouteActive(path: string) {
+    const route = this.router.url;
+    if (route.includes(path.split('/')[this.menuLevel])) {
+      return 'accent'
+    }
+    return 'basic'
+  }
 
 }

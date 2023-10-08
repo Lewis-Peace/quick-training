@@ -7,7 +7,7 @@ try
 
     builder.Services.AddDbContext<LiftBuddyContext>(options =>
     {
-        options.UseSqlite(builder.Configuration.GetConnectionString("TestDatabase"));
+        options.UseMySQL(builder.Configuration.GetConnectionString("DevDatabase"));
     });
 
     var app = builder.Build();

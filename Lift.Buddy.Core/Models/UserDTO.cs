@@ -18,6 +18,9 @@ public class UserDTO
     [JsonPropertyName("email")]
     public string Email { get; set; }
 
+    [JsonPropertyName("isTrainer")]
+    public bool IsTrainer { get; set; }
+
     public Credentials Credentials { get; set; }
 
     public IEnumerable<SecurityQuestionDTO> SecurityQuestions { get; set; } = Enumerable.Empty<SecurityQuestionDTO>();

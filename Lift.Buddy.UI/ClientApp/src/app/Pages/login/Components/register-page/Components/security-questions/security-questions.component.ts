@@ -52,7 +52,8 @@ export class SecurityQuestionsComponent implements OnInit {
             surname: userWithoutSecQuestions.surname,
             email: userWithoutSecQuestions.email,
             credentials: userWithoutSecQuestions.credentials,
-            securityQuestions: securityQuestions
+            securityQuestions: securityQuestions,
+            isTrainer: false
         }
 
         this.loginService.user = userToRegister;

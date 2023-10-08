@@ -47,7 +47,7 @@ export class LoginPageComponent implements OnInit {
             this.forgotPasswordVisible = true;
         } else {
             this.snackBarService.openSuccessSnackbar("Login successful")
-            this.loginService.currentUsername = this.loginForm.controls['username'].value!;
+            this.loginService.currentUsername = credentials.username;
             const previousPage = this.authGuard.previousPage?.initialUrl ?? '';
             this.router.navigateByUrl(previousPage);
         }

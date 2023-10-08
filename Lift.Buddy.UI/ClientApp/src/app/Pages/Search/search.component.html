@@ -12,12 +12,20 @@
   <app-search-bar
     (result)="setSearchResult($event)"
   ></app-search-bar>
-  <mat-card class="mt-3">
-    <mat-card-content>
-      <app-search-result
-        *ngFor="let user of searchResults"
-        [user]="user"
-      ></app-search-result>
-    </mat-card-content>
-  </mat-card>
+  <div class="content mt-3">
+    <app-loading-spinner
+      *ngIf="isLoading"
+    ></app-loading-spinner>
+    <mat-card *ngIf="!isLoading">
+      <mat-card-content *ngIf="searchResults.length != 0" class="flex-grow-1">
+        <app-search-result
+          *ngFor="let user of searchResults"
+          [user]="user"
+        ></app-search-result>
+      </mat-card-content>
+      <mat-card-content *ngIf="searchResults.length == 0" class="flex-grow-1">
+        <p>No results</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </ng-template>

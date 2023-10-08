@@ -6,38 +6,67 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Lift.Buddy.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class entitiesrefactor : Migration
+    public partial class MySQLDBChange : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Username = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Surname = table.Column<string>(type: "TEXT", nullable: true),
-                    Gender = table.Column<int>(type: "INTEGER", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Password = table.Column<string>(type: "TEXT", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
-                    IsTrainer = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false)
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Username = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: true),
+                    Surname = table.Column<string>(type: "longtext", nullable: true),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "longtext", nullable: false),
+                    Password = table.Column<string>(type: "longtext", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    IsTrainer = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "PersonalRecords",
+                columns: table => new
+                {
+                    PersonalRecordId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    ExerciseName = table.Column<string>(type: "longtext", nullable: true),
+                    Series = table.Column<int>(type: "int", nullable: false),
+                    Repetitions = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<double>(type: "double", nullable: true),
+                    UOM = table.Column<int>(type: "int", nullable: true),
+                    ExerciseType = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonalRecords", x => x.PersonalRecordId);
+                    table.ForeignKey(
+                        name: "FK_PersonalRecords_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "SecurityQuestions",
                 columns: table => new
                 {
-                    SecurityQuestionId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Question = table.Column<string>(type: "TEXT", nullable: false),
-                    Answer = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    SecurityQuestionId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Question = table.Column<string>(type: "longtext", nullable: true),
+                    Answer = table.Column<string>(type: "longtext", nullable: true),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -48,17 +77,18 @@ namespace Lift.Buddy.Core.Migrations
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "WorkoutPlans",
                 columns: table => new
                 {
-                    WorkoutPlanId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    ReviewAverage = table.Column<float>(type: "REAL", nullable: false),
-                    ReviewCount = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    WorkoutPlanId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: true),
+                    ReviewAverage = table.Column<float>(type: "float", nullable: false),
+                    ReviewCount = table.Column<int>(type: "int", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,18 +99,19 @@ namespace Lift.Buddy.Core.Migrations
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "UserWorkoutPlan",
                 columns: table => new
                 {
-                    UsersUserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkoutPlansWorkoutPlanId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    AssignedPlansWorkoutPlanId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    UsersUserId = table.Column<Guid>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserWorkoutPlan", x => new { x.UsersUserId, x.WorkoutPlansWorkoutPlanId });
+                    table.PrimaryKey("PK_UserWorkoutPlan", x => new { x.AssignedPlansWorkoutPlanId, x.UsersUserId });
                     table.ForeignKey(
                         name: "FK_UserWorkoutPlan_Users_UsersUserId",
                         column: x => x.UsersUserId,
@@ -88,20 +119,21 @@ namespace Lift.Buddy.Core.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserWorkoutPlan_WorkoutPlans_WorkoutPlansWorkoutPlanId",
-                        column: x => x.WorkoutPlansWorkoutPlanId,
+                        name: "FK_UserWorkoutPlan_WorkoutPlans_AssignedPlansWorkoutPlanId",
+                        column: x => x.AssignedPlansWorkoutPlanId,
                         principalTable: "WorkoutPlans",
                         principalColumn: "WorkoutPlanId",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "WorkoutDays",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Day = table.Column<int>(type: "INTEGER", nullable: false),
-                    WorkoutPlanId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Day = table.Column<int>(type: "int", nullable: false),
+                    WorkoutPlanId = table.Column<Guid>(type: "char(36)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -112,19 +144,20 @@ namespace Lift.Buddy.Core.Migrations
                         principalTable: "WorkoutPlans",
                         principalColumn: "WorkoutPlanId",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Exercises",
                 columns: table => new
                 {
-                    ExerciseId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Repetitions = table.Column<int>(type: "INTEGER", nullable: true),
-                    Series = table.Column<int>(type: "INTEGER", nullable: true),
-                    Time = table.Column<TimeOnly>(type: "TEXT", nullable: true),
-                    Rest = table.Column<TimeOnly>(type: "TEXT", nullable: true),
-                    WorkoutDayId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    ExerciseId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: true),
+                    Repetitions = table.Column<int>(type: "int", nullable: true),
+                    Series = table.Column<int>(type: "int", nullable: true),
+                    Time = table.Column<int>(type: "int", nullable: true),
+                    Rest = table.Column<int>(type: "int", nullable: true),
+                    WorkoutDayId = table.Column<Guid>(type: "char(36)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -135,47 +168,13 @@ namespace Lift.Buddy.Core.Migrations
                         principalTable: "WorkoutDays",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PersonalRecords",
-                columns: table => new
-                {
-                    PersonalRecordId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ExerciseName = table.Column<string>(type: "TEXT", nullable: false),
-                    Series = table.Column<int>(type: "INTEGER", nullable: false),
-                    Reps = table.Column<int>(type: "INTEGER", nullable: false),
-                    Weight = table.Column<double>(type: "REAL", nullable: true),
-                    UOM = table.Column<int>(type: "INTEGER", nullable: true),
-                    ExerciseId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PersonalRecords", x => x.PersonalRecordId);
-                    table.ForeignKey(
-                        name: "FK_PersonalRecords_Exercises_ExerciseId",
-                        column: x => x.ExerciseId,
-                        principalTable: "Exercises",
-                        principalColumn: "ExerciseId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PersonalRecords_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Exercises_WorkoutDayId",
                 table: "Exercises",
                 column: "WorkoutDayId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersonalRecords_ExerciseId",
-                table: "PersonalRecords",
-                column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonalRecords_UserId",
@@ -188,9 +187,9 @@ namespace Lift.Buddy.Core.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserWorkoutPlan_WorkoutPlansWorkoutPlanId",
+                name: "IX_UserWorkoutPlan_UsersUserId",
                 table: "UserWorkoutPlan",
-                column: "WorkoutPlansWorkoutPlanId");
+                column: "UsersUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkoutDays_WorkoutPlanId",
@@ -207,6 +206,9 @@ namespace Lift.Buddy.Core.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Exercises");
+
+            migrationBuilder.DropTable(
                 name: "PersonalRecords");
 
             migrationBuilder.DropTable(
@@ -214,9 +216,6 @@ namespace Lift.Buddy.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserWorkoutPlan");
-
-            migrationBuilder.DropTable(
-                name: "Exercises");
 
             migrationBuilder.DropTable(
                 name: "WorkoutDays");
