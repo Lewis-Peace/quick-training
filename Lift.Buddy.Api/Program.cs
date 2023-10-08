@@ -70,6 +70,9 @@ builder.Services.AddAuthentication("Bearer")
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
 builder.Services.AddScoped<IPersonalRecordService, PersonalRecordService>();
+builder.Services.AddScoped<ITrainerService, TrainerService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddSingleton<IDatabaseMapper, DatabaseMapper>();
 
 builder.Services.AddDbContext<LiftBuddyContext>(options =>

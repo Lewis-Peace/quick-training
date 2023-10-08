@@ -9,5 +9,15 @@
 </ng-template>
 
 <ng-template #main>
-  <router-outlet></router-outlet>
+  <app-search-bar
+    (result)="setSearchResult($event)"
+  ></app-search-bar>
+  <mat-card class="mt-3">
+    <mat-card-content>
+      <app-search-result
+        *ngFor="let user of searchResults"
+        [user]="user"
+      ></app-search-result>
+    </mat-card-content>
+  </mat-card>
 </ng-template>

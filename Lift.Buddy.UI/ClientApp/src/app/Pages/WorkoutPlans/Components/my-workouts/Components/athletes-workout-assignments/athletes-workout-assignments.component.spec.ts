@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { EmptySearchComponent } from './empty-search.component';
+import { AthletesWorkoutAssignmentsComponent } from './athletes-workout-assignments.component';
 
-describe('EmptySearchComponent', () => {
-  let component: EmptySearchComponent;
-  let fixture: ComponentFixture<EmptySearchComponent>;
+describe('AthletesWorkoutAssignmentsComponent', () => {
+  let component: AthletesWorkoutAssignmentsComponent;
+  let fixture: ComponentFixture<AthletesWorkoutAssignmentsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmptySearchComponent ]
+      declarations: [ AthletesWorkoutAssignmentsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmptySearchComponent);
+    fixture = TestBed.createComponent(AthletesWorkoutAssignmentsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

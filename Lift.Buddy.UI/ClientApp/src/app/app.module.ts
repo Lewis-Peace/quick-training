@@ -50,6 +50,8 @@ import { LoadingVisualizationService } from './Services/loading-visualization.se
 import { SearchModule } from './Pages/Search/search.module';
 import { MyAthletesModule } from './Pages/My-athletes/my-athletes.module';
 import { LoginModule } from './Pages/login/login.module';
+import { TrainerService } from './Services/trainer.service';
+import { SearchService } from './Services/search.service';
 //#endregion
 
 @NgModule({
@@ -94,7 +96,7 @@ import { LoginModule } from './Pages/login/login.module';
     SearchModule,
     MyAthletesModule
   ],
-  providers: [LoginService, ApiCallsService, PersonalRecordService, DialogService, LoadingVisualizationService],
+  providers: [LoginService, ApiCallsService, PersonalRecordService, DialogService, LoadingVisualizationService, TrainerService, SearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

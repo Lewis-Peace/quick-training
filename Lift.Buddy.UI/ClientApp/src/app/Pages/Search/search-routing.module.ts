@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SearchResultComponent } from './Components/search-result/search-result.component';
-import { EmptySearchComponent } from './Components/empty-search/empty-search.component';
+import { SearchBarComponent } from './Components/search-bar/search-bar.component';
 
 const routes: Routes = [
-  {path: '', component: EmptySearchComponent},
+  {path: '', component: SearchBarComponent},
   {path: '**', redirectTo: ''},
 ]
 

@@ -1,0 +1,9 @@
+<mat-toolbar class="mt-3">
+  <i class="fa fa-magnifying-glass m-3"></i>
+  <input #input class="search-input" type="search" (input)="updateSuggested()" (search)="search()" [value]="searchValue" [matAutocomplete]="auto"/>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="search()">
+      <mat-option *ngFor="let userSuggestion of suggested" [value]="userSuggestion.credentials.username">
+          {{userSuggestion.credentials.username}}
+      </mat-option>
+  </mat-autocomplete>
+</mat-toolbar>

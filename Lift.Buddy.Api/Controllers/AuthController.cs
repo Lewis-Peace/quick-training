@@ -22,29 +22,6 @@ namespace Lift.Buddy.API.Controllers
             _loginService = loginService;
         }
 
-        #region User Data
-        [HttpGet("user-data")]
-        [Authorize]
-        public async Task<IActionResult> GetUserData()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (userId is null)
-                return NotFound();
-
-            var response = await _loginService.GetUserData(Guid.Parse(userId));
-            return Ok(response);
-        }
-
-        [HttpPut("user-data")]
-        [Authorize]
-        public async Task<IActionResult> UpdateUserData([FromBody] UserDTO userData)
-        {
-            await _loginService.UpdateUserData(userData);
-            return NoContent();
-        }
-        #endregion
-
         [HttpPost("security-questions")]
         [Authorize]
         public async Task<IActionResult> GetSecurityQuestions([FromBody] Credentials credentials)

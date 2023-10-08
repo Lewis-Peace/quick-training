@@ -7,6 +7,12 @@ import { RouterModule } from '@angular/router';
 import { MyAthletesComponent } from './my-athletes.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { MyAthletesRightMenuComponent } from './Components/my-athletes-right-menu/my-athletes-right-menu.component';
+import { MatCardModule } from '@angular/material/card';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -14,7 +20,14 @@ import { MyAthletesRightMenuComponent } from './Components/my-athletes-right-men
     MyAthletesRoutingModule,
     BrowserModule,
     RouterModule,
-    UIElementsModule
+    UIElementsModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule
   ],
   declarations: [
     MyAthletesComponent,

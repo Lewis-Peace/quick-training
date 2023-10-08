@@ -21,14 +21,6 @@ export class LoginService {
 
     constructor(private apiCalls: ApiCallsService) { }
 
-    public async getUserData() {
-        return await this.apiCalls.apiGet<User>(this.defaultUrl + '/user-data');
-    }
-
-    public async updateUserData(userData: User) {
-        return await this.apiCalls.apiPut<User>(this.defaultUrl + '/user-data', userData);
-    }
-
     public async login(credentials: Credentials) {
         const response = await this.apiCalls.apiPost<string>(this.defaultUrl, credentials);
 

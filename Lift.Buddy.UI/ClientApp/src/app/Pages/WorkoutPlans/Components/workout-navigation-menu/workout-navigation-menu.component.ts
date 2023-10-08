@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationMenu } from 'src/app/Model/NavigationMenu';
-import { workoutNavigationMenu } from '../../../routes'
+import { workoutNavigationMenu } from '../../../../routes'
 
 @Component({
     selector: 'app-workout-navigation-menu',

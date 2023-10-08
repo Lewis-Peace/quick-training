@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationMenu } from 'src/app/Model/NavigationMenu';
+import { trainerNavigationMenu } from 'src/app/routes';
 
 @Component({
   selector: 'app-my-athletes-right-menu',
@@ -11,5 +13,8 @@ export class MyAthletesRightMenuComponent implements OnInit {
 
   ngOnInit() {
   }
+
+
+  public navigationData: NavigationMenu[] = trainerNavigationMenu;
 
 }

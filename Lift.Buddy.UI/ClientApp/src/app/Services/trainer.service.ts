@@ -1,0 +1,27 @@
+import { Injectable } from '@angular/core';
+import { ApiCallsService } from './Utils/api-calls.service';
+import { User } from '../Model/User';
+import { WorkoutPlan } from '../Model/WorkoutPlan';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TrainerService {
+
+  constructor(
+    private apiService: ApiCallsService
+  ) { }
+
+  private defaultUrl: string = "api/Trainer";
+
+  public getMyAthletes() {
+    const response = this.apiService.apiGet<User>(this.defaultUrl + '/athletes');
+    return response;
+  }
+
+  public removeAthleteSubscription(athlete: User) {
+    const response = this.apiService.apiDelete<WorkoutPlan>(this.defaultUrl + '/athletes', athlete);
+    return response;
+  }
+
+}
