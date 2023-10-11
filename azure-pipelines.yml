@@ -9,11 +9,56 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+- group: microservices-dev-subscription-connections
+- name: appName
+  value : 'aspnet-api'
+- name: dockerfilePath
+  value : '$(Build.SourcesDirectory)/$(appName)/Dockerfile'
+- name: imageName
+  value: sample/$(appName)
+- name: system_accesstoken
+  value : $(System.AccessToken)
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: self
+      persistCredentials: true
+    #  Build and push an image to container registry
+    - task: Docker@2
+      displayName: Login to ACR
+      inputs:
+        command: login
+        containerRegistry: $(azure-container-registry)
+
+    - task: Docker@2
+      displayName: Build an image for $(appName)
+      inputs:
+        command: build
+        buildContext: '$(Build.SourcesDirectory)/$(appName)'
+        repository: $(imageName)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(azure-container-registry)
+        tags: |
+          latest
+          $(build.buildNumber)
+
+    - task: Docker@2
+      displayName: Push an image to container registry
+      inputs:
+        command: push
+        repository: $(imageName)
+        tags: |
+          latest
+          $(build.buildNumber)
+
+    - powershell: |
+        Set-Content -Path "$(Build.ArtifactStagingDirectory)/$(appName)" -Value (docker inspect $(container-registery-loginname)/$(imageName):latest -f '{{ .Id }}')
+      displayName: Saving container hashes
