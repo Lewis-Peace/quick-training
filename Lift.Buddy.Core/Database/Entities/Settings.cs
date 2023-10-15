@@ -6,8 +6,8 @@ namespace Lift.Buddy.Core.Database.Entities
     public class Settings
     {
         [Key]
-        public Guid userId { get; set; }
-        public UnitOfMeasure unitOfMeasure { get; set; } = UnitOfMeasure.KG;
+        public Guid UserId { get; set; }
+        public UnitOfMeasure UnitOfMeasure { get; set; } = UnitOfMeasure.KG;
 
         public virtual User User { get; set; }
     }

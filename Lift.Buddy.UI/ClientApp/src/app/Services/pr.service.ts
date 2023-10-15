@@ -16,7 +16,7 @@ export class PersonalRecordService {
         return this.apiService.apiGet<PersonalRecord>(this.defaultUrl);
     }
 
-    public savePersonalRecord(personalRecords: { toUpdate: PersonalRecord[], toAdd: PersonalRecord[] }) {
+    public savePersonalRecord(personalRecords: { toUpdate: PersonalRecord[], toAdd: PersonalRecord[], toRemove: PersonalRecord[] }) {
         return this.apiService.apiPut<PersonalRecord[]>(this.defaultUrl, personalRecords);
     }
 }

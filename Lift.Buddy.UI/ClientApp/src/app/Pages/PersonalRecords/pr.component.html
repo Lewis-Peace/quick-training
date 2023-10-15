@@ -24,6 +24,7 @@
       <app-pr-exercise
         [index]="idx + 1"
         [exercise]="exercise"
+        (onRemove)="removeExercise(idx)"
       ></app-pr-exercise>
     </div>
   </div>

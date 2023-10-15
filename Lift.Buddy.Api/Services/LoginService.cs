@@ -64,12 +64,14 @@ namespace Lift.Buddy.API.Services
             {
                 var newUser = _mapper.Map(user);
                 newUser.UserId = Guid.NewGuid();
+                newUser.Settings = new Core.Database.Entities.Settings();
 
                 await _context.Users.AddAsync(newUser);
                 if ((await _context.SaveChangesAsync()) == 0)
                 {
                     throw new Exception($"User '{user.Credentials.Username}' was not added to the database.");
                 }
+
 
                 response.Result = true;
             }

@@ -6,6 +6,6 @@ namespace Lift.Buddy.Core.Models
     public class SettingsDTO
     {
         [JsonPropertyName("unitOfMeasure")]
-        public UnitOfMeasure unitOfMeasure { get; set; } = UnitOfMeasure.KG;
+        public UnitOfMeasure UnitOfMeasure { get; set; } = UnitOfMeasure.KG;
     }
 }

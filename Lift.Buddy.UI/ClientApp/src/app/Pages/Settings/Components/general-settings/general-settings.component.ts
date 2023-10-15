@@ -87,8 +87,8 @@ export class GeneralSettingsComponent implements OnInit {
   public UOMs: string[] = [];
 
   public generalSettingsForm: FormGroup = new FormGroup({
-    UOM: new FormControl('kg'),
-    language: new FormControl('en')
+    UOM: new FormControl(0),
+    language: new FormControl(0)
   });
 
   public swapRole() {

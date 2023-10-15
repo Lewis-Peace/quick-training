@@ -50,14 +50,14 @@ namespace Lift.Buddy.API.Services
             var response = new Response<SettingsDTO>();
             try
             {
-                var settings = await _context.Settings.FirstOrDefaultAsync(x => x.userId == userId);
+                var settings = await _context.Settings.Include(x => x.User).FirstOrDefaultAsync(x => x.UserId == userId);
 
                 if (settings == null)
                 {
                     throw new Exception("Settings for user not found.");
                 }
 
-                _context.Settings.Remove(settings);
+                _context.Settings.Update(new Settings { User = settings.User });
 
                 if (await _context.SaveChangesAsync() < 1)
                 {
@@ -80,7 +80,7 @@ namespace Lift.Buddy.API.Services
             var response = new Response<SettingsDTO>();
             try
             {
-                var settings = await _context.Settings.FirstOrDefaultAsync(x => x.userId == userId);
+                var settings = await _context.Settings.Include(x => x.User).FirstOrDefaultAsync(x => x.User.UserId == userId);
 
                 if (settings == null)
                 {

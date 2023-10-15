@@ -21,14 +21,14 @@ namespace Lift.Buddy.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSettings()
+        public async Task<IActionResult> GetSettings()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId is null)
                 return NotFound();
 
-            var settings = _settingsService.GetSettings(new Guid(userId));
+            var settings = await _settingsService.GetSettings(new Guid(userId));
             return Ok(settings);
         }
 
@@ -53,27 +53,27 @@ namespace Lift.Buddy.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateSettings([FromBody] SettingsDTO settings)
+        public async Task<IActionResult> UpdateSettings([FromBody] SettingsDTO settings)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId is null)
                 return NotFound();
 
-            _settingsService.UpdateSettings(new Guid(userId), settings);
+            await _settingsService.UpdateSettings(new Guid(userId), settings);
 
             return NoContent();
         }
 
         [HttpDelete]
-        public IActionResult DeleteSettings()
+        public async Task<IActionResult> DeleteSettings()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId is null)
                 return NotFound();
 
-            _settingsService.DeleteSettings(new Guid(userId));
+            await _settingsService.DeleteSettings(new Guid(userId));
 
             return NoContent();
         }

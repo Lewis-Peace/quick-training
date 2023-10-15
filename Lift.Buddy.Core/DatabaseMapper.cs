@@ -104,6 +104,7 @@ public class DatabaseMapper : IDatabaseMapper
             Surname = user.Surname,
             Email = user.Email,
             Credentials = new Credentials { Username = user.Username },
+            IsTrainer = user.IsTrainer,
         };
     }
 
@@ -124,7 +125,8 @@ public class DatabaseMapper : IDatabaseMapper
                     Answer = q.Answer,
                     Question = q.Question
                 };
-            }).ToArray()
+            }).ToArray(),
+            IsTrainer = user.IsTrainer,
         };
     }
 
@@ -189,7 +191,7 @@ public class DatabaseMapper : IDatabaseMapper
     {
         return new SettingsDTO
         {
-            unitOfMeasure = settings.unitOfMeasure
+            UnitOfMeasure = settings.UnitOfMeasure
         };
     }
 
@@ -197,7 +199,7 @@ public class DatabaseMapper : IDatabaseMapper
     {
         return new Settings
         {
-            unitOfMeasure = settings.unitOfMeasure
+            UnitOfMeasure = settings.UnitOfMeasure
         };
     }
 }

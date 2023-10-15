@@ -22,6 +22,7 @@ public class PersonalRecords
 {
     public IEnumerable<PersonalRecordDTO> ToUpdate { get; set; }
     public IEnumerable<PersonalRecordDTO> ToAdd { get; set; }
+    public IEnumerable<PersonalRecordDTO> ToRemove { get; set; }
 }
 
 //public record Weight(double Amount, UnitOfMeasure UnitOfMeasure);

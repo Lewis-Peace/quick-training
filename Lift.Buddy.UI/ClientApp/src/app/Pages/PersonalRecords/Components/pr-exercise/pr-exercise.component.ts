@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UnitOfMeasure } from 'src/app/Model/Enums/UnitOfMeasures';
 import { PersonalRecord } from 'src/app/Model/PersonalRecord';
 
@@ -13,10 +13,11 @@ export class PrExerciseComponent implements OnInit {
 
   @Input() exercise: PersonalRecord = new PersonalRecord();
   @Input() index: number = -1;
+  @Output() onRemove: EventEmitter<null> = new EventEmitter();
 
   public exerciseForm: FormGroup = new FormGroup({
     name: new FormControl(''),
-    weight: new FormControl(0),
+    weight: new FormControl(undefined, [Validators.min(0)]),
     unitOfMeasure: new FormControl(UnitOfMeasure.KG)
   });
 
