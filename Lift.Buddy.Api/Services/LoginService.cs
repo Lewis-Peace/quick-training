@@ -41,10 +41,10 @@ namespace Lift.Buddy.API.Services
             return response;
         }
 
-        public async Task<(Guid UserId, bool IsValid, bool? isTrainer)> CheckCredentials(Credentials credentials)
+        public async Task<(Guid UserId, bool IsValid)> CheckCredentials(Credentials credentials)
         {
             if (!credentials.HasValues())
-                return (Guid.Empty, false, null);
+                return (Guid.Empty, false);
 
             var username = credentials.Username;
 
@@ -53,7 +53,7 @@ namespace Lift.Buddy.API.Services
             if (user == null) throw new KeyNotFoundException($"User '{username}' doesn't exist");
 
             var hashedPwd = Utils.HashString(credentials.Password); // userei un servizio separato che si occupa solo di hash e fare il controllo
-            return (user.UserId, hashedPwd == user.Password, user.IsTrainer);
+            return (user.UserId, hashedPwd == user.Password);
         }
 
         public async Task<Response<UserDTO>> RegisterUser(UserDTO user)

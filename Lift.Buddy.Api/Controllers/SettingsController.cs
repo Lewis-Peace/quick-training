@@ -1,5 +1,6 @@
 ﻿using Lift.Buddy.API.Interfaces;
 using Lift.Buddy.Core.Models;
+using Lift.Buddy.Core.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace Lift.Buddy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class SettingsController : ControllerBase
     {
         private readonly ISettingsService _settingsService;
@@ -34,13 +35,21 @@ namespace Lift.Buddy.API.Controllers
         [HttpGet("labels-languages")]
         public IActionResult GetLabelsLanguages()
         {
-            return Ok();
+            var response = new Response<string>();
+            var enums = ((Languages[]) Enum.GetValues(typeof(Languages))).Select(x => x.ToString()).Skip(1);
+            response.Body = enums;
+            response.Result = true;
+            return Ok(response);
         }
 
-        [HttpGet("labels-unit-of-measure")]
+        [HttpGet("labels-unit-of-measures")]
         public IActionResult GetLabelsUnitOfMeasure()
         {
-            return Ok();
+            var response = new Response<string>();
+            var enums = ((UnitOfMeasure[])Enum.GetValues(typeof(UnitOfMeasure))).Select(x => x.ToString()).Skip(1);
+            response.Body = enums;
+            response.Result = true;
+            return Ok(response);
         }
 
         [HttpPut]

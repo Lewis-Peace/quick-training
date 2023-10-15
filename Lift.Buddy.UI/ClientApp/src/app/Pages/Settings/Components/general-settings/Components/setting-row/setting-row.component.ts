@@ -19,8 +19,8 @@ export class SettingRowComponent implements OnInit {
   @Input() label: string = '';
   @Input() doesLoading: boolean = false;
   @Input() formControl: FormControl = new FormControl(null);
-  @Input() default: any = '';
-  @Input() options: {value: string | boolean, label: string}[] = [];
+  @Input() default: any = 0;
+  @Input() options: string[] = [];
 
   constructor(
     private loadingVisualizationService: LoadingVisualizationService
@@ -42,7 +42,7 @@ export class SettingRowComponent implements OnInit {
   // Don't know what this does but it's mandatory for the provider
 
   writeValue(value: string) {
-    this.default = value ? value : '';
+    this.default = value ? value : 0;
   }
 
   registerOnChange() {}

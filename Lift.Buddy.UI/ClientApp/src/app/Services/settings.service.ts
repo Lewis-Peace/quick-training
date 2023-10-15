@@ -29,4 +29,12 @@ export class SettingsService {
     const response = await this.apiService.apiDelete<Settings>(this.defaultUrl, {});
     return response;
   }
+  public async getLanguageLabels() {
+    const response = await this.apiService.apiGet<string>(this.defaultUrl + '/labels-languages');
+    return response;
+  }
+  public async getUnitOfMeasureLabels() {
+    const response = await this.apiService.apiGet<string>(this.defaultUrl + '/labels-unit-of-measures');
+    return response;
+  }
 }

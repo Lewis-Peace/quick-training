@@ -10,9 +10,9 @@ namespace Lift.Buddy.API.Services
     public class SettingsService : ISettingsService
     {
         private readonly LiftBuddyContext _context;
-        private readonly DatabaseMapper _mapper;
+        private readonly IDatabaseMapper _mapper;
 
-        public SettingsService(LiftBuddyContext context, DatabaseMapper mapper)
+        public SettingsService(LiftBuddyContext context, IDatabaseMapper mapper)
         {
             _context = context;
             _mapper = mapper;

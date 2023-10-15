@@ -4,7 +4,7 @@
   </button>
   <mat-form-field class="col-2">
     <mat-select ngDefaultControl (valueChange)="updateForm($event)" [(ngModel)]="default" placeholder="">
-      <mat-option [value]="option.value" *ngFor="let option of options">{{option.label}}</mat-option>
+      <mat-option [value]="idx" *ngFor="let option of options; let idx = index">{{option}}</mat-option>
     </mat-select>
   </mat-form-field>
 </div>

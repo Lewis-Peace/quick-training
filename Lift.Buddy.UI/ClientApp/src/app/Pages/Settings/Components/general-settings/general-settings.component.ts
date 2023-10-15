@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { SettingsService } from 'src/app/Services/settings.service';
 import { Settings } from 'src/app/Model/Settings';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
+import { UserService } from 'src/app/Services/user.service';
 
 @Component({
   selector: 'app-general-settings',
@@ -21,14 +22,19 @@ export class GeneralSettingsComponent implements OnInit {
     private dialogService: DialogService,
     private loadingVisService: LoadingVisualizationService,
     private snackbarService: SnackBarService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private userService: UserService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loadingSubscription = this.loadingVisService.$isLoading.subscribe(loading => {
       this.isLoading = loading;
     })
-    this.initSettings();
+    this.loadingVisService.setIsLoading(true);
+    await this.initSettings();
+    await this.initLabels();
+    await this.initUserInfo();
+    this.loadingVisService.setIsLoading(false);
   }
 
   ngOnDestroy() {
@@ -44,22 +50,41 @@ export class GeneralSettingsComponent implements OnInit {
     this.settings = settings.body[0];
   }
 
+  private async initLabels() {
+    const langLabelsResp = await this.settingsService.getLanguageLabels();
+    if (!langLabelsResp.result) {
+      this.snackbarService.operErrorSnackbar(`Error loading labels.`);
+    }
+
+    this.languages = langLabelsResp.body;
+    
+    const UOMLabelResp = await this.settingsService.getUnitOfMeasureLabels();
+    if (!UOMLabelResp.result) {
+      this.snackbarService.operErrorSnackbar(`Error loading labels.`);
+    }
+
+    this.UOMs = UOMLabelResp.body;
+  }
+
+  private async initUserInfo() {
+    const response = await this.userService.getUserData();
+    if (!response.result) {
+      this.snackbarService.operErrorSnackbar(`Failed to load user information. ${response.notes}`);
+    }
+
+    let user = response.body[0];
+
+    this.isTrainer = user.isTrainer;
+  }
+
   public settings: Settings | undefined;
-  public isTrainer = this.loginService.isTrainer;
+  public isTrainer: boolean | undefined;
   public isLoading: boolean = false;
 	public loadingSubscription: Subscription | undefined;
 
-  public language = 'en';
-  public languages = [
-    {value: 'en', label: 'English'},
-    {value: 'it', label: 'Italiano'},
-  ];
+  public languages: string[] = [];
 
-  public UOM = true;
-  public UOMs = [
-    {value: 'kg', label: 'KG'},
-    {value: 'lb', label: 'LB'},
-  ];
+  public UOMs: string[] = [];
 
   public generalSettingsForm: FormGroup = new FormGroup({
     UOM: new FormControl('kg'),
