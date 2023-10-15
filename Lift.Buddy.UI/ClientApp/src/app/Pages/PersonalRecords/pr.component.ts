@@ -32,6 +32,7 @@ export class PersonalRecordComponent implements OnInit {
   }
 
   private updateCount: number = 0
+  private recordsToDelete: PersonalRecord[] = [];
   public isLoading: boolean = false;
   public isLoagingSubscription: Subscription | undefined;
 
@@ -45,10 +46,12 @@ export class PersonalRecordComponent implements OnInit {
 
     if (!response.result) {
       this.snackbarService.operErrorSnackbar(`Failed to load PR. Error ${response.notes}`)
+      this.loadingService.setIsLoading(false);
       return;
     }
 
     if (response.body.length == 0) {
+      this.loadingService.setIsLoading(false);
       return;
     }
 
@@ -68,8 +71,9 @@ export class PersonalRecordComponent implements OnInit {
     const records = this.prForm.controls['exercises'].value;
     const toUpdate = records.slice(0, this.updateCount)
     const toAdd = records.slice(this.updateCount)
+    const toRemove = this.recordsToDelete;
 
-    const response = await this.personalRecordService.savePersonalRecord({ toUpdate, toAdd });
+    const response = await this.personalRecordService.savePersonalRecord({ toUpdate, toAdd, toRemove});
 
     if (!response.result) {
       this.snackbarService.operErrorSnackbar(`An exception occurred during save. Ex ${response.notes}`);
@@ -77,5 +81,15 @@ export class PersonalRecordComponent implements OnInit {
     }
 
     this.snackbarService.openSuccessSnackbar('Personal results succesfully saved.')
+  }
+
+  public removeExercise(index: number) {
+    let newExerciseList: PersonalRecord[] = this.prForm.controls['exercises'].value;
+    const deleteRecord = newExerciseList.splice(index, 1);
+    this.recordsToDelete.push(deleteRecord[0]);
+    if (index <= this.updateCount) {
+      this.updateCount--;
+    }
+    this.prForm.controls['exercises'].setValue(newExerciseList)
   }
 }

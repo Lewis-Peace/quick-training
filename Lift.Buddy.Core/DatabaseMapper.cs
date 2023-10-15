@@ -1,5 +1,6 @@
 using Lift.Buddy.Core.Database.Entities;
 using Lift.Buddy.Core.Models;
+using Lift.Buddy.Core.Models.Enums;
 
 namespace Lift.Buddy.Core;
 
@@ -22,6 +23,9 @@ public interface IDatabaseMapper
 
     WorkoutDayDTO Map(WorkoutDay workoutDay);
     WorkoutDay Map(WorkoutDayDTO workoutDay);
+
+    SettingsDTO Map(Settings settings);
+    Settings Map(SettingsDTO settings);
 }
 
 public class DatabaseMapper : IDatabaseMapper
@@ -100,6 +104,7 @@ public class DatabaseMapper : IDatabaseMapper
             Surname = user.Surname,
             Email = user.Email,
             Credentials = new Credentials { Username = user.Username },
+            IsTrainer = user.IsTrainer,
         };
     }
 
@@ -120,7 +125,8 @@ public class DatabaseMapper : IDatabaseMapper
                     Answer = q.Answer,
                     Question = q.Question
                 };
-            }).ToArray()
+            }).ToArray(),
+            IsTrainer = user.IsTrainer,
         };
     }
 
@@ -178,6 +184,22 @@ public class DatabaseMapper : IDatabaseMapper
             Id = workoutDay.Id ?? Guid.NewGuid(),
             Day = workoutDay.Day,
             Exercises = workoutDay.Exercises.Select(e => Map(e)).ToArray(),
+        };
+    }
+
+    public SettingsDTO Map(Settings settings)
+    {
+        return new SettingsDTO
+        {
+            UnitOfMeasure = settings.UnitOfMeasure
+        };
+    }
+
+    public Settings Map(SettingsDTO settings)
+    {
+        return new Settings
+        {
+            UnitOfMeasure = settings.UnitOfMeasure
         };
     }
 }

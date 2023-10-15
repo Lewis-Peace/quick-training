@@ -11,6 +11,7 @@ public class LiftBuddyContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<WorkoutDay> WorkoutDays { get; set; }
     public DbSet<WorkoutPlan> WorkoutPlans { get; set; }
+    public DbSet<Settings> Settings { get; set; }
 
     public LiftBuddyContext(DbContextOptions<LiftBuddyContext> options) : base(options)
     { }
@@ -79,6 +80,20 @@ public class LiftBuddyContext : DbContext
         modelBuilder.Entity<SecurityQuestion>(entity =>
         {
             entity.HasKey(sq => sq.SecurityQuestionId);
+        });
+
+        modelBuilder.Entity<Settings>(b =>
+        {
+            b.HasKey(x => x.UserId);
+
+            b.Property(x => x.UnitOfMeasure)
+                .IsRequired();
+
+            b.HasOne(x => x.User)
+                .WithOne(x => x.Settings)
+                .HasForeignKey<Settings>(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
         });
 
         base.OnModelCreating(modelBuilder);

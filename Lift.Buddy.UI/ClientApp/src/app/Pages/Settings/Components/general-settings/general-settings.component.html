@@ -7,13 +7,12 @@
       [formControl]="getFormControl('language')"
       [options]="languages"
       [doesLoading]="true"
-      [default]="language"
     ></app-setting-row>
     <app-setting-row
       label="Change unit of measure"
       [formControl]="getFormControl('UOM')"
       [options]="UOMs"
-      [default]="'kg'"
+      [default]="(settings?.unitOfMeasure ?? 1) - 1"
     ></app-setting-row>
     <div class="text-center">
       <button class="col-7 p-3" mat-raised-button color="warn" (click)="swapRole()">Swap to {{isTrainer ? 'athlete' : 'trainer'}}</button>

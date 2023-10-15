@@ -57,8 +57,11 @@ namespace Lift.Buddy.API.Services
                     return record;
                 });
 
+                var toRemove = records.ToRemove.Select(r => _mapper.Map(r));
+
                 _context.PersonalRecords.UpdateRange(toUpdate);
                 await _context.PersonalRecords.AddRangeAsync(toAdd);
+                _context.RemoveRange(toRemove);
 
                 if ((await _context.SaveChangesAsync()) < 1)
                 {

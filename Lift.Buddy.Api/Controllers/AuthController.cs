@@ -33,7 +33,7 @@ namespace Lift.Buddy.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] Credentials credentials)
         {
-            var (id, success, isTrainer) = await _loginService.CheckCredentials(credentials);
+            var (id, success) = await _loginService.CheckCredentials(credentials);
             if (!success)
                 return Unauthorized();
 
@@ -61,7 +61,7 @@ namespace Lift.Buddy.API.Controllers
             var res = new Response<string>
             {
                 Result = true,
-                Body = new string[] { token, id.ToString(), isTrainer.ToString() },
+                Body = new string[] { token, id.ToString() },
                 Notes = ""
             };
 

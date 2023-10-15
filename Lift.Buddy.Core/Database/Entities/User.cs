@@ -25,6 +25,7 @@ public class User
     public virtual ICollection<WorkoutPlan> CreatedPlans { get; set; }
     public virtual ICollection<PersonalRecord> PersonalRecords { get; set; }
     public virtual ICollection<SecurityQuestion> SecurityQuestions { get; set; }
+    public virtual Settings Settings { get; set; }
 }
 
 public enum Gender

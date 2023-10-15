@@ -27,7 +27,6 @@ namespace Lift.Buddy.API.Controllers
             return Ok(response);
         }
 
-        #region User Data
         [HttpGet]
         public async Task<IActionResult> GetUserData()
         {
@@ -46,6 +45,5 @@ namespace Lift.Buddy.API.Controllers
             await _usersService.UpdateUserData(userData);
             return NoContent();
         }
-        #endregion
     }
 }
