@@ -11,6 +11,7 @@ public class LiftBuddyContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<WorkoutDay> WorkoutDays { get; set; }
     public DbSet<WorkoutPlan> WorkoutPlans { get; set; }
+    public DbSet<Settings> Settings { get; set; }
 
     public LiftBuddyContext(DbContextOptions<LiftBuddyContext> options) : base(options)
     { }

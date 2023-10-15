@@ -5,6 +5,9 @@ import { LoginService } from 'src/app/Services/login.service';
 import { SwapRoleConfirmationDialogComponent } from './Components/swap-role-confirmation-dialog/swap-role-confirmation-dialog.component';
 import { LoadingVisualizationService } from 'src/app/Services/loading-visualization.service';
 import { Subscription } from 'rxjs';
+import { SettingsService } from 'src/app/Services/settings.service';
+import { Settings } from 'src/app/Model/Settings';
+import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
 
 @Component({
   selector: 'app-general-settings',
@@ -16,19 +19,32 @@ export class GeneralSettingsComponent implements OnInit {
   constructor(
     private loginService: LoginService,
     private dialogService: DialogService,
-    private loadingVisService: LoadingVisualizationService
+    private loadingVisService: LoadingVisualizationService,
+    private snackbarService: SnackBarService,
+    private settingsService: SettingsService
   ) { }
 
   ngOnInit() {
     this.loadingSubscription = this.loadingVisService.$isLoading.subscribe(loading => {
       this.isLoading = loading;
     })
+    this.initSettings();
   }
 
   ngOnDestroy() {
     this.loadingSubscription?.unsubscribe();
   }
 
+  private async initSettings() {
+    const settings = await this.settingsService.getSettings();
+    if (!settings.result) {
+      this.settings = new Settings();
+      return;
+    }
+    this.settings = settings.body[0];
+  }
+
+  public settings: Settings | undefined;
   public isTrainer = this.loginService.isTrainer;
   public isLoading: boolean = false;
 	public loadingSubscription: Subscription | undefined;
@@ -64,11 +80,22 @@ export class GeneralSettingsComponent implements OnInit {
     return this.generalSettingsForm.get(controlName) as FormControl;
   }
 
-  public reset() {
-
+  public async reset() {
+    const response = await this.settingsService.deleteSettings()
+    if (!response.result) {
+      this.snackbarService.operErrorSnackbar(`Failed to reset settings. Ex: ${response.notes}`)
+    }
   }
 
-  public save() {
+  public async save() {
+    if (!this.settings) {
+      this.snackbarService.operErrorSnackbar('Failed to save settings');
+      return;
+    }
 
+    const response = await this.settingsService.updateSettings(this.settings);
+    if (!response.result) {
+      this.snackbarService.operErrorSnackbar(`Failed to update settings. Ex: ${response.notes}`)
+    }
   }
 }

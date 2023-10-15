@@ -18,13 +18,6 @@ public class PersonalRecordDTO
     public ExerciseType ExerciseType { get; set; }
 }
 
-public enum UnitOfMeasure
-{
-    Undefined,
-    KG,
-    LB
-}
-
 public class PersonalRecords
 {
     public IEnumerable<PersonalRecordDTO> ToUpdate { get; set; }
