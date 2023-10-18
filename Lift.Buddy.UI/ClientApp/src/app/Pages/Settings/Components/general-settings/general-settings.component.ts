@@ -122,5 +122,7 @@ export class GeneralSettingsComponent implements OnInit {
     if (!response.result) {
       this.snackbarService.operErrorSnackbar(`Failed to update settings. Ex: ${response.notes}`)
     }
+
+    this.snackbarService.openSuccessSnackbar(`Settings saved.`)
   }
 }

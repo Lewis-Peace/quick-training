@@ -6,7 +6,7 @@
     </div>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="form">
+    <form [formGroup]="securityQuestionsForm!">
       <div style="display: flex" *ngFor="let item of items">
         <mat-form-field>
           <mat-label>Security question</mat-label>
@@ -16,7 +16,7 @@
             }}</mat-option>
           </mat-select>
           <mat-error
-            *ngIf="form.controls['question' + item].errors?.['required']"
+            *ngIf="securityQuestionsForm!.controls['question' + item].errors?.['required']"
             >This field is required</mat-error
           >
         </mat-form-field>
@@ -25,18 +25,22 @@
           <mat-label>Reply</mat-label>
           <input matInput [formControlName]="'response' + item" />
           <mat-error
-            *ngIf="form.controls['response' + item].errors?.['required']"
+            *ngIf="securityQuestionsForm!.controls['response' + item].errors?.['required']"
             >This field is required</mat-error
           >
         </mat-form-field>
       </div>
     </form>
   </mat-card-content>
-  <mat-card-actions align="end">
-    <button mat-button (click)="back()">Back</button>
-
-    <div style="width: 100%"></div>
-
-    <button mat-button color="primary" (click)="register()">Confirm</button>
+  <mat-card-actions>
+    <div class="container">
+      <div class="row">
+        <button class="col-2" mat-button matStepperPrevious>Back</button>
+    
+        <div class="col-8"></div>
+    
+        <button class="col-2" mat-raised-button color="primary" (click)="onRegister.emit()" matStepperNext>Confirm</button>
+      </div>
+    </div>
   </mat-card-actions>
 </mat-card>

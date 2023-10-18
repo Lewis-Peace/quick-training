@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Credentials } from 'src/app/Model/Credentials';
 import { User } from 'src/app/Model/User';
@@ -12,17 +12,7 @@ import { LoginService } from 'src/app/Services/login.service';
 })
 export class UserInformationComponent implements OnInit {
 
-  @Output() onConfirm: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
-
-
-  public form: FormGroup = new FormGroup({
-    username: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
-    name: new FormControl(''),
-    surname: new FormControl(''),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    confirmPassword: new FormControl('', [Validators.required, this.notSamePasswordError])
-  });
+  @Input() userInformationForm: FormGroup | undefined;
 
   constructor(
     private loginService: LoginService,
@@ -40,24 +30,6 @@ export class UserInformationComponent implements OnInit {
     let password = g.parent?.value?.password;
     g.setErrors({})
     return confirmPassword == password ? {} : {noMatch: true};
-  }
-
-  public register() {
-    if (!this.form.valid) {
-      this.snackbarService.operErrorSnackbar('Fill the form correctly.');
-      return;
-    }
-
-    let credentials: Credentials = new Credentials(this.form?.controls['username'].value, this.form?.controls['password'].value);
-    let user: User = new User();
-
-    user.name = this.form?.controls['name'].value;
-    user.surname = this.form?.controls['surname'].value;
-    user.email = this.form?.controls['email'].value;
-    user.credentials = credentials;
-
-    this.loginService.user = user;
-    this.onConfirm.emit();
   }
 
 }

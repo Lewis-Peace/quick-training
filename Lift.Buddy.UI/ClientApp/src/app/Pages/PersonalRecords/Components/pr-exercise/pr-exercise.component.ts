@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UnitOfMeasure } from 'src/app/Model/Enums/UnitOfMeasures';
+import { UnitOfMeasure, UnitOfMeasureToString } from 'src/app/Model/Enums/UnitOfMeasures';
 import { PersonalRecord } from 'src/app/Model/PersonalRecord';
 
 @Component({
@@ -51,6 +51,10 @@ export class PrExerciseComponent implements OnInit {
     this.exerciseForm.controls['unitOfMeasure'].valueChanges.subscribe(unitOfMeasure => {
       this.exercise.unitOfMeasure = unitOfMeasure;
     });
+  }
+
+  public unitOfMeasureToString(uom: number) {
+    return UnitOfMeasureToString(uom);
   }
 
 }

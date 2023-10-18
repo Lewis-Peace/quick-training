@@ -1,10 +1,19 @@
-
-  <app-user-information
-    *ngIf="registrationStep == 0"
-    (onConfirm)="getUserData()"
-  ></app-user-information>
-  <app-security-questions
-    *ngIf="registrationStep == 1"
-    (onBack)="back()"
-    (onRegister)="register()"
-  ></app-security-questions>
+<mat-stepper #stepper linear>
+  <mat-step [stepControl]="userInformationForm" errorMessage="Form not complete">
+    <ng-template matStepLabel>User information</ng-template>
+    <app-user-information
+      [userInformationForm]="userInformationForm"
+    ></app-user-information>
+  </mat-step>
+  <mat-step [stepControl]="securityQuestionsForm">
+    <ng-template matStepLabel>Security questions</ng-template>
+    <app-security-questions
+      [securityQuestionsForm]="securityQuestionsForm"
+        (onRegister)="register()"
+    ></app-security-questions>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <app-loading-spinner></app-loading-spinner>
+  </mat-step>
+</mat-stepper>

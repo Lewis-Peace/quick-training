@@ -6,63 +6,26 @@ import { User } from 'src/app/Model/User';
 import { LoginService } from 'src/app/Services/login.service';
 
 @Component({
-    selector: 'app-security-questions',
-    templateUrl: './security-questions.component.html',
-    styleUrls: ['./security-questions.component.css']
+  selector: 'app-security-questions',
+  templateUrl: './security-questions.component.html',
+  styleUrls: ['./security-questions.component.css']
 })
 export class SecurityQuestionsComponent implements OnInit {
 
-    constructor(
-        private loginService: LoginService
-    ) { }
+  @Input() securityQuestionsForm: FormGroup | undefined;
+  @Output() onRegister: EventEmitter<Credentials> = new EventEmitter<Credentials>();
 
-    ngOnInit() {
-    }
+  constructor(
+  ) { }
 
-    @Input() registrationStep: number | undefined;
-    @Output() onRegister: EventEmitter<Credentials> = new EventEmitter<Credentials>();
-    @Output() onBack: EventEmitter<boolean> = new EventEmitter();
+  ngOnInit() {
+  }
 
-    public questions: string[] = ["test", "t", "e", "s", "t"]
-    public items: number[] = [1, 2, 3]
+  private initSecurityQuestions() {
 
+  }
 
-    public form: FormGroup = new FormGroup({
-        question1: new FormControl('', Validators.required),
-        question2: new FormControl('', Validators.required),
-        question3: new FormControl('', Validators.required),
-        response1: new FormControl('', [Validators.required]),
-        response2: new FormControl('', [Validators.required]),
-        response3: new FormControl('', [Validators.required]),
-    });
-
-    public register() {
-        let userWithoutSecQuestions = this.loginService.user!;
-        let securityQuestions: SecurityQuestion[] = [];
-
-        if (this.form.valid) {
-            securityQuestions = this.items
-                .map(n => new SecurityQuestion(this.form.controls['question' + n].value, this.form.controls['response' + n].value));
-        }
-
-        let userToRegister: User = {
-            id: "",
-            username: userWithoutSecQuestions.username,
-            name: userWithoutSecQuestions.name,
-            surname: userWithoutSecQuestions.surname,
-            email: userWithoutSecQuestions.email,
-            credentials: userWithoutSecQuestions.credentials,
-            securityQuestions: securityQuestions,
-            isTrainer: false
-        }
-
-        this.loginService.user = userToRegister;
-        this.onRegister.emit();
-    }
-
-
-    public back() {
-        this.onBack.emit();
-    }
+  public questions: string[] = ["test", "t", "e", "s", "t"]
+  public items: number[] = [1, 2, 3]
 
 }

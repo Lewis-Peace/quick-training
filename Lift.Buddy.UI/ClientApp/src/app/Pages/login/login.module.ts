@@ -12,11 +12,13 @@ import { RouterModule } from '@angular/router';
 import { MatOptionModule } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { UIElementsModule } from '../Components/UI.Elements.module';
 import { LoginPageComponent } from './Components/login-page/login-page.component';
+import { STEPPER_GLOBAL_OPTIONS } from "@angular/cdk/stepper";
 
 @NgModule({
     imports: [
@@ -31,7 +33,8 @@ import { LoginPageComponent } from './Components/login-page/login-page.component
         MatInputModule,
         MatIconModule,
         MatSelectModule,
-        UIElementsModule
+        UIElementsModule,
+        MatStepperModule
     ],
     declarations: [
         LoginPageComponent,
@@ -41,6 +44,12 @@ import { LoginPageComponent } from './Components/login-page/login-page.component
         UserInformationComponent,
         SecurityQuestionsComponent
     ],
-    bootstrap: []
+    bootstrap: [],
+    providers: [
+      {
+        provide: STEPPER_GLOBAL_OPTIONS,
+        useValue: {showError: true},
+      },
+    ]
 })
 export class LoginModule { }

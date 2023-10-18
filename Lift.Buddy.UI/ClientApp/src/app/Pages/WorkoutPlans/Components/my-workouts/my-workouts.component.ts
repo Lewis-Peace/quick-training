@@ -35,37 +35,39 @@ export class MyWorkoutsComponent implements OnInit {
 	) { }
 
 	async ngOnInit() {
-		this.initLoadingVisualizaton()
+		this.loadingSubscription = this.loadingVisualizationService.$isLoading.subscribe(loading => this.isLoading = loading);
+		this.loadingVisualizationService.setIsLoading(true);
 		await this.initWorkouts();
+		this.loadingVisualizationService.setIsLoading(false);
 	}
 
 	ngOnDestroy() {
 		this.loadingSubscription?.unsubscribe();
 	}
 
-	private initLoadingVisualizaton() {
-		this.loadingSubscription = this.loadingVisualizationService.$isLoading.subscribe(loading => this.isLoading = loading);
-	}
-
 	private async initWorkouts() {
-		this.loadingVisualizationService.setIsLoading(true);
 		const response = await this.workoutplanService.getWorkoutPlansCreatedByUser(this.loginService.userId);
 		if (!response.result) {
 			this.snackbarService.operErrorSnackbar(`Failed ot load workouts due to: ${response.notes}`)
 		}
 
 		this.workouts = response.body;
-		this.workouts.forEach(async workoutPlan => {
-			const response = await this.workoutplanService.getWorkoutPlanSubscribers(workoutPlan);
-			if (!response.result) {
-				this.snackbarService.operErrorSnackbar(`Failed to load number of people subscribed to ${workoutPlan.name}. Error ${response.notes}`)
-			}
-
-			const subscribersQuantity = response.body.length ?? 0;
+    for (let i = 0; i < this.workouts.length; i++) {
+      const workoutPlan = this.workouts[i];
+      
+			const subscribersQuantity = await this.getSubscribersCount(workoutPlan);
 			this.workoutPlanSubscribers.push(subscribersQuantity);
-		});
-		this.loadingVisualizationService.setIsLoading(false);
+    }
 	}
+
+  private async getSubscribersCount(workoutPlan: WorkoutPlan) {
+    const response = await this.workoutplanService.getWorkoutPlanSubscribers(workoutPlan);
+    if (!response.result) {
+      this.snackbarService.operErrorSnackbar(`Failed to load number of people subscribed to ${workoutPlan.name}. Error ${response.notes}`)
+    }
+
+    return response.body.length ?? 0;
+  }
 
 	public add(event: MatChipInputEvent) {
 		const value = (event.value || '').trim();

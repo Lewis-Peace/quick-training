@@ -7,11 +7,11 @@
       </div>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="form" class="row">
+      <form [formGroup]="userInformationForm!" class="row">
         <mat-form-field class="col-12">
           <mat-label>Username</mat-label>
           <input matInput formControlName="username"/>
-          <mat-error *ngIf="form.controls['username'].errors?.['required']">This field is required</mat-error>
+          <mat-error *ngIf="userInformationForm!.controls['username'].errors?.['required']">This field is required</mat-error>
         </mat-form-field>
         <div class="container">
           <div class="row">
@@ -34,8 +34,8 @@
         <mat-form-field>
           <mat-label>Email</mat-label>
           <input matInput formControlName="email"/>
-          <mat-error *ngIf="form.controls['email'].errors?.['required']">This field is required</mat-error>
-          <mat-error *ngIf="form.controls['email'].errors?.['email']">This has to be a valid email</mat-error>
+          <mat-error *ngIf="userInformationForm!.controls['email'].errors?.['required']">This field is required</mat-error>
+          <mat-error *ngIf="userInformationForm!.controls['email'].errors?.['email']">This has to be a valid email</mat-error>
         </mat-form-field>
         <!--- Password section-->
         <mat-form-field>
@@ -52,8 +52,8 @@
           </mat-label>
           <input onkeypress="return event.charCode != 32" [type]="confirmPasswordVisible ? 'text' : 'password'" matInput formControlName="confirmPassword">
           <mat-icon matSuffix (click)="confirmPasswordVisible = !confirmPasswordVisible">{{confirmPasswordVisible ? 'visibility_off' : 'visibility'}}</mat-icon>
-          <mat-error *ngIf="form.controls['confirmPassword'].errors?.['required']">This field is required</mat-error>
-          <mat-error *ngIf="form.controls['confirmPassword'].errors?.['noMatch']">Passwords doesn't match</mat-error>
+          <mat-error *ngIf="userInformationForm!.controls['confirmPassword'].errors?.['required']">This field is required</mat-error>
+          <mat-error *ngIf="userInformationForm!.controls['confirmPassword'].errors?.['noMatch']">Passwords doesn't match</mat-error>
         </mat-form-field>
       </form>
 
@@ -65,7 +65,7 @@
 
           <div class="col-8"></div>
 
-          <button class="col-2" mat-raised-button color="primary" (click)="register()">Confirm</button>
+          <button class="col-2" mat-raised-button color="primary" matStepperNext>Next</button>
         </div>
       </div>
     </mat-card-actions>

@@ -23,9 +23,9 @@
       <mat-form-field>
         <mat-label>Unit of measure</mat-label>
         <mat-select formControlName="unitOfMeasure">
-          <mat-option [value]="uom" *ngFor="let uom of UOMs">{{
-            uom
-          }}</mat-option>
+          <mat-option [value]="uom" *ngFor="let uom of UOMs">
+            {{unitOfMeasureToString(uom)}}
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
