@@ -1,5 +1,6 @@
 ﻿using Lift.Buddy.API.Interfaces;
 using Lift.Buddy.Core.Database.Entities;
+using Lift.Buddy.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -40,6 +41,12 @@ namespace Lift.Buddy.API.Controllers
 
             await _trainersService.RemoveFollower(new Guid(trainerGuidString), user);
             return NoContent();
+        }
+
+        [HttpPost("frontpage")]
+        public IActionResult AddFrontpage([FromBody] FrontpageDTO frontpage)
+        {
+            return Ok();
         }
     }
 }

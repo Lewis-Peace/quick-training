@@ -4,7 +4,6 @@
     {
         Undefined,
         English,
-        Italian,
-        Spanish
+        Italian
     }
 }

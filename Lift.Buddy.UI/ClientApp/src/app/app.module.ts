@@ -22,6 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatChipsModule } from '@angular/material/chips'
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { MatRippleModule } from '@angular/material/core'
 //#endregion
 
 import { ScrollingModule } from '@angular/cdk/scrolling'
@@ -83,6 +84,7 @@ import { SettingsService } from './Services/settings.service';
     MatToolbarModule,
     MatListModule,
     MatTreeModule,
+    MatRippleModule,
     ScrollingModule,
     MatCheckboxModule,
     MatChipsModule,

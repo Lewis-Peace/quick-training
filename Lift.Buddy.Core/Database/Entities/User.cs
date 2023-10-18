@@ -26,6 +26,7 @@ public class User
     public virtual ICollection<PersonalRecord> PersonalRecords { get; set; }
     public virtual ICollection<SecurityQuestion> SecurityQuestions { get; set; }
     public virtual Settings Settings { get; set; }
+    public virtual Frontpage Frontpage { get; set; }
 }
 
 public enum Gender

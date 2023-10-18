@@ -1,0 +1,27 @@
+<div class="container h-100">
+  <div class="header">
+    <img class="profile-picture" src="../../../../../assets/default-user-image.png" alt="profile picture">
+    <h1 class="username">Name</h1>
+  </div>
+  <div class="body">
+    <form class="form" [formGroup]="frontpageForm">
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea 
+          matInput
+          class="col-12"
+          name="name"
+          formControlName="description"
+          rows="5"
+        ></textarea>
+        <mat-error *ngIf="getDescriptionError()">
+          {{getDescriptionError()}}
+        </mat-error>
+      </mat-form-field>
+    </form>
+    <div class="buttons row">
+      <div class="col-10"></div>
+      <button class="col-2" mat-raised-button color="primary" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>
