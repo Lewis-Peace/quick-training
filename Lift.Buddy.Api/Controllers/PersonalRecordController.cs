@@ -24,7 +24,7 @@ namespace Lift.Buddy.API.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userId is null)
-                return NotFound();
+                return StatusCode(500);
 
             var response = await _recordService.GetByUserId(Guid.Parse(userId));
             return Ok(response);
@@ -36,7 +36,7 @@ namespace Lift.Buddy.API.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userId is null)
-                return NotFound();
+                return StatusCode(500);
 
             var response = await _recordService.UpdatePersonalRecord(Guid.Parse(userId), userRecords);
             return Ok(response);

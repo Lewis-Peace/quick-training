@@ -54,6 +54,7 @@ import { LoginModule } from './Pages/login/login.module';
 import { TrainerService } from './Services/trainer.service';
 import { SearchService } from './Services/search.service';
 import { SettingsService } from './Services/settings.service';
+import { FrontpageService } from './Services/frontpage.service';
 //#endregion
 
 @NgModule({
@@ -107,7 +108,8 @@ import { SettingsService } from './Services/settings.service';
     LoadingVisualizationService,
     TrainerService,
     SearchService,
-    SettingsService
+    SettingsService,
+    FrontpageService
   ],
   bootstrap: [AppComponent]
 })

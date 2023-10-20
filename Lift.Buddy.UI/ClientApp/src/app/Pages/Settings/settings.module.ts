@@ -14,7 +14,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { SwapRoleConfirmationDialogComponent } from './Components/general-settings/Components/swap-role-confirmation-dialog/swap-role-confirmation-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
-import { SettingRowComponent } from './Components/general-settings/Components/setting-row/setting-row.component';
+import { SettingSelectionRowComponent } from './Components/general-settings/Components/setting-selection-row/setting-selection-row.component';
+import { SettingToggleRowComponent } from './Components/general-settings/Components/setting-toggle-row/setting-toggle-row.component';
 
 @NgModule({
   imports: [
@@ -30,14 +31,16 @@ import { SettingRowComponent } from './Components/general-settings/Components/se
     MatInputModule,
     MatSlideToggleModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSlideToggleModule
   ],
   declarations: [
     SettingsComponent,
     GeneralSettingsComponent,
     SwapRoleConfirmationDialogComponent,
     SwapRoleConfirmationDialogComponent,
-    SettingRowComponent
+    SettingSelectionRowComponent,
+    SettingToggleRowComponent
   ],
   bootstrap: [SettingsComponent]
 })

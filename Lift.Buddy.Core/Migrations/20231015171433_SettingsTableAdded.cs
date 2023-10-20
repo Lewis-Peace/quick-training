@@ -15,15 +15,15 @@ namespace Lift.Buddy.Core.Migrations
                 name: "Settings",
                 columns: table => new
                 {
-                    userId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    unitOfMeasure = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    UnitOfMeasure = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Settings", x => x.userId);
+                    table.PrimaryKey("PK_Settings", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Settings_Users_userId",
-                        column: x => x.userId,
+                        name: "FK_Settings_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);

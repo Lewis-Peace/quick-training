@@ -47,4 +47,11 @@ export class UserService {
   public async updateUserData(userData: User) {
     return await this.apiCalls.apiPut<User>(this.defaultUrl, userData);
   }
+
+  public async subscribeToTrainer(trainer: User) {
+    return await this.apiCalls.apiPost<null>(this.defaultUrl + '/subscribe', trainer);
+  }
+  public async unsubscribeToTrainer(trainer: User) {
+    return await this.apiCalls.apiDelete<null>(this.defaultUrl + '/subscribe', trainer);
+  }
 }

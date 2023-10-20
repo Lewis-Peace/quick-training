@@ -65,6 +65,72 @@ namespace Lift.Buddy.API.Services
             return response;
         }
 
+        public async Task<Response<UserDTO>> SubscribeToTrainer(Guid user, UserDTO userDTO)
+        {
+            var response = new Response<UserDTO>();
+            try
+            {
+                var athlete = await _context.Users.Include(x => x.Trainers).FirstOrDefaultAsync(x => x.UserId == user);
+                if (athlete == null)
+                {
+                    throw new Exception("Athlete not found.");
+                }
+                var trainer = await _context.Users.Include(x => x.SubscribedAthletes).FirstOrDefaultAsync(x => x.UserId == userDTO.UserId);
+                if (trainer == null)
+                {
+                    throw new Exception("Trainer not found.");
+                }
+                athlete.Trainers.Add(trainer);
+                trainer.SubscribedAthletes.Add(athlete);
+
+                if (await _context.SaveChangesAsync() < 1)
+                {
+                    throw new Exception("Failed to save into database.");
+                }
+
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                response.Notes = Utils.ErrorMessage(nameof(SubscribeToTrainer), ex);
+            }
+            return response;
+        }
+
+        public async Task<Response<UserDTO>> UnsubscribeToTrainer(Guid user, UserDTO userDTO)
+        {
+            var response = new Response<UserDTO>();
+            try
+            {
+                var athlete = await _context.Users.Include(x => x.Trainers).FirstOrDefaultAsync(x => x.UserId == user);
+                if (athlete == null)
+                {
+                    throw new Exception("Athlete not found.");
+                }
+                var trainer = await _context.Users.Include(x => x.SubscribedAthletes).FirstOrDefaultAsync(x => x.UserId == userDTO.UserId);
+                if (trainer == null)
+                {
+                    throw new Exception("Trainer not found.");
+                }
+                athlete.Trainers.Remove(trainer);
+                trainer.SubscribedAthletes.Remove(athlete);
+
+                if (await _context.SaveChangesAsync() < 1)
+                {
+                    throw new Exception("Failed to save into database.");
+                }
+
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                response.Notes = Utils.ErrorMessage(nameof(SubscribeToTrainer), ex);
+            }
+            return response;
+        }
+
         public async Task<Response<UserDTO>> UpdateUserData(UserDTO userData)
         {
             var response = new Response<UserDTO>();
@@ -99,5 +165,6 @@ namespace Lift.Buddy.API.Services
 
             return response;
         }
+
     }
 }

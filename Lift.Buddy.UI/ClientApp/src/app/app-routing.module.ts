@@ -25,7 +25,7 @@ const routes: Routes = [
   {path: 'workout', component: WorkoutPlansComponent, loadChildren: () => WorkoutPlansRoutingModule, canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, loadChildren: () => SettingsRoutingModule},
   {path: 'search', component: SearchComponent, loadChildren: () => SearchRoutingModule},
-  {path: 'my-athletes', component: MyAthletesComponent, loadChildren: () => MyAthletesRoutingModule},
+  {path: 'my-athletes', component: MyAthletesComponent, loadChildren: () => MyAthletesRoutingModule, canActivate: [AuthGuard]},
   {path: '**', component: PageNotFoundComponent}
 ];
 

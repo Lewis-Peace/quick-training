@@ -14,7 +14,7 @@ export class LoginService {
 
     private defaultUrl: string = "api/Auth";
     public currentUsername: string = "";
-    public user: User | undefined;
+    public username: string | undefined;
     // usare subject per condividere il valore, non tenerlo nel login service e passarlo in giro
     public userId: string = "";
 
@@ -26,6 +26,7 @@ export class LoginService {
         if (response.result) {
             ApiCallsService.jwtToken = response.body[0];
             this.userId = response.body[1];
+            this.username = response.body[2];
         }
         return response;
     }

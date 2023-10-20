@@ -26,6 +26,7 @@ public class LiftBuddyContext : DbContext
             entity.Property(u => u.Username).IsRequired().HasMaxLength(32);
             entity.Property(u => u.Password).IsRequired();
             entity.Property(u => u.Email).IsRequired();
+            entity.Property(u => u.Private).IsRequired();
             entity.Property(u => u.IsTrainer).IsRequired().HasDefaultValue(false);
             entity.Property(u => u.IsAdmin).IsRequired().HasDefaultValue(false);
 
@@ -39,6 +40,9 @@ public class LiftBuddyContext : DbContext
 
             entity.HasMany(u => u.AssignedPlans)
                 .WithMany(p => p.Users);
+
+            entity.HasMany(u => u.SubscribedAthletes)
+                .WithMany(u => u.Trainers);
         });
 
         modelBuilder.Entity<WorkoutPlan>(entity =>

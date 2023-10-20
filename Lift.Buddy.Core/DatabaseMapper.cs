@@ -26,6 +26,9 @@ public interface IDatabaseMapper
 
     SettingsDTO Map(Settings settings);
     Settings Map(SettingsDTO settings);
+
+    FrontpageDTO Map(Frontpage frontpage);
+    Frontpage Map(FrontpageDTO frontpage);
 }
 
 public class DatabaseMapper : IDatabaseMapper
@@ -105,6 +108,7 @@ public class DatabaseMapper : IDatabaseMapper
             Email = user.Email,
             Credentials = new Credentials { Username = user.Username },
             IsTrainer = user.IsTrainer,
+            Private = user.Private,
         };
     }
 
@@ -127,6 +131,7 @@ public class DatabaseMapper : IDatabaseMapper
                 };
             }).ToArray(),
             IsTrainer = user.IsTrainer,
+            Private = user.Private,
         };
     }
 
@@ -200,6 +205,22 @@ public class DatabaseMapper : IDatabaseMapper
         return new Settings
         {
             UnitOfMeasure = settings.UnitOfMeasure
+        };
+    }
+
+    public FrontpageDTO Map(Frontpage frontpage)
+    {
+        return new FrontpageDTO
+        {
+            Description = frontpage.Description,
+        };
+    }
+
+    public Frontpage Map(FrontpageDTO frontpage)
+    {
+        return new Frontpage
+        {
+            Description = frontpage.Description,
         };
     }
 }

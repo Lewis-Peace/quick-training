@@ -4,3 +4,37 @@
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
 }
+
+.search-result-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  vertical-align: middle;
+  height: 100%;
+  .text-crop-row-3 {
+    flex: 1 1 auto;
+  }
+  .sub-button {
+    margin-right: 5px;
+  }
+}
+
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+ 
+.spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  border-top-color: #000000;
+  animation: spinner .8s linear infinite;
+}

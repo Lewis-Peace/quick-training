@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Lift.Buddy.Core.Models.Enums;
+using System.Text.Json.Serialization;
 
 namespace Lift.Buddy.Core.Models;
 
@@ -20,6 +21,15 @@ public class UserDTO
 
     [JsonPropertyName("isTrainer")]
     public bool IsTrainer { get; set; }
+
+    [JsonPropertyName("private")]
+    public bool Private { get; set; }
+
+    [JsonPropertyName("description")]
+    public string Description { get; set; }
+
+    [JsonPropertyName("subscriptionState")]
+    public SubscriptionState SubscriptionState { get; set; } = SubscriptionState.Undefined;
 
     public Credentials Credentials { get; set; }
 

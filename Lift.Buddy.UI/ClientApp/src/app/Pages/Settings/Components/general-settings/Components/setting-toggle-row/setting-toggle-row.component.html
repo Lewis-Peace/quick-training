@@ -1,0 +1,6 @@
+<div class="text-center mb-3">
+  <button disabled="true" mat-button class="col-5">
+    {{label}}: {{default ? 'Private' : 'Public'}}
+  </button>
+  <mat-slide-toggle class="col-2" ngDefaultControl [(ngModel)]="default"></mat-slide-toggle>
+</div>

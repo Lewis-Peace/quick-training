@@ -33,7 +33,7 @@ namespace Lift.Buddy.API.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userId is null)
-                return NotFound();
+                return StatusCode(500);
 
             var response = await _usersService.GetUserData(Guid.Parse(userId));
             return Ok(response);
@@ -43,6 +43,30 @@ namespace Lift.Buddy.API.Controllers
         public async Task<IActionResult> UpdateUserData([FromBody] UserDTO userData)
         {
             await _usersService.UpdateUserData(userData);
+            return NoContent();
+        }
+
+        [HttpPost("subscribe")]
+        public async Task<IActionResult> SubscribeToTrainer([FromBody] UserDTO trainer)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                return StatusCode(500);
+
+            await _usersService.SubscribeToTrainer(Guid.Parse(userId), trainer);
+            return NoContent();
+        }
+
+        [HttpDelete("subscribe")]
+        public async Task<IActionResult> UnsubscribeToTrainer([FromBody] UserDTO trainer)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                return StatusCode(500);
+
+            await _usersService.UnsubscribeToTrainer(Guid.Parse(userId), trainer);
             return NoContent();
         }
     }

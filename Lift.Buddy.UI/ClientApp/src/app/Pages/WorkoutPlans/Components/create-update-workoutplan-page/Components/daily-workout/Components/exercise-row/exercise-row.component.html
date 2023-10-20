@@ -5,16 +5,16 @@
     </mat-form-field>
   </div>
   <mat-form-field [class]="'col-' + (!readonly ? 3 : 5)">
-    <input matInput formControlName="name"/>
+    <input [readonly]="readonly" matInput formControlName="name"/>
   </mat-form-field>
   <mat-form-field class="col-2">
-    <input min="1" value="1" type="number" formControlName="reps" matInput/>
+    <input [readonly]="readonly" min="1" value="1" type="number" formControlName="reps" matInput/>
   </mat-form-field>
   <mat-form-field class="col-2">
-    <input min="1" value="1" type="number" formControlName="series" matInput/>
+    <input [readonly]="readonly" min="1" value="1" type="number" formControlName="series" matInput/>
   </mat-form-field>
   <mat-form-field class="col-2">
-    <input type="time" formControlName="rest" matInput/>
+    <input [readonly]="readonly" type="time" formControlName="rest" matInput/>
   </mat-form-field>
   <div class="col-1">
     <button *ngIf="!readonly" mat-icon-button class="button">

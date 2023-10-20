@@ -1,7 +1,8 @@
 <div class="container h-100">
-  <div class="header">
+  <div class="header" (mouseover)="viewBackgroundButton = true" (mouseleave)="viewBackgroundButton = false">
     <img class="profile-picture" src="../../../../../assets/default-user-image.png" alt="profile picture">
-    <h1 class="username">Name</h1>
+    <h1 class="username">{{username}}</h1>
+    <button @backgroundButton *ngIf="viewBackgroundButton" class="change-background-button" mat-flat-button>Change background</button>
   </div>
   <div class="body">
     <form class="form" [formGroup]="frontpageForm">

@@ -3,18 +3,18 @@ import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LoadingVisualizationService } from 'src/app/Services/loading-visualization.service';
 
 @Component({
-  selector: 'app-setting-row',
-  templateUrl: './setting-row.component.html',
-  styleUrls: ['./setting-row.component.css'],
+  selector: 'app-setting-selection-row',
+  templateUrl: './setting-selection-row.component.html',
+  styleUrls: ['./setting-selection-row.component.css'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SettingRowComponent),
+      useExisting: forwardRef(() => SettingSelectionRowComponent),
       multi: true,
     }
   ]
 })
-export class SettingRowComponent implements OnInit {
+export class SettingSelectionRowComponent implements OnInit {
 
   @Input() label: string = '';
   @Input() doesLoading: boolean = false;

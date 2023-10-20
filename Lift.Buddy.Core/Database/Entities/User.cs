@@ -18,6 +18,7 @@ public class User
 
     public string Email { get; set; }
     public string Password { get; set; }
+    public bool Private { get; set; } = false;
     public bool IsAdmin { get; set; } = false;
     public bool IsTrainer { get; set; } = false;
 
@@ -25,6 +26,8 @@ public class User
     public virtual ICollection<WorkoutPlan> CreatedPlans { get; set; }
     public virtual ICollection<PersonalRecord> PersonalRecords { get; set; }
     public virtual ICollection<SecurityQuestion> SecurityQuestions { get; set; }
+    public virtual ICollection<User> SubscribedAthletes { get; set; }
+    public virtual ICollection<User> Trainers { get; set; }
     public virtual Settings Settings { get; set; }
     public virtual Frontpage Frontpage { get; set; }
 }

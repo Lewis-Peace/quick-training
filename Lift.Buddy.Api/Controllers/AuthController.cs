@@ -61,7 +61,7 @@ namespace Lift.Buddy.API.Controllers
             var res = new Response<string>
             {
                 Result = true,
-                Body = new string[] { token, id.ToString() },
+                Body = new string[] { token, id.ToString(), credentials.Username },
                 Notes = ""
             };
 

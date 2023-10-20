@@ -9,6 +9,7 @@ import { SettingsService } from 'src/app/Services/settings.service';
 import { Settings } from 'src/app/Model/Settings';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
 import { UserService } from 'src/app/Services/user.service';
+import { User } from 'src/app/Model/User';
 
 @Component({
   selector: 'app-general-settings',
@@ -18,7 +19,6 @@ import { UserService } from 'src/app/Services/user.service';
 export class GeneralSettingsComponent implements OnInit {
 
   constructor(
-    private loginService: LoginService,
     private dialogService: DialogService,
     private loadingVisService: LoadingVisualizationService,
     private snackbarService: SnackBarService,
@@ -72,13 +72,11 @@ export class GeneralSettingsComponent implements OnInit {
       this.snackbarService.operErrorSnackbar(`Failed to load user information. ${response.notes}`);
     }
 
-    let user = response.body[0];
-
-    this.isTrainer = user.isTrainer;
+    this.user = response.body[0];
   }
 
   public settings: Settings | undefined;
-  public isTrainer: boolean | undefined;
+  public user: User | undefined;
   public isLoading: boolean = false;
 	public loadingSubscription: Subscription | undefined;
 
@@ -96,7 +94,7 @@ export class GeneralSettingsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.isTrainer = !this.isTrainer;
+        this.user!.isTrainer = !this.user!.isTrainer;
       }
     })
   }

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SettingRowComponent } from './setting-row.component';
+import { SettingToggleRowComponent } from './setting-toggle-row.component';
 
-describe('SettingRowComponent', () => {
-  let component: SettingRowComponent;
-  let fixture: ComponentFixture<SettingRowComponent>;
+describe('SettingToggleRowComponent', () => {
+  let component: SettingToggleRowComponent;
+  let fixture: ComponentFixture<SettingToggleRowComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingRowComponent ]
+      declarations: [ SettingToggleRowComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SettingRowComponent);
+    fixture = TestBed.createComponent(SettingToggleRowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

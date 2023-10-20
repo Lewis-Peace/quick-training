@@ -26,7 +26,7 @@ namespace Lift.Buddy.API.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId is null)
-                return NotFound();
+                return StatusCode(500);
 
             var settings = await _settingsService.GetSettings(new Guid(userId));
             return Ok(settings);
@@ -58,7 +58,7 @@ namespace Lift.Buddy.API.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId is null)
-                return NotFound();
+                return StatusCode(500);
 
             await _settingsService.UpdateSettings(new Guid(userId), settings);
 
@@ -71,7 +71,7 @@ namespace Lift.Buddy.API.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId is null)
-                return NotFound();
+                return StatusCode(500);
 
             await _settingsService.DeleteSettings(new Guid(userId));
 

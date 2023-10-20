@@ -46,12 +46,6 @@ export class RegisterPageComponent implements OnInit {
     return confirmPassword == password ? {} : {noMatch: true};
   }
 
-  public getUserData() {
-    if (this.loginService.user?.credentials == undefined) {
-      this.snackbarService.operErrorSnackbar("Compile the form properly");
-    }
-  }
-
   public async register() {
       const userInformation = this.userInformationForm.value;
       let user = new User();

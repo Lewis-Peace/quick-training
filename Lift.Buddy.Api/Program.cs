@@ -78,7 +78,7 @@ builder.Services.AddSingleton<IDatabaseMapper, DatabaseMapper>();
 
 builder.Services.AddDbContext<LiftBuddyContext>(options =>
 {
-    options.UseMySQL(builder.Configuration.GetConnectionString("DevDatabase"));
+    options.UseMySQL(builder.Configuration.GetConnectionString("DevDatabase") ?? "");
 });
 
 builder.Services.AddControllers().AddNewtonsoftJson();

@@ -1,5 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { SubscriptionState } from 'src/app/Model/Enums/SubscriptionState';
 import { User } from 'src/app/Model/User';
+import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
+import { LoadingVisualizationService } from 'src/app/Services/loading-visualization.service';
+import { UserService } from 'src/app/Services/user.service';
 
 @Component({
   selector: 'app-search-result',
@@ -9,10 +13,55 @@ import { User } from 'src/app/Model/User';
 export class SearchResultComponent implements OnInit {
 
   @Input() user: User | undefined;
+  public requestSent: boolean = false;
+  public isLoading: boolean = false;
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+    private snackbarService: SnackBarService
+  ) { }
 
   ngOnInit() {
+  }
+
+  public get isSubscribed(): boolean {
+    return this.user?.subscriptionState == SubscriptionState.Subscribed;
+  }
+
+  public get isLoggedin(): boolean {
+    return this.user?.subscriptionState != SubscriptionState.Undefined;
+  }
+
+  async subscribe(trainer: User | undefined) {
+    if (!trainer) {
+      this.snackbarService.operErrorSnackbar(`Failed to subscribe to trainer`);
+      return;
+    }
+    this.isLoading = true;
+    const response = await this.userService.subscribeToTrainer(trainer);
+    if (!response.result) {
+      this.snackbarService.operErrorSnackbar(`Failed to subscribe to ${trainer.username}.`);
+      return;
+    }
+
+    this.user!.subscriptionState = SubscriptionState.Subscribed;
+    this.isLoading = false;
+  }
+
+  async unsubscribe(trainer: User | undefined) {
+    if (!trainer) {
+      this.snackbarService.operErrorSnackbar(`Failed to subscribe to trainer`);
+      return;
+    }
+    this.isLoading = true;
+    const response = await this.userService.unsubscribeToTrainer(trainer);
+    if (!response.result) {
+      this.snackbarService.operErrorSnackbar(`Failed to unsubscribe to ${trainer.username}.`);
+      return;
+    }
+
+    this.user!.subscriptionState = SubscriptionState.Unsubscribed;
+    this.isLoading = false;
   }
 
 }

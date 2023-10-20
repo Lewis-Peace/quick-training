@@ -1,5 +1,6 @@
 ﻿using Lift.Buddy.API.Interfaces;
 using Lift.Buddy.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PdfSharp.Pdf.Content.Objects;
 using System.Security.Claims;
@@ -8,6 +9,7 @@ namespace Lift.Buddy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class WorkoutPlanController : ControllerBase
     {
         private readonly IWorkoutPlanService _workoutScheduleService;
@@ -23,7 +25,7 @@ namespace Lift.Buddy.API.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId is null)
-                return NotFound();
+                return StatusCode(500);
 
             var res = await _workoutScheduleService.GetUserWorkoutPlans(Guid.Parse(userId));
             return Ok(res);
@@ -71,7 +73,7 @@ namespace Lift.Buddy.API.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId is null)
-                return NotFound();
+                return StatusCode(500);
 
             workoutSchedule.CreatorId = Guid.Parse(userId);
 
