@@ -12,20 +12,14 @@ export class SearchComponent implements OnInit {
 
   public searchResults: User[] = [];
   public isLoading: boolean = false;
-  private isLoadingSubscription: Subscription | undefined;
 
   constructor(
-    private loadingService: LoadingVisualizationService
   ) { }
 
   ngOnInit() {
-    this.isLoadingSubscription = this.loadingService.$isLoading.subscribe(isLoading =>
-      this.isLoading = isLoading
-    )
   }
 
   ngOnDestroy() {
-    this.isLoadingSubscription?.unsubscribe();
   }
 
   public setSearchResult(result: User[]) {

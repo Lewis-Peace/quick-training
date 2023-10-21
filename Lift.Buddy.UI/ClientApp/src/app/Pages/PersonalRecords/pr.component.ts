@@ -23,12 +23,10 @@ export class PersonalRecordComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.isLoagingSubscription = this.loadingService.$isLoading.subscribe(isLoading => this.isLoading = isLoading);
     await this.initUserPersonalRecord();
   }
 
   ngOnDestroy() {
-    this.isLoagingSubscription?.unsubscribe();
   }
 
   private updateCount: number = 0

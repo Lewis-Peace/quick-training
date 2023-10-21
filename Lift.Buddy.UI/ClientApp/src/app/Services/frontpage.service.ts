@@ -12,7 +12,7 @@ export class FrontpageService {
     private apiService: ApiCallsService
   ) { }
 
-  private defaultUrl = 'api/Trainer/frontpage';
+  private defaultUrl = 'api/Frontpage';
 
   public async getFrontpage() {
     const response = await this.apiService.apiGet<Frontpage>(this.defaultUrl);

@@ -14,7 +14,7 @@
   ></app-search-bar>
   <div class="content mt-3">
     <app-loading-spinner
-      *ngIf="isLoading"
+      (OnLoading)="isLoading = $event"
     ></app-loading-spinner>
     <mat-card *ngIf="!isLoading">
       <mat-card-content *ngIf="searchResults.length != 0" class="flex-grow-1">

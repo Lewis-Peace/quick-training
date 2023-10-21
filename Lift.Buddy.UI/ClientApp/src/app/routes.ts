@@ -12,6 +12,7 @@ export const generalNavigationMenu: NavigationMenu[] = [
 
 export const workoutNavigationMenu: NavigationMenu[] = [
   { name: 'todays workout', icon: 'calendar', path: 'workout/training' },
+  { name: 'assigned to me', icon: 'handshake', path: 'workout/assigned-to-me' },
   { name: 'my workouts', icon: 'calendar', path: 'workout/my-workouts' },
   { name: 'create workout', icon: 'calendar-plus', path: 'workout/add/new' }
 ]

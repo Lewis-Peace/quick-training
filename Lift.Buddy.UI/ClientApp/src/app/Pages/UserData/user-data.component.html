@@ -9,7 +9,10 @@
 </ng-template>
 
 <ng-template #main>
-  <mat-card *ngIf="userData != undefined">
+  <app-loading-spinner
+    (OnLoading)="isLoading = $event"
+  ></app-loading-spinner>
+  <mat-card *ngIf="userData != undefined && !isLoading">
     <mat-card-header>
       <mat-card-title>
         Welcome {{userData.username}}

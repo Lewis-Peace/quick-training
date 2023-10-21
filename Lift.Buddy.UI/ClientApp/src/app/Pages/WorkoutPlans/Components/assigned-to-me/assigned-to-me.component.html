@@ -1,0 +1,6 @@
+<app-loading-spinner
+  (OnLoading)="isLoading = $event"
+></app-loading-spinner>
+<div class="container" *ngIf="!isLoading">
+  Test
+</div>

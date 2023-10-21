@@ -35,14 +35,12 @@ export class MyWorkoutsComponent implements OnInit {
 	) { }
 
 	async ngOnInit() {
-		this.loadingSubscription = this.loadingVisualizationService.$isLoading.subscribe(loading => this.isLoading = loading);
 		this.loadingVisualizationService.setIsLoading(true);
 		await this.initWorkouts();
 		this.loadingVisualizationService.setIsLoading(false);
 	}
 
 	ngOnDestroy() {
-		this.loadingSubscription?.unsubscribe();
 	}
 
 	private async initWorkouts() {

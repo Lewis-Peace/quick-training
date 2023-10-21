@@ -1,4 +1,7 @@
-<div class="page d-flex">
+<app-loading-spinner
+  (OnLoading)="isLoading = $event"
+></app-loading-spinner>
+<div *ngIf="!isLoading" class="page d-flex">
   <mat-tab-group  *ngIf="dailyWorkouts.length != 0">
     <mat-tab
       *ngFor="let workout of dailyWorkouts"

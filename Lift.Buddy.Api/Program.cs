@@ -74,6 +74,7 @@ builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<ISettingsService, SettingsService>();
+builder.Services.AddScoped<IFrontpageService, FrontpageService>();
 builder.Services.AddSingleton<IDatabaseMapper, DatabaseMapper>();
 
 builder.Services.AddDbContext<LiftBuddyContext>(options =>

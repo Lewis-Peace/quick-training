@@ -1,4 +1,4 @@
-<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+<app-loading-spinner (OnLoading)="isLoading = $event"></app-loading-spinner>
 <div class="settings grid">
   <h1>General settings</h1>
   <form *ngIf="!isLoading" class="mt-3" [formGroup]="generalSettingsForm">

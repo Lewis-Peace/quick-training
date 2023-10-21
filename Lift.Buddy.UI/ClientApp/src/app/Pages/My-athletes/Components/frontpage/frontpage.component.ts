@@ -6,6 +6,7 @@ import { Frontpage } from 'src/app/Model/Frontpage';
 import { User } from 'src/app/Model/User';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
 import { FrontpageService } from 'src/app/Services/frontpage.service';
+import { LoadingVisualizationService } from 'src/app/Services/loading-visualization.service';
 import { LoginService } from 'src/app/Services/login.service';
 
 @Component({
@@ -29,11 +30,13 @@ export class FrontpageComponent implements OnInit {
   public viewBackgroundButton: boolean = false;
   public frontpage: Frontpage = new Frontpage();
   public username: string | undefined;
+  public isLoading: boolean = false;
 
   constructor(
     private frontpageService: FrontpageService,
     private snackbarService: SnackBarService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private loadingVisualizationService: LoadingVisualizationService
   ) { }
 
   public frontpageForm: FormGroup = new FormGroup({
@@ -41,8 +44,10 @@ export class FrontpageComponent implements OnInit {
   });
 
   async ngOnInit() {
+    this.loadingVisualizationService.setIsLoading(true);
     await this.initFrontpage();
     this.username = this.loginService.username;
+    this.loadingVisualizationService.setIsLoading(false);
   }
 
   private async initFrontpage() {

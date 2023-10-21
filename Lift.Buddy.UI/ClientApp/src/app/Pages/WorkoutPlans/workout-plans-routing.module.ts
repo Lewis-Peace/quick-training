@@ -4,11 +4,13 @@ import { YourWorkoutsPageComponent } from "./Components/your-workouts-page/your-
 import { CreateUpdateWorkoutplanPageComponent } from "./Components/create-update-workoutplan-page/create-update-workoutplan-page.component";
 import { MyWorkoutsComponent } from "./Components/my-workouts/my-workouts.component";
 import { AthletesWorkoutAssignmentsComponent } from "./Components/my-workouts/Components/athletes-workout-assignments/athletes-workout-assignments.component";
+import { AssignedToMeComponent } from "./Components/assigned-to-me/assigned-to-me.component";
 
 const routes: Routes = [
   {path: 'training', component: YourWorkoutsPageComponent},
   {path: 'add/:workoutId', component: CreateUpdateWorkoutplanPageComponent},
   {path: 'assign/:workoutId', component: AthletesWorkoutAssignmentsComponent},
+  {path: 'assigned-to-me', component: AssignedToMeComponent},
   {path: 'my-workouts', component: MyWorkoutsComponent,}
 ]
 

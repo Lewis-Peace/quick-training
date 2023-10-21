@@ -11,7 +11,7 @@
 
 <ng-template #main>
   <app-loading-spinner
-    *ngIf="isLoading"
+    (OnLoading)="isLoading = $event"
   ></app-loading-spinner>
   <div *ngIf="!isLoading" class="container mt-3 pr-container">
     <div

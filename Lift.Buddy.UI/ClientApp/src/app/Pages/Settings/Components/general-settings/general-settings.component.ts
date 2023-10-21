@@ -27,9 +27,6 @@ export class GeneralSettingsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.loadingSubscription = this.loadingVisService.$isLoading.subscribe(loading => {
-      this.isLoading = loading;
-    })
     this.loadingVisService.setIsLoading(true);
     await this.initSettings();
     await this.initLabels();
@@ -38,7 +35,6 @@ export class GeneralSettingsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.loadingSubscription?.unsubscribe();
   }
 
   private async initSettings() {
@@ -78,7 +74,6 @@ export class GeneralSettingsComponent implements OnInit {
   public settings: Settings | undefined;
   public user: User | undefined;
   public isLoading: boolean = false;
-	public loadingSubscription: Subscription | undefined;
 
   public languages: string[] = [];
 

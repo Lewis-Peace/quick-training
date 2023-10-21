@@ -25,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { AthletesWorkoutAssignmentsComponent } from './Components/my-workouts/Components/athletes-workout-assignments/athletes-workout-assignments.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AssignedToMeComponent } from './Components/assigned-to-me/assigned-to-me.component';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ExerciseRowComponent,
     DailyWorkoutComponent,
     AthletesWorkoutAssignmentsComponent,
+    AssignedToMeComponent
   ],
   exports: [
 

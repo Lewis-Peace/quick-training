@@ -44,44 +44,5 @@ namespace Lift.Buddy.API.Controllers
             await _trainersService.RemoveFollower(Guid.Parse(trainerGuidString), user);
             return NoContent();
         }
-
-        [HttpGet("frontpage")]
-        public async Task<IActionResult> GetFrontpage()
-        {
-            var trainerGuidString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (trainerGuidString == null)
-            {
-                return StatusCode(500);
-            }
-
-            var response = await _trainersService.GetFrontpage(Guid.Parse(trainerGuidString));
-            return Ok(response);
-        }
-
-        [HttpPost("frontpage")]
-        public async Task<IActionResult> AddFrontpage([FromBody] FrontpageDTO frontpage)
-        {
-            var trainerGuidString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (trainerGuidString == null)
-            {
-                return StatusCode(500);
-            }
-
-            var response = await _trainersService.AddFrontpage(Guid.Parse(trainerGuidString), frontpage);
-            return Ok(response);
-        }
-
-        [HttpPut("frontpage")]
-        public async Task<IActionResult> UpdateFrontpage([FromBody] FrontpageDTO frontpage)
-        {
-            var trainerGuidString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (trainerGuidString == null)
-            {
-                return StatusCode(500);
-            }
-
-            var response = await _trainersService.UpdateFrontpage(Guid.Parse(trainerGuidString), frontpage);
-            return Ok(response);
-        }
     }
 }
