@@ -14,10 +14,12 @@ namespace Lift.Buddy.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _usersService;
+        private readonly IWorkoutPlanService _workoutPlanService;
 
-        public UserController(IUserService usersService)
+        public UserController(IUserService usersService, IWorkoutPlanService workoutPlanService)
         {
             _usersService = usersService;
+            _workoutPlanService = workoutPlanService;
         }
 
         [HttpGet("{username}")]
@@ -46,28 +48,55 @@ namespace Lift.Buddy.API.Controllers
             return NoContent();
         }
 
-        [HttpPost("subscribe")]
-        public async Task<IActionResult> SubscribeToTrainer([FromBody] UserDTO trainer)
+        [HttpGet("workouts")]
+        public async Task<IActionResult> GetWorkoutsAssignedToUser()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userId is null)
                 return StatusCode(500);
 
-            await _usersService.SubscribeToTrainer(Guid.Parse(userId), trainer);
-            return NoContent();
+            var response = await _workoutPlanService.GetAssignedWorkoutPlans(Guid.Parse(userId));
+            return Ok(response);
         }
 
-        [HttpDelete("subscribe")]
-        public async Task<IActionResult> UnsubscribeToTrainer([FromBody] UserDTO trainer)
+        #region Subscription
+
+        [HttpGet("subscription")]
+        public IActionResult GetSubscriptions()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userId is null)
                 return StatusCode(500);
 
-            await _usersService.UnsubscribeToTrainer(Guid.Parse(userId), trainer);
+            var response = _usersService.GetSubscriptionsRelatedToUser(Guid.Parse(userId));
+            return Ok(response);
+        }
+
+        [HttpPost("subscription")]
+        public async Task<IActionResult> SubscribeToTrainer([FromBody] SubscriptionDTO subscription)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                return StatusCode(500);
+
+            await _usersService.SubscribeToTrainer(Guid.Parse(userId), subscription);
             return NoContent();
         }
+
+        [HttpDelete("subscription")]
+        public async Task<IActionResult> UnsubscribeToTrainer([FromBody] SubscriptionDTO subscription)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                return StatusCode(500);
+
+            await _usersService.UnsubscribeToTrainer(Guid.Parse(userId), subscription);
+            return NoContent();
+        }
+        #endregion
     }
 }

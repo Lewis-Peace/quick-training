@@ -3,6 +3,7 @@ using Lift.Buddy.Core.Models;
 using Lift.Buddy.Core;
 using Microsoft.EntityFrameworkCore;
 using Lift.Buddy.Core.Database;
+using Lift.Buddy.Core.Database.Entities;
 
 namespace Lift.Buddy.API.Services
 {
@@ -65,23 +66,36 @@ namespace Lift.Buddy.API.Services
             return response;
         }
 
-        public async Task<Response<UserDTO>> SubscribeToTrainer(Guid user, UserDTO userDTO)
+        #region Subscriptions
+        public Response<SubscriptionDTO> GetSubscriptionsRelatedToUser(Guid user)
+        {
+            var response = new Response<SubscriptionDTO>();
+
+            try
+            {
+                var subscriptions = _context.Subscriptions.Where(x => x.TrainerId == user);
+
+                response.Body = subscriptions.Select(x => _mapper.Map(x));
+                response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                response.Notes = Utils.ErrorMessage(nameof(GetSubscriptionsRelatedToUser), ex);
+            }
+
+            return response;
+        }
+
+        public async Task<Response<UserDTO>> SubscribeToTrainer(Guid user, SubscriptionDTO subscriptionDTO)
         {
             var response = new Response<UserDTO>();
             try
             {
-                var athlete = await _context.Users.Include(x => x.Trainers).FirstOrDefaultAsync(x => x.UserId == user);
-                if (athlete == null)
-                {
-                    throw new Exception("Athlete not found.");
-                }
-                var trainer = await _context.Users.Include(x => x.SubscribedAthletes).FirstOrDefaultAsync(x => x.UserId == userDTO.UserId);
-                if (trainer == null)
-                {
-                    throw new Exception("Trainer not found.");
-                }
-                athlete.Trainers.Add(trainer);
-                trainer.SubscribedAthletes.Add(athlete);
+                var subscription = _mapper.Map(subscriptionDTO);
+                subscription.AthleteId = user;
+
+                _context.Subscriptions.Add(subscription);
 
                 if (await _context.SaveChangesAsync() < 1)
                 {
@@ -98,23 +112,19 @@ namespace Lift.Buddy.API.Services
             return response;
         }
 
-        public async Task<Response<UserDTO>> UnsubscribeToTrainer(Guid user, UserDTO userDTO)
+        public async Task<Response<UserDTO>> UnsubscribeToTrainer(Guid user, SubscriptionDTO subscriptionDTO)
         {
             var response = new Response<UserDTO>();
             try
             {
-                var athlete = await _context.Users.Include(x => x.Trainers).FirstOrDefaultAsync(x => x.UserId == user);
-                if (athlete == null)
+                var subscription = await _context.Subscriptions
+                    .FirstOrDefaultAsync(x => x.TrainerId == subscriptionDTO.TrainerId && x.AthleteId == user);
+                if (subscription == null)
                 {
-                    throw new Exception("Athlete not found.");
+                    throw new Exception("Subscription not found.");
                 }
-                var trainer = await _context.Users.Include(x => x.SubscribedAthletes).FirstOrDefaultAsync(x => x.UserId == userDTO.UserId);
-                if (trainer == null)
-                {
-                    throw new Exception("Trainer not found.");
-                }
-                athlete.Trainers.Remove(trainer);
-                trainer.SubscribedAthletes.Remove(athlete);
+
+                _context.Subscriptions.Remove(subscription);
 
                 if (await _context.SaveChangesAsync() < 1)
                 {
@@ -130,6 +140,8 @@ namespace Lift.Buddy.API.Services
             }
             return response;
         }
+
+        #endregion
 
         public async Task<Response<UserDTO>> UpdateUserData(UserDTO userData)
         {

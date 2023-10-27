@@ -7,7 +7,7 @@
       *ngFor="let workout of dailyWorkouts"
       [label]="workout.name"
     >
-      <app-training-card [exercises]="workout.workout.exercises"></app-training-card>
+      <app-training-tab [exercises]="workout.workout.exercises"></app-training-tab>
     </mat-tab>
   </mat-tab-group>
   <div *ngIf="dailyWorkouts.length == 0">

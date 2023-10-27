@@ -1,0 +1,13 @@
+.subscription-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .subscription-table {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    .mat-column-remove {
+      text-align: center;
+    }
+  }
+}

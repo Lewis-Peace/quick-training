@@ -1,4 +1,6 @@
-﻿namespace Lift.Buddy.Core.Database.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Lift.Buddy.Core.Database.Entities;
 
 public class User
 {
@@ -26,8 +28,8 @@ public class User
     public virtual ICollection<WorkoutPlan> CreatedPlans { get; set; }
     public virtual ICollection<PersonalRecord> PersonalRecords { get; set; }
     public virtual ICollection<SecurityQuestion> SecurityQuestions { get; set; }
-    public virtual ICollection<User> SubscribedAthletes { get; set; }
-    public virtual ICollection<User> Trainers { get; set; }
+    public virtual ICollection<Subscription> SubscribedAthletes { get; set; }
+    public virtual ICollection<Subscription> Trainers { get; set; }
     public virtual Settings Settings { get; set; }
     public virtual Frontpage Frontpage { get; set; }
 }

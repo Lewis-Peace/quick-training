@@ -1,3 +1,4 @@
+using Lift.Buddy.Core.Database;
 using Lift.Buddy.Core.Database.Entities;
 using Lift.Buddy.Core.Models;
 using Lift.Buddy.Core.Models.Enums;
@@ -29,6 +30,9 @@ public interface IDatabaseMapper
 
     FrontpageDTO Map(Frontpage frontpage);
     Frontpage Map(FrontpageDTO frontpage);
+
+    SubscriptionDTO Map(Subscription subcription);
+    Subscription Map(SubscriptionDTO subcription);
 }
 
 public class DatabaseMapper : IDatabaseMapper
@@ -102,7 +106,7 @@ public class DatabaseMapper : IDatabaseMapper
     {
         return new UserDTO
         {
-            UserId = user.UserId,
+            Id = user.UserId,
             Name = user.Name,
             Surname = user.Surname,
             Email = user.Email,
@@ -221,6 +225,28 @@ public class DatabaseMapper : IDatabaseMapper
         return new Frontpage
         {
             Description = frontpage.Description,
+        };
+    }
+
+    public SubscriptionDTO Map(Subscription subcription)
+    {
+        return new SubscriptionDTO
+        {
+            AthleteId = subcription.AthleteId,
+            TrainerId = subcription.TrainerId,
+            SubscriptionType = subcription.SubscriptionType,
+            Expiration = subcription.Expiration
+        };
+    }
+
+    public Subscription Map(SubscriptionDTO subcription)
+    {
+        return new Subscription
+        {
+            AthleteId = subcription.AthleteId,
+            TrainerId = subcription.TrainerId,
+            SubscriptionType = subcription.SubscriptionType,
+            Expiration = subcription.Expiration
         };
     }
 }

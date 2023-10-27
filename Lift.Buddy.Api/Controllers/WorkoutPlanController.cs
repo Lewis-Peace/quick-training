@@ -2,7 +2,6 @@
 using Lift.Buddy.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PdfSharp.Pdf.Content.Objects;
 using System.Security.Claims;
 
 namespace Lift.Buddy.API.Controllers

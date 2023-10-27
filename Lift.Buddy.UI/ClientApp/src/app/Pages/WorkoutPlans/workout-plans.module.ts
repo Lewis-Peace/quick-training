@@ -5,7 +5,7 @@ import { WorkoutNavigationMenuComponent } from './Components/workout-navigation-
 import { UIElementsModule } from '../Components/UI.Elements.module';
 import { WorkoutPlansComponent } from './workout-plans.component';
 import { DeleteWorkoutPlanConfirmationPopupComponent } from './Components/my-workouts/Components/delete-workout-plan-confirmation-popup/delete-workout-plan-confirmation-popup.component';
-import { TrainingCardComponent } from './Components/your-workouts-page/Components/training-card/training-card.component';
+import { TrainingTabComponent } from './Components/your-workouts-page/Components/training-tab/training-tab.component';
 import { ExerciseRowComponent } from './Components/create-update-workoutplan-page/Components/daily-workout/Components/exercise-row/exercise-row.component';
 import { DailyWorkoutComponent } from './Components/create-update-workoutplan-page/Components/daily-workout/daily-workout.component';
 import { WorkoutPlansRoutingModule } from './workout-plans-routing.module';
@@ -53,7 +53,7 @@ import { AssignedToMeComponent } from './Components/assigned-to-me/assigned-to-m
     MyWorkoutsComponent,
     WorkoutNavigationMenuComponent,
     DeleteWorkoutPlanConfirmationPopupComponent,
-    TrainingCardComponent,
+    TrainingTabComponent,
     ExerciseRowComponent,
     DailyWorkoutComponent,
     AthletesWorkoutAssignmentsComponent,

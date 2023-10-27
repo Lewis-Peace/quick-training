@@ -23,14 +23,17 @@ namespace Lift.Buddy.API.Services
 
         #region Get
 
-        public async Task<Response<WorkoutPlanDTO>> GetWorkoutPlans()
+        public async Task<Response<WorkoutPlanDTO>> GetAssignedWorkoutPlans(Guid userId)
         {
             var response = new Response<WorkoutPlanDTO>();
 
             try
             {
-                // limitare/lazy loading
-                var workoutPlan = await _context.WorkoutPlans.ToArrayAsync();
+                var workoutPlan = await _context.Users
+                    .Include(x => x.AssignedPlans)
+                    .Where(x => x.UserId == userId)
+                    .SelectMany(x => x.AssignedPlans)
+                    .ToArrayAsync();
 
                 response.Result = true;
                 response.Body = workoutPlan.Select(p => _mapper.Map(p));
@@ -38,7 +41,7 @@ namespace Lift.Buddy.API.Services
             catch (Exception ex)
             {
                 response.Result = false;
-                response.Notes = Utils.ErrorMessage(nameof(GetWorkoutPlans), ex);
+                response.Notes = Utils.ErrorMessage(nameof(GetAssignedWorkoutPlans), ex);
             }
 
             return response;
@@ -330,7 +333,7 @@ namespace Lift.Buddy.API.Services
                 foreach (var user in userDTO)
                 {
                     var userFromDb = await _context.Users
-                            .Where(x => x.UserId == user.UserId)
+                            .Where(x => x.UserId == user.Id)
                             .FirstOrDefaultAsync();
                     if (userFromDb != null)
                     {

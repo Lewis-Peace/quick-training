@@ -3,12 +3,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Exercise } from 'src/app/Model/Exercise';
 
 @Component({
-    selector: 'app-training-card',
-    templateUrl: './training-card.component.html',
-    styleUrls: ['./training-card.component.css']
+    selector: 'app-training-tab',
+    templateUrl: './training-tab.component.html',
+    styleUrls: ['./training-tab.component.css']
 })
 
-export class TrainingCardComponent implements OnInit {
+export class TrainingTabComponent implements OnInit {
 
     @Input() exercises: Exercise[] = [];
     @Input() name: string = '';

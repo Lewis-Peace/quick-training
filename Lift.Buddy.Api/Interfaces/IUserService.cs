@@ -1,4 +1,5 @@
-﻿using Lift.Buddy.Core.Models;
+﻿using Lift.Buddy.Core.Database.Entities;
+using Lift.Buddy.Core.Models;
 
 namespace Lift.Buddy.API.Interfaces
 {
@@ -7,7 +8,8 @@ namespace Lift.Buddy.API.Interfaces
         Task<Response<UserDTO>> GetUserData(Guid userId);
         Task<Response<UserDTO>> UpdateUserData(UserDTO userData);
         Task<Response<UserDTO>> GetUsersByUsername(string username, int amount = 10);
-        Task<Response<UserDTO>> SubscribeToTrainer(Guid user, UserDTO userDTO);
-        Task<Response<UserDTO>> UnsubscribeToTrainer(Guid user, UserDTO userDTO);
+        Response<SubscriptionDTO> GetSubscriptionsRelatedToUser(Guid user);
+        Task<Response<UserDTO>> SubscribeToTrainer(Guid user, SubscriptionDTO userDTO);
+        Task<Response<UserDTO>> UnsubscribeToTrainer(Guid user, SubscriptionDTO userDTO);
     }
 }

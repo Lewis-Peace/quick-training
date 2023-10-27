@@ -13,6 +13,7 @@ public class LiftBuddyContext : DbContext
     public DbSet<WorkoutPlan> WorkoutPlans { get; set; }
     public DbSet<Settings> Settings { get; set; }
     public DbSet<Frontpage> Frontpages { get; set; }
+    public DbSet<Subscription> Subscriptions { get; set; }
 
     public LiftBuddyContext(DbContextOptions<LiftBuddyContext> options) : base(options)
     { }
@@ -42,7 +43,17 @@ public class LiftBuddyContext : DbContext
                 .WithMany(p => p.Users);
 
             entity.HasMany(u => u.SubscribedAthletes)
-                .WithMany(u => u.Trainers);
+                .WithOne(u => u.Athlete);
+            entity.HasMany(u => u.Trainers)
+                .WithOne(u => u.Trainer);
+        });
+
+        modelBuilder.Entity<Subscription>(entity =>
+        {
+            entity.HasKey(u => new { u.TrainerId, u.AthleteId });
+            entity.Property(u => u.SubscriptionType);
+            entity.Property(u => u.Expiration)
+                .HasConversion(x => x.ToString(), x => DateTime.Parse(x));
         });
 
         modelBuilder.Entity<WorkoutPlan>(entity =>

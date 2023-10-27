@@ -28,7 +28,7 @@ namespace Lift.Buddy.API.Services
             try
             {
 
-                var u = await _context.Users.Include(x => x.Trainers).FirstOrDefaultAsync(x => x.UserId == userId);
+                var u = await _context.Users.Include(x => x.SubscribedAthletes).FirstOrDefaultAsync(x => x.UserId == userId);
 
                 if (u == null)
                 {
@@ -37,7 +37,7 @@ namespace Lift.Buddy.API.Services
 
                 foreach (var user in users)
                 {
-                    var isSubscribed = u.Trainers.FirstOrDefault(x => x.UserId == user.UserId) != null;
+                    var isSubscribed = u.SubscribedAthletes.FirstOrDefault(x => x.AthleteId == user.Id) != null;
                     if (isSubscribed)
                     {
                         user.SubscriptionState = SubscriptionState.Subscribed;
@@ -45,7 +45,7 @@ namespace Lift.Buddy.API.Services
                     {
                         user.SubscriptionState = SubscriptionState.Unsubscribed;
                     }
-                    var frontpage = await _context.Frontpages.FirstOrDefaultAsync(x => x.Id == user.UserId);
+                    var frontpage = await _context.Frontpages.FirstOrDefaultAsync(x => x.Id == user.Id);
                     if (frontpage != null)
                     {
                         user.Description = frontpage.Description;

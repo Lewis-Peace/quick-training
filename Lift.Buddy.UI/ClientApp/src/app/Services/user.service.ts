@@ -1,8 +1,10 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ApiCallsService } from './Utils/api-calls.service';
 import { User } from '../Model/User';
 import { SnackBarService } from './Utils/snack-bar.service';
+import { Subscription } from '../Model/Subscription';
+import { WorkoutPlan } from '../Model/WorkoutPlan';
 
 @Injectable({
   providedIn: 'root'
@@ -48,10 +50,17 @@ export class UserService {
     return await this.apiCalls.apiPut<User>(this.defaultUrl, userData);
   }
 
-  public async subscribeToTrainer(trainer: User) {
-    return await this.apiCalls.apiPost<null>(this.defaultUrl + '/subscribe', trainer);
+  public async getAssignedWorkouts() {
+    return await this.apiCalls.apiGet<WorkoutPlan>(this.defaultUrl + '/workouts');
   }
-  public async unsubscribeToTrainer(trainer: User) {
-    return await this.apiCalls.apiDelete<null>(this.defaultUrl + '/subscribe', trainer);
+  
+  public async getSubscriptions() {
+    return await this.apiCalls.apiGet<Subscription>(this.defaultUrl + '/subscription');
+  }
+  public async subscribeToTrainer(subscription: Subscription) {
+    return await this.apiCalls.apiPost<null>(this.defaultUrl + '/subscription', subscription);
+  }
+  public async unsubscribeToTrainer(subscription: Subscription) {
+    return await this.apiCalls.apiDelete<null>(this.defaultUrl + '/subscription', subscription);
   }
 }

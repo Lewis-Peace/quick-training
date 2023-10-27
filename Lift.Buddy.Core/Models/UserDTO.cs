@@ -5,7 +5,7 @@ namespace Lift.Buddy.Core.Models;
 
 public class UserDTO
 {
-    public Guid? UserId { get; set; }
+    public Guid? Id { get; set; }
 
     [JsonPropertyName("username")]
     public string Userame { get; set; }

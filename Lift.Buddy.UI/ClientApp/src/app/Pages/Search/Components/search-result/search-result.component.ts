@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SubscriptionState } from 'src/app/Model/Enums/SubscriptionState';
+import { Subscription } from 'src/app/Model/Subscription';
 import { User } from 'src/app/Model/User';
 import { SnackBarService } from 'src/app/Services/Utils/snack-bar.service';
 import { LoadingVisualizationService } from 'src/app/Services/loading-visualization.service';
+import { LoginService } from 'src/app/Services/login.service';
 import { UserService } from 'src/app/Services/user.service';
 
 @Component({
@@ -18,7 +20,8 @@ export class SearchResultComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private snackbarService: SnackBarService
+    private snackbarService: SnackBarService,
+    private loginService: LoginService
   ) { }
 
   ngOnInit() {
@@ -35,12 +38,18 @@ export class SearchResultComponent implements OnInit {
   async subscribe(trainer: User | undefined) {
     if (!trainer) {
       this.snackbarService.operErrorSnackbar(`Failed to subscribe to trainer`);
+      this.isLoading = false;
       return;
     }
     this.isLoading = true;
-    const response = await this.userService.subscribeToTrainer(trainer);
+    let subscription = new Subscription()
+    subscription.trainerId = trainer.id;
+    subscription.athleteId = this.loginService.userId;
+    
+    const response = await this.userService.subscribeToTrainer(subscription);
     if (!response.result) {
-      this.snackbarService.operErrorSnackbar(`Failed to subscribe to ${trainer.username}.`);
+      this.snackbarService.operErrorSnackbar(`Failed to subscribe to ${trainer.credentials.username}. Ex: ${response.notes}`);
+      this.isLoading = false;
       return;
     }
 
@@ -50,13 +59,19 @@ export class SearchResultComponent implements OnInit {
 
   async unsubscribe(trainer: User | undefined) {
     if (!trainer) {
-      this.snackbarService.operErrorSnackbar(`Failed to subscribe to trainer`);
+      this.snackbarService.operErrorSnackbar(`Failed to unsubscribe to trainer`);
+      this.isLoading = false;
       return;
     }
     this.isLoading = true;
-    const response = await this.userService.unsubscribeToTrainer(trainer);
+    let subscription = new Subscription()
+    subscription.trainerId = trainer.id;
+    subscription.athleteId = this.loginService.userId;
+
+    const response = await this.userService.unsubscribeToTrainer(subscription);
     if (!response.result) {
-      this.snackbarService.operErrorSnackbar(`Failed to unsubscribe to ${trainer.username}.`);
+      this.snackbarService.operErrorSnackbar(`Failed to unsubscribe to ${trainer.credentials.username}. Ex: ${response.notes}`);
+      this.isLoading = false;
       return;
     }
 

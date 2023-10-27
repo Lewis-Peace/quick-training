@@ -25,11 +25,10 @@ namespace Lift.Buddy.API.Services
 
             try
             {
-                var association = await _context.WorkoutPlans
-                    .Where(x => x.CreatorId == trainerGuid)
-                    .Include(x => x.Users)
-                    .SelectMany(x => x.Users)
-                    .Distinct()
+                var association = await _context.Subscriptions
+                    .Where(x => x.TrainerId == trainerGuid)
+                    .Include(x => x.Athlete)
+                    .Select(x => x.Athlete)
                     .Select(x => _mapper.Map(x))
                     .ToArrayAsync();
 

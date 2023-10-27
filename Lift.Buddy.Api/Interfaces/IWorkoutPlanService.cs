@@ -5,7 +5,7 @@ namespace Lift.Buddy.API.Interfaces
 {
     public interface IWorkoutPlanService
     {
-        Task<Response<WorkoutPlanDTO>> GetWorkoutPlans();
+        Task<Response<WorkoutPlanDTO>> GetAssignedWorkoutPlans(Guid userId);
         Task<Response<WorkoutPlanDTO>> GetWorkoutPlanById(Guid id);
         Task<Response<WorkoutPlanDTO>> GetWorkoutPlanCreatedByUser(Guid userId);
         Task<Response<WorkoutPlanDTO>> GetUserWorkoutPlans(Guid userId);
