@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MyAthletesMainComponent } from './Components/my-athletes-main/my-athletes-main.component';
+import { MyAthletesMainComponent } from './Pages/my-athletes-main/my-athletes-main.component';
 import { MyAthletesRoutingModule } from './my-athletes-routing.module';
 import { UIElementsModule } from '../Components/UI.Elements.module';
 import { RouterModule } from '@angular/router';
@@ -15,8 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { FrontpageComponent } from './Components/frontpage/frontpage.component';
-import { RequestsComponent } from './Components/requests/requests.component';
+import { FrontpageComponent } from './Pages/frontpage/frontpage.component';
+import { RequestsComponent } from './Pages/requests/requests.component';
 import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({

@@ -19,7 +19,8 @@ export class AssignedToMeComponent implements OnInit {
   constructor(
     private loadingVisualizationService: LoadingVisualizationService,
     private userService: UserService,
-    private snackbarService: SnackBarService
+    private snackbarService: SnackBarService,
+    private workoutplanService: WorkoutplanService
   ) { }
 
   async ngOnInit() {
@@ -36,6 +37,7 @@ export class AssignedToMeComponent implements OnInit {
     }
 
     this.workoutplans = response.body;
+    this.workoutplanService.setWorkoutPlan(response.body[0]);
   }
 
 }

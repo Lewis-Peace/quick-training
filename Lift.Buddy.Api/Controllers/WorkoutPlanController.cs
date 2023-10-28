@@ -86,21 +86,21 @@ namespace Lift.Buddy.API.Controllers
         }
 
         [HttpPut("review")]
-        public async Task<IActionResult> ReviewWorkouPlan([FromBody] WorkoutPlanDTO workoutPlan)
+        public async Task<IActionResult> ReviewWorkouPlan([FromBody] ReviewDTO reviewDTO)
         {
-            var response = await _workoutScheduleService.ReviewWorkoutPlan(workoutPlan);
-            if (!response.Result)
-            {
-                return Ok(response);
-            }
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            return NoContent();
+            if (userId is null)
+                return StatusCode(500);
+
+            var response = await _workoutScheduleService.ReviewWorkoutPlan(Guid.Parse(userId), reviewDTO);
+            return Ok(response);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] WorkoutPlanDTO workoutSchedule)
+        public async Task<IActionResult> Update([FromBody] WorkoutPlanDTO workoutPlan)
         {
-            var response = await _workoutScheduleService.UpdateWorkoutPlan(workoutSchedule);
+            var response = await _workoutScheduleService.UpdateWorkoutPlan(workoutPlan);
             if (!response.Result)
             {
                 return Ok(response);

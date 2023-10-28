@@ -77,29 +77,11 @@ export class MyWorkoutsComponent implements OnInit {
 		event.chipInput!.clear();
 	}
 
-	public remove(item: any) {
-		const idx = this.items.indexOf(item);
+	public remove(item: WorkoutPlan) {
+		const idx = this.workouts.indexOf(item);
 
 		if (idx >= 0) {
-			this.items.splice(idx, 1);
+			this.workouts.splice(idx, 1);
 		}
-	}
-
-	public async deleteWorkout(workout: WorkoutPlan) {
-		const dialogRef = this.dialogService.openCenterDialog(
-			DeleteWorkoutPlanConfirmationPopupComponent,
-			{
-				data: { workout: workout }
-			}
-		);
-
-		dialogRef.afterClosed().subscribe(result => {
-			if (result) {
-				const deletedWorkoutIdx = this.workouts.indexOf(workout);
-				if (deletedWorkoutIdx != -1) {
-					this.workouts.splice(deletedWorkoutIdx, 1)
-				}
-			}
-		})
 	}
 }

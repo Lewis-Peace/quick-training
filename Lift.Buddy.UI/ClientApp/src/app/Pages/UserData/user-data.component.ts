@@ -40,6 +40,7 @@ export class UserDataComponent implements OnInit {
     if (this.userData == undefined) {
       return;
     }
+    this.userData.username = this.userData.credentials.username;
 
     const response = await this.userService.updateUserData(this.userData);
 

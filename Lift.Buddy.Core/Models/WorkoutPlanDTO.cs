@@ -6,8 +6,8 @@ namespace Lift.Buddy.Core.Models
     {
         public Guid? Id { get; set; }
         public string Name { get; set; }
-        public int ReviewsCount { get; set; } = 0;
-        public float ReviewAverage { get; set; } = 0;
+        public double ReviewAverage { get; set; } = 0;
+        public double? MyReview { get; set; } = null;
         public Guid CreatorId { get; set; }
         public IEnumerable<WorkoutDayDTO> WorkoutDays { get; set; } = Enumerable.Empty<WorkoutDayDTO>();
 

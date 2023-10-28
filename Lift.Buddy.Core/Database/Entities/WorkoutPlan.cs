@@ -1,4 +1,6 @@
-﻿namespace Lift.Buddy.Core.Database.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Lift.Buddy.Core.Database.Entities;
 
 public class WorkoutPlan
 {
@@ -11,11 +13,10 @@ public class WorkoutPlan
     public Guid WorkoutPlanId { get; set; }
 
     public string Name { get; set; }
-    public float ReviewAverage { get; set; }
-    public int ReviewCount { get; set; }
+    public double ReviewAverage { get; set; }
     public Guid CreatorId { get; set; }
-
     public virtual User Creator { get; set; }
+    public virtual ICollection<Review> Reviews { get; set; }
     public virtual ICollection<User> Users { get; set; }
     public virtual ICollection<WorkoutDay> WorkoutDays { get; set; }
 }

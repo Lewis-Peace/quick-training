@@ -8,7 +8,7 @@ public class UserDTO
     public Guid? Id { get; set; }
 
     [JsonPropertyName("username")]
-    public string Userame { get; set; }
+    public string Username { get; set; }
 
     [JsonPropertyName("name")]
     public string Name { get; set; }

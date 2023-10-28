@@ -1,0 +1,37 @@
+<mat-card *ngIf="workoutplan">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>{{ workoutplan.name }}</mat-card-title>
+      <button *ngIf="isTrainer" mat-button (click)="deleteWorkout(workoutplan)">
+        <mat-icon fontSet="fa" fontIcon="fa-xmark"></mat-icon>
+      </button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <form>
+      <mat-form-field *ngIf="isTrainer">
+        <mat-label>Workout plan subscribers</mat-label>
+        <input readonly="true" [value]="subscribedToWorkoutPlan" matInput/>
+      </mat-form-field>
+      <mat-form-field *ngIf="isAthlete">
+        <mat-label>Notes</mat-label>
+        <input name="notes" [(ngModel)]="notes" matInput/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Days of workout</mat-label>
+        <input readonly="true" [value]="workoutplan.workoutDays.length" matInput/>
+      </mat-form-field>
+      <div class="grid">
+        <app-stars-rating
+          [rating]="isTrainer ? workoutplan.reviewAverage : workoutplan.myReview"
+          [readonly]="isTrainer"
+          (onChange)="reviewWorkoutplan($event)"
+        ></app-stars-rating>
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-actions *ngIf="isTrainer" slot="start" class="d-flex justify-content-between">
+    <button mat-button color="primary" [routerLink]="['..', 'assign', workoutplan.id]">Assign</button>
+    <button mat-button [routerLink]="['..', 'add', workoutplan.id]">Modify</button>
+  </mat-card-actions>
+</mat-card>

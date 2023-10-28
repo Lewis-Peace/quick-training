@@ -1,0 +1,20 @@
+<app-loading-spinner
+  (OnLoading)="isLoading = $event"
+></app-loading-spinner>
+<mat-tab-group>
+  <mat-tab label="Exercises">
+    <app-workoutplan-page
+      [workoutplans]="workoutplans"
+      [readonly]="true"
+    ></app-workoutplan-page>
+  </mat-tab>
+  <mat-tab label="Summary">
+    <div class="container row" *ngIf="!isLoading">
+      <div class="col-4 p-3" *ngFor="let workoutplan of workoutplans;let idx = index">
+        <app-workoutplan-card
+          [workoutplan]="workoutplan"
+        ></app-workoutplan-card>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

@@ -1,13 +1,15 @@
-import { CreateUpdateWorkoutplanPageComponent } from './Components/create-update-workoutplan-page/create-update-workoutplan-page.component';
-import { YourWorkoutsPageComponent } from './Components/your-workouts-page/your-workouts-page.component';
-import { MyWorkoutsComponent } from './Components/my-workouts/my-workouts.component';
+import { CreateUpdateWorkoutplanPageComponent } from './Pages/create-update-workoutplan-page/create-update-workoutplan-page.component';
+import { YourWorkoutsPageComponent } from './Pages/your-workouts-page/your-workouts-page.component';
+import { MyWorkoutsComponent } from './Pages/my-workouts/my-workouts.component';
 import { WorkoutNavigationMenuComponent } from './Components/workout-navigation-menu/workout-navigation-menu.component';
 import { UIElementsModule } from '../Components/UI.Elements.module';
 import { WorkoutPlansComponent } from './workout-plans.component';
-import { DeleteWorkoutPlanConfirmationPopupComponent } from './Components/my-workouts/Components/delete-workout-plan-confirmation-popup/delete-workout-plan-confirmation-popup.component';
-import { TrainingTabComponent } from './Components/your-workouts-page/Components/training-tab/training-tab.component';
-import { ExerciseRowComponent } from './Components/create-update-workoutplan-page/Components/daily-workout/Components/exercise-row/exercise-row.component';
-import { DailyWorkoutComponent } from './Components/create-update-workoutplan-page/Components/daily-workout/daily-workout.component';
+import { DeleteWorkoutPlanConfirmationPopupComponent } from './Pages/my-workouts/Components/delete-workout-plan-confirmation-popup/delete-workout-plan-confirmation-popup.component';
+import { TrainingTabComponent } from './Pages/your-workouts-page/Components/training-tab/training-tab.component';
+import { ExerciseRowComponent } from './Components/workoutplan-page/Components/exercise-row/exercise-row.component';
+import { DailyWorkoutComponent } from './Components/workoutplan-page/Components/daily-workout/daily-workout.component';
+import { AssignedToMeComponent } from './Pages/assigned-to-me/assigned-to-me.component';
+import { AthletesWorkoutAssignmentsComponent } from './Pages/my-workouts/Components/athletes-workout-assignments/athletes-workout-assignments.component';
 import { WorkoutPlansRoutingModule } from './workout-plans-routing.module';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,9 +25,9 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { AthletesWorkoutAssignmentsComponent } from './Components/my-workouts/Components/athletes-workout-assignments/athletes-workout-assignments.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { AssignedToMeComponent } from './Components/assigned-to-me/assigned-to-me.component';
+import { WorkoutplanCardComponent } from './Components/workoutplan-card/workoutplan-card.component';
+import { WorkoutplanPageComponent } from './Components/workoutplan-page/workoutplan-page.component';
 
 @NgModule({
   imports: [
@@ -57,7 +59,9 @@ import { AssignedToMeComponent } from './Components/assigned-to-me/assigned-to-m
     ExerciseRowComponent,
     DailyWorkoutComponent,
     AthletesWorkoutAssignmentsComponent,
-    AssignedToMeComponent
+    AssignedToMeComponent,
+    WorkoutplanCardComponent,
+    WorkoutplanPageComponent
   ],
   exports: [
 

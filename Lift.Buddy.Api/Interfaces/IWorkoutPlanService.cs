@@ -15,6 +15,6 @@ namespace Lift.Buddy.API.Interfaces
         Task<Response<WorkoutPlanDTO>> AddWorkoutPlan(WorkoutPlanDTO workoutPlan);
         Task<Response<WorkoutPlanDTO>> UpdateWorkoutPlan(WorkoutPlanDTO workoutPlan);
         Task<Response<WorkoutPlanDTO>> DeleteWorkoutPlan(Guid workoutPlan);
-        Task<Response<WorkoutPlanDTO>> ReviewWorkoutPlan(WorkoutPlanDTO workoutPlan);
+        Task<Response<WorkoutPlanDTO>> ReviewWorkoutPlan(Guid user, ReviewDTO reviewDTO);
     }
 }

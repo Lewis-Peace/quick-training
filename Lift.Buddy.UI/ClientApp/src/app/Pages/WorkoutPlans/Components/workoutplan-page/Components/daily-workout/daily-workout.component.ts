@@ -15,6 +15,7 @@ export class DailyWorkoutComponent implements OnInit {
     @Input() day: number = 0;
     @Input() workoutPlan: WorkoutPlan | undefined;
     @Input() exercises: FormControl<Exercise[] | null> | undefined;
+    @Input() readonly: boolean = false;
     @Output() onSave: EventEmitter<any> = new EventEmitter();
 
     public exerciseList: Exercise[] = [];

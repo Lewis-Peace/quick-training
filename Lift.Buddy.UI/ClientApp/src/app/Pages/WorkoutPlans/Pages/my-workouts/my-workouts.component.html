@@ -1,0 +1,14 @@
+<app-loading-spinner
+  (OnLoading)="isLoading = $event"
+></app-loading-spinner>
+
+<div *ngIf="!isLoading" class="row justify-content-center container">
+  <div class="col-4 p-3" *ngFor="let workout of workouts;let idx = index">
+    <app-workoutplan-card
+      [workoutplan]="workout"
+      [subscribedToWorkoutPlan]="workoutPlanSubscribers[idx]"
+      (OnWorkoutplanDelete)="remove($event)"
+      POV="trainer"
+    ></app-workoutplan-card>
+  </div>
+</div>

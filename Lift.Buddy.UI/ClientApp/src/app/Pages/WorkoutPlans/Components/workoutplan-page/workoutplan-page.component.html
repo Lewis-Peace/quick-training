@@ -1,0 +1,38 @@
+<div class="container" *ngIf="workoutplan || workoutplans">
+  <div class="row">
+    <form [formGroup]="workoutDayForm">
+      <div class="row mt-3">
+        <div class="col-6" *ngIf="workoutplan">
+          <mat-form-field>
+            <mat-label>Workout plan name</mat-label>
+            <input formControlName="name" matInput/>
+          </mat-form-field>
+        </div>
+        <div class="col-6" *ngIf="workoutplans">
+          <mat-form-field>
+            <mat-label>Choose training to show</mat-label>
+            <mat-select (valueChange)="switchWorkoutPlanToShow($event)" [value]="showingWorkoutPlanId">
+              <mat-option *ngFor="let workout of workoutplans" [value]="workout.id" >{{workout.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Training day</mat-label>
+            <mat-select formControlName="trainingDay">
+              <mat-option *ngFor="let day of days;" [value]="day?.value">{{day?.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <app-daily-workout
+          [workoutPlan]="showingWorkoutPlan"
+          [day]="workoutDayForm.controls['trainingDay'].value"
+          [exercises]="exercises"
+          [readonly]="readonly"
+        ></app-daily-workout>
+      </div>
+    </form>
+  </div>
+</div>

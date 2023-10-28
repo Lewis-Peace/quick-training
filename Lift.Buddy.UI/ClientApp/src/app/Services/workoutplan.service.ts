@@ -1,3 +1,4 @@
+import { Review } from './../Model/Review';
 import { Injectable } from '@angular/core';
 import { ApiCallsService } from './Utils/api-calls.service';
 import { WorkoutPlan } from '../Model/WorkoutPlan';
@@ -13,9 +14,6 @@ import { User } from '../Model/User';
 export class WorkoutplanService {
 
 	private defaultUrl: string = 'api/WorkoutPlan';
-	private _day: number | undefined
-	private day = new BehaviorSubject<number>(0);
-	public day$ = this.day.asObservable();
 
 	constructor(
 		private apiService: ApiCallsService,
@@ -24,6 +22,10 @@ export class WorkoutplanService {
 	) { }
 
 	//#region Day observable
+	private _day: number | undefined
+	private day = new BehaviorSubject<number>(0);
+	public day$ = this.day.asObservable();
+
 	public getDay() {
 		return this._day
 	}
@@ -34,6 +36,20 @@ export class WorkoutplanService {
 	}
 	//#endregion
 
+  //#region WorkoutPlan Observable
+	private _workoutPlan: WorkoutPlan | undefined
+	private workoutPlan = new BehaviorSubject<WorkoutPlan>(new WorkoutPlan());
+	public workoutPlan$ = this.workoutPlan.asObservable();
+
+	public getWorkoutPlan() {
+		return this._workoutPlan
+	}
+
+	public setWorkoutPlan(workoutPlan: WorkoutPlan) {
+		this._workoutPlan = workoutPlan;
+		this.workoutPlan.next(workoutPlan);
+	}
+  //#endregion
 
 	public async getWorkoutPlanById(id: string) {
 		return await this.apiService.apiGet<WorkoutPlan>(this.defaultUrl + `/${id}`);
@@ -95,4 +111,8 @@ export class WorkoutplanService {
 	public async deleteWorkoutPlan(workoutId: string) {
 		return this.apiService.apiDelete(this.defaultUrl, { workoutId });
 	}
+
+  public async reviewWorkoutPlan(review: Review) {
+    return await this.apiService.apiPut<WorkoutPlan>(this.defaultUrl + '/review', review);
+  }
 }

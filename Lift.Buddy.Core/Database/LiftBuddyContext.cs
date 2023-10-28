@@ -14,6 +14,7 @@ public class LiftBuddyContext : DbContext
     public DbSet<Settings> Settings { get; set; }
     public DbSet<Frontpage> Frontpages { get; set; }
     public DbSet<Subscription> Subscriptions { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
     public LiftBuddyContext(DbContextOptions<LiftBuddyContext> options) : base(options)
     { }
@@ -59,7 +60,8 @@ public class LiftBuddyContext : DbContext
         modelBuilder.Entity<WorkoutPlan>(entity =>
         {
             entity.HasKey(p => p.WorkoutPlanId);
-            entity.Property(p => p.WorkoutPlanId).ValueGeneratedNever();
+
+            entity.Property(p => p.ReviewAverage);
 
             entity.HasOne(p => p.Creator)
                 .WithMany(p => p.CreatedPlans)
@@ -68,6 +70,20 @@ public class LiftBuddyContext : DbContext
             entity.HasMany(p => p.WorkoutDays)
                 .WithOne(p => p.WorkoutPlan)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasKey(p => new { p.WorkoutPlanId, p.UserId });
+            entity.Property(x => x.Value);
+
+            entity.HasOne(p => p.User)
+                .WithMany()
+                .HasForeignKey(p => p.UserId);
+
+            entity.HasOne(p => p.WorkoutPlan)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(p => p.WorkoutPlanId);
         });
 
         modelBuilder.Entity<WorkoutDay>(entity =>

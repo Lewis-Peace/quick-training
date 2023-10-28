@@ -1,8 +1,0 @@
-<app-loading-spinner
-  (OnLoading)="isLoading = $event"
-></app-loading-spinner>
-<div class="container" *ngIf="!isLoading">
-  <mat-card *ngFor="let workoutplan of workoutplans">
-    <mat-card-title>{{workoutplan.name}}</mat-card-title>
-  </mat-card>
-</div>

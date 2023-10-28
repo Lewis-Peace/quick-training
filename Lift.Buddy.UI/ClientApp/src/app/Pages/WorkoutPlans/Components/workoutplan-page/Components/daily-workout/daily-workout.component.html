@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row row-header">
     <span class="col-1">Index</span>
-    <span class="col-3">Exercise name</span>
+    <span [class]="'col-' + (readonly ? 5 : 3)">Exercise name</span>
     <span class="col-2">Repetition</span>
     <span class="col-2">Series</span>
     <span class="col-2">Rest</span>
@@ -11,13 +11,14 @@
     <app-exercise-row
       *ngFor="let exercise of exercises?.value; let idx = index"
       [exercise]="exercise"
+      [readonly]="readonly"
       [index]="idx"
       (onDelete)="remove($event)"
       (onChange)="(1 + 1)"
     ></app-exercise-row>
   </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="!readonly">
   <button mat-raised-button (click)="addExercise()" class="col-2">
     Add exercise
   </button>

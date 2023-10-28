@@ -19,7 +19,7 @@ public interface IDatabaseMapper
     SecurityQuestionDTO Map(SecurityQuestion securityQuestion);
     SecurityQuestion Map(SecurityQuestionDTO securityQuestion);
 
-    WorkoutPlanDTO Map(WorkoutPlan workoutPlan);
+    WorkoutPlanDTO Map(WorkoutPlan workoutPlan, Guid? userId);
     WorkoutPlan Map(WorkoutPlanDTO workoutPlan);
 
     WorkoutDayDTO Map(WorkoutDay workoutDay);
@@ -33,6 +33,8 @@ public interface IDatabaseMapper
 
     SubscriptionDTO Map(Subscription subcription);
     Subscription Map(SubscriptionDTO subcription);
+    ReviewDTO Map(Review review);
+    Review Map(ReviewDTO review);
 }
 
 public class DatabaseMapper : IDatabaseMapper
@@ -149,16 +151,22 @@ public class DatabaseMapper : IDatabaseMapper
         throw new NotImplementedException();
     }
 
-    public WorkoutPlanDTO Map(WorkoutPlan workoutPlan)
+    public WorkoutPlanDTO Map(WorkoutPlan workoutPlan, Guid? userId)
     {
+        Review userReview = null;
+        if (userId != null)
+        {
+            userReview = workoutPlan.Reviews.FirstOrDefault(x => x.UserId == userId);
+        }
+
         return new WorkoutPlanDTO
         {
             Id = workoutPlan.WorkoutPlanId,
             Name = workoutPlan.Name,
             CreatorId = workoutPlan.CreatorId,
             ReviewAverage = workoutPlan.ReviewAverage,
-            ReviewsCount = workoutPlan.ReviewCount,
-            WorkoutDays = workoutPlan.WorkoutDays.Select(d => Map(d))
+            WorkoutDays = workoutPlan.WorkoutDays.Select(d => Map(d)),
+            MyReview = userReview?.Value
         };
     }
 
@@ -170,7 +178,6 @@ public class DatabaseMapper : IDatabaseMapper
             WorkoutPlanId = workoutPlan.Id ?? Guid.NewGuid(),
             Name = workoutPlan.Name,
             ReviewAverage = workoutPlan.ReviewAverage,
-            ReviewCount = workoutPlan.ReviewsCount,
             WorkoutDays = workoutPlan.WorkoutDays.Select(d => Map(d)).ToArray(),
             CreatorId = workoutPlan.CreatorId,
         };
@@ -247,6 +254,26 @@ public class DatabaseMapper : IDatabaseMapper
             TrainerId = subcription.TrainerId,
             SubscriptionType = subcription.SubscriptionType,
             Expiration = subcription.Expiration
+        };
+    }
+
+    public ReviewDTO Map(Review review)
+    {
+        return new ReviewDTO
+        {
+            Value = review.Value,
+            WorkoutPlanId = review.WorkoutPlanId,
+            UserId = review.UserId,
+        };
+    }
+
+    public Review Map(ReviewDTO review)
+    {
+        return new Review
+        {
+            Value = review.Value,
+            WorkoutPlanId = review.WorkoutPlanId,
+            UserId = review.UserId,
         };
     }
 }

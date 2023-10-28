@@ -155,7 +155,7 @@ namespace Lift.Buddy.API.Services
                 if (user == null) throw new KeyNotFoundException($"User '{userData.Credentials.Username}' doesn't exist");
 
                 // TODO check che i campi non diventino vuoti
-                user.Username = userData.Userame;
+                user.Username = userData.Username;
                 user.Surname = userData.Surname;
                 user.Name = userData.Name;
                 user.Email = userData.Email;

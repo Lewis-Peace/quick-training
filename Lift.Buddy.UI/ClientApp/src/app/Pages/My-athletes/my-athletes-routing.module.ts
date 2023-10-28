@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MyAthletesMainComponent } from './Components/my-athletes-main/my-athletes-main.component';
-import { FrontpageComponent } from './Components/frontpage/frontpage.component';
-import { RequestsComponent } from './Components/requests/requests.component';
+import { MyAthletesMainComponent } from './Pages/my-athletes-main/my-athletes-main.component';
+import { FrontpageComponent } from './Pages/frontpage/frontpage.component';
+import { RequestsComponent } from './Pages/requests/requests.component';
 
 const routes: Routes = [
   {path: 'home', component: MyAthletesMainComponent},
