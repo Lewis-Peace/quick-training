@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  lift.buddy.api:
+    image: ${DOCKER_REGISTRY-}liftbuddyapi
+    build:
+      context: .
+      dockerfile: Lift.Buddy.Api/Dockerfile
+    ports:
+      - 5200:5200
+  # Try implementing build also for UI 
+  #lift.buddy.ui:
+  #  image: ${DOCKER_REGISTRY-}liftbuddyui
+  #  build:
+  #    context: .
+  #    dockerfile: Lift.Buddy.UI/ClientApp/Dockerfile
+  #  environment:
+  #    NODE_ENV: production
+  #  ports:
+  #    - 80:80

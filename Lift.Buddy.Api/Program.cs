@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-builder.WebHost.UseUrls("http://localhost:5200");
+builder.WebHost.UseUrls("http://+:5200");
 
 var anyCors = "anyCors";
 builder.Services.AddCors(options =>
