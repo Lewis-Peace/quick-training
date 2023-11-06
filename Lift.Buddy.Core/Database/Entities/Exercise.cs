@@ -6,7 +6,7 @@ public class Exercise
     public string Name { get; set; }
     public int? Repetitions { get; set; }
     public int? Series { get; set; }
-    public int? Time { get; set; }
+    public TimeSpan? Time { get; set; }
     public int? Rest { get; set; }
 
     public virtual WorkoutDay WorkoutDay { get; set; }

@@ -5,14 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Lift.Buddy.Core.Migrations
 {
     [DbContext(typeof(LiftBuddyContext))]
-    [Migration("20231015171433_SettingsTableAdded")]
-    partial class SettingsTableAdded
+    [Migration("20231106213932_PostgreSqlInit")]
+    partial class PostgreSqlInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,31 +21,33 @@ namespace Lift.Buddy.Core.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.11")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.Exercise", b =>
                 {
                     b.Property<Guid>("ExerciseId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int?>("Repetitions")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("Rest")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("Series")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<int?>("Time")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan?>("Time")
+                        .HasColumnType("interval");
 
                     b.Property<Guid?>("WorkoutDayId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("ExerciseId");
 
@@ -53,32 +56,47 @@ namespace Lift.Buddy.Core.Migrations
                     b.ToTable("Exercises");
                 });
 
+            modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.Frontpage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Frontpages");
+                });
+
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.PersonalRecord", b =>
                 {
                     b.Property<Guid>("PersonalRecordId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ExerciseName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("ExerciseType")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Repetitions")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Series")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("UOM")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<double?>("Weight")
-                        .HasColumnType("double");
+                        .HasColumnType("double precision");
 
                     b.HasKey("PersonalRecordId");
 
@@ -87,20 +105,38 @@ namespace Lift.Buddy.Core.Migrations
                     b.ToTable("PersonalRecords");
                 });
 
+            modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.Review", b =>
+                {
+                    b.Property<Guid>("WorkoutPlanId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
+
+                    b.HasKey("WorkoutPlanId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.SecurityQuestion", b =>
                 {
                     b.Property<Guid>("SecurityQuestionId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Answer")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Question")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("SecurityQuestionId");
 
@@ -111,53 +147,77 @@ namespace Lift.Buddy.Core.Migrations
 
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.Settings", b =>
                 {
-                    b.Property<Guid>("userId")
-                        .HasColumnType("char(36)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("unitOfMeasure")
-                        .HasColumnType("int");
+                    b.Property<int>("UnitOfMeasure")
+                        .HasColumnType("integer");
 
-                    b.HasKey("userId");
+                    b.HasKey("UserId");
 
                     b.ToTable("Settings");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.Subscription", b =>
+                {
+                    b.Property<Guid>("TrainerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AthleteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Expiration")
+                        .HasColumnType("text");
+
+                    b.Property<int>("SubscriptionType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("TrainerId", "AthleteId");
+
+                    b.HasIndex("AthleteId");
+
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.User", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("Gender")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsAdmin")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
                     b.Property<bool>("IsTrainer")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Private")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Surname")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("varchar(32)");
+                        .HasColumnType("character varying(32)");
 
                     b.HasKey("UserId");
 
@@ -168,13 +228,13 @@ namespace Lift.Buddy.Core.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Day")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<Guid?>("WorkoutPlanId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -186,19 +246,20 @@ namespace Lift.Buddy.Core.Migrations
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.WorkoutPlan", b =>
                 {
                     b.Property<Guid>("WorkoutPlanId")
-                        .HasColumnType("char(36)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("CreatorId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
-                    b.Property<float>("ReviewAverage")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ReviewCount")
-                        .HasColumnType("int");
+                    b.Property<double>("ReviewAverage")
+                        .HasColumnType("double precision");
 
                     b.HasKey("WorkoutPlanId");
 
@@ -210,10 +271,10 @@ namespace Lift.Buddy.Core.Migrations
             modelBuilder.Entity("UserWorkoutPlan", b =>
                 {
                     b.Property<Guid>("AssignedPlansWorkoutPlanId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("UsersUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uuid");
 
                     b.HasKey("AssignedPlansWorkoutPlanId", "UsersUserId");
 
@@ -232,6 +293,17 @@ namespace Lift.Buddy.Core.Migrations
                     b.Navigation("WorkoutDay");
                 });
 
+            modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.Frontpage", b =>
+                {
+                    b.HasOne("Lift.Buddy.Core.Database.Entities.User", "User")
+                        .WithOne("Frontpage")
+                        .HasForeignKey("Lift.Buddy.Core.Database.Entities.Frontpage", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.PersonalRecord", b =>
                 {
                     b.HasOne("Lift.Buddy.Core.Database.Entities.User", "User")
@@ -241,6 +313,25 @@ namespace Lift.Buddy.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.Review", b =>
+                {
+                    b.HasOne("Lift.Buddy.Core.Database.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lift.Buddy.Core.Database.Entities.WorkoutPlan", "WorkoutPlan")
+                        .WithMany("Reviews")
+                        .HasForeignKey("WorkoutPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("WorkoutPlan");
                 });
 
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.SecurityQuestion", b =>
@@ -257,11 +348,30 @@ namespace Lift.Buddy.Core.Migrations
                 {
                     b.HasOne("Lift.Buddy.Core.Database.Entities.User", "User")
                         .WithOne("Settings")
-                        .HasForeignKey("Lift.Buddy.Core.Database.Entities.Settings", "userId")
+                        .HasForeignKey("Lift.Buddy.Core.Database.Entities.Settings", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.Subscription", b =>
+                {
+                    b.HasOne("Lift.Buddy.Core.Database.Entities.User", "Athlete")
+                        .WithMany("SubscribedAthletes")
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lift.Buddy.Core.Database.Entities.User", "Trainer")
+                        .WithMany("Trainers")
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.WorkoutDay", b =>
@@ -304,11 +414,17 @@ namespace Lift.Buddy.Core.Migrations
                 {
                     b.Navigation("CreatedPlans");
 
+                    b.Navigation("Frontpage");
+
                     b.Navigation("PersonalRecords");
 
                     b.Navigation("SecurityQuestions");
 
                     b.Navigation("Settings");
+
+                    b.Navigation("SubscribedAthletes");
+
+                    b.Navigation("Trainers");
                 });
 
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.WorkoutDay", b =>
@@ -318,6 +434,8 @@ namespace Lift.Buddy.Core.Migrations
 
             modelBuilder.Entity("Lift.Buddy.Core.Database.Entities.WorkoutPlan", b =>
                 {
+                    b.Navigation("Reviews");
+
                     b.Navigation("WorkoutDays");
                 });
 #pragma warning restore 612, 618

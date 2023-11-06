@@ -15,6 +15,7 @@ public class WorkoutPlan
     public string Name { get; set; }
     public double ReviewAverage { get; set; }
     public Guid CreatorId { get; set; }
+    public DateTime CreationDate { get; set; }
     public virtual User Creator { get; set; }
     public virtual ICollection<Review> Reviews { get; set; }
     public virtual ICollection<User> Users { get; set; }

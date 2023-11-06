@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>e0a52929-b5ad-44a9-8cc0-1484c4a72242</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+    <DockerServiceUrl>http://localhost:5200</DockerServiceUrl>
     <DockerServiceName>lift.buddy.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

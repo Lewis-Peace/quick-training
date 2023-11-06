@@ -17,7 +17,7 @@ FROM build AS publish
 RUN dotnet publish "Lift.Buddy.API.csproj" -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
-ENV ASPNETCORE_URLS http://+:5200
+ENV ASPNETCORE_URLS http://localhost:5200
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Lift.Buddy.API.dll"]

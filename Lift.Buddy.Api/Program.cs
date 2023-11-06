@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-builder.WebHost.UseUrls("http://+:5200");
+builder.WebHost.UseUrls("http://localhost:5200");
 
 var anyCors = "anyCors";
 builder.Services.AddCors(options =>
@@ -79,7 +79,7 @@ builder.Services.AddSingleton<IDatabaseMapper, DatabaseMapper>();
 
 builder.Services.AddDbContext<LiftBuddyContext>(options =>
 {
-    options.UseMySQL(builder.Configuration.GetConnectionString("DevDatabase") ?? "");
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Database") ?? "");
 });
 
 builder.Services.AddControllers().AddNewtonsoftJson();
