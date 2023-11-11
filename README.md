@@ -6,8 +6,8 @@ Here the link to the trello project [link](https://trello.com/invite/b/ZM5SPJhw/
 
 ### Useful commands
 #### Database migrations
-- dotnet ef migrations add "migration-name" --project Lift.Buddy.Core --context LiftBuddyContext
-- dotnet ef database update --project Lift.Buddy.Core --context LiftBuddyContext
+- dotnet ef migrations add "migration-name" --project Lift.Buddy.Core --context LiftBuddyContext --startup-project Lift.Buddy.API
+- dotnet ef database update --project Lift.Buddy.Core --context LiftBuddyContext --startup-project Lift.Buddy.API
 #### Deploy UI
 Inside clientapp folder
 - docker compose up --build

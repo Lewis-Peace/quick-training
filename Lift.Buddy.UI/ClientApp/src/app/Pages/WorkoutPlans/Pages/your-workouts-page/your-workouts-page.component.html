@@ -10,8 +10,8 @@
       <app-training-tab [exercises]="workout.workout.exercises"></app-training-tab>
     </mat-tab>
   </mat-tab-group>
-  <div *ngIf="dailyWorkouts.length == 0">
-    <h1 class="mt-3 text-center">No trainig for today</h1>
+  <div class="text-center w-100" *ngIf="dailyWorkouts.length == 0">
+    <h1 class="mt-5">No trainig for today</h1>
   </div>
 </div>
 

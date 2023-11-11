@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Exercise } from 'src/app/Model/Exercise';
@@ -63,5 +64,17 @@ export class DailyWorkoutComponent implements OnInit {
             }
             this.workoutPlan?.workoutDays.splice(idx!, 1);
         }
+    }
+
+    public onDrop(event: CdkDragDrop<Exercise[] | null | undefined>) {
+      if (event.container.data) {
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        this.exercises?.setValue(event.container.data);
+        let dailyworkoutIdx = this.workoutPlan!.workoutDays.findIndex(x => x.day == this.day);
+        if (dailyworkoutIdx == -1) {
+          return;
+        }
+        this.workoutPlan!.workoutDays[dailyworkoutIdx].exercises = event.container.data;
+      }
     }
 }

@@ -1,9 +1,10 @@
 version: '3.4'
-name: lift-buddy
 
 services:
   lift.buddy.api:
-    image: ${DOCKER_REGISTRY-}liftbuddyapi
+    environment:
+      - VERSION=${VERSION}
+    image: lewispeace/lift-buddy:apiV${VERSION}
     container_name: API
     build:
       context: .
@@ -12,7 +13,7 @@ services:
       - 5200:5200
   # Try implementing build also for UI 
   lift.buddy.ui:
-    image: ${DOCKER_REGISTRY-}liftbuddyui
+    image: lewispeace/lift-buddy:uiV${VERSION}
     container_name: UI
     build:
       context: Lift.Buddy.UI/ClientApp

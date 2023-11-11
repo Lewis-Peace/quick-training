@@ -8,57 +8,34 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
-
+  
 variables:
-- group: microservices-dev-subscription-connections
-- name: appName
-  value : 'aspnet-api'
-- name: dockerfilePath
-  value : '$(Build.SourcesDirectory)/$(appName)/Dockerfile'
-- name: imageName
-  value: sample/$(appName)
-- name: system_accesstoken
-  value : $(System.AccessToken)
+  - group: Docker Hub credentials
 
 stages:
-- stage: Build
-  displayName: Build and push stage
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - checkout: self
-      persistCredentials: true
-    #  Build and push an image to container registry
-    - task: Docker@2
-      displayName: Login to ACR
-      inputs:
-        command: login
-        containerRegistry: $(azure-container-registry)
+  - stage: Dockerize
 
-    - task: Docker@2
-      displayName: Build an image for $(appName)
-      inputs:
-        command: build
-        buildContext: '$(Build.SourcesDirectory)/$(appName)'
-        repository: $(imageName)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(azure-container-registry)
-        tags: |
-          latest
-          $(build.buildNumber)
-
-    - task: Docker@2
-      displayName: Push an image to container registry
-      inputs:
-        command: push
-        repository: $(imageName)
-        tags: |
-          latest
-          $(build.buildNumber)
-
-    - powershell: |
-        Set-Content -Path "$(Build.ArtifactStagingDirectory)/$(appName)" -Value (docker inspect $(container-registery-loginname)/$(imageName):latest -f '{{ .Id }}')
-      displayName: Saving container hashes
+    displayName: Build and push stage
+    jobs:
+      - job: Dockerize
+        displayName: Build
+        steps:
+          - script:
+              docker login -u $(username) -p $(password) docker.io
+            displayName: Login
+          - script:
+              echo VERSION=$(Build.BuildNumber) > .env
+            displayName: Setting enviroment
+          - script: |
+              cat .env
+              docker compose config
+            displayName: Debug
+          - script:
+              docker compose up -d
+            displayName: Build
+          - script:
+              docker push lewispeace/lift-buddy:apiV$(Build.BuildNumber)
+            displayName: Push api
+          - script:
+              docker push lewispeace/lift-buddy:uiV$(Build.BuildNumber)
+            displayName: Push ui

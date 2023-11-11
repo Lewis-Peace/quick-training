@@ -1,6 +1,6 @@
 <div class="container" *ngIf="workoutplan || workoutplans">
   <div class="row">
-    <form [formGroup]="workoutDayForm">
+    <form [formGroup]="workoutForm">
       <div class="row mt-3">
         <div class="col-6" *ngIf="workoutplan">
           <mat-form-field>
@@ -28,9 +28,10 @@
       <div class="row">
         <app-daily-workout
           [workoutPlan]="showingWorkoutPlan"
-          [day]="workoutDayForm.controls['trainingDay'].value"
+          [day]="workoutForm.controls['trainingDay'].value"
           [exercises]="exercises"
           [readonly]="readonly"
+          (onSave)="save()"
         ></app-daily-workout>
       </div>
     </form>

@@ -1,30 +1,9 @@
-<div class="container">
-  <div class="row">
-    <form [formGroup]="workoutDayForm">
-      <div class="row mt-3">
-        <div class="col-6">
-          <mat-form-field>
-            <mat-label>Workout plan name</mat-label>
-            <input formControlName="name" matInput/>
-          </mat-form-field>
-        </div>
-        <div class="col-6">
-          <mat-form-field>
-            <mat-label>Training day</mat-label>
-            <mat-select formControlName="trainingDay">
-              <mat-option *ngFor="let day of days; let idx = index" [value]="idx">{{day}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <app-daily-workout
-          [workoutPlan]="workoutPlan"
-          [day]="workoutDayForm.controls['trainingDay'].value"
-          [exercises]="exercises"
-          (onSave)="save()"
-        ></app-daily-workout>
-      </div>
-    </form>
-  </div>
+<app-loading-spinner
+  (OnLoading)="isLoading = $event"
+></app-loading-spinner>
+<div class="container" *ngIf="!isLoading">
+  <app-workoutplan-page
+    [workoutplan]="workoutPlan"
+    (onSave)="save($event)"
+  ></app-workoutplan-page>
 </div>

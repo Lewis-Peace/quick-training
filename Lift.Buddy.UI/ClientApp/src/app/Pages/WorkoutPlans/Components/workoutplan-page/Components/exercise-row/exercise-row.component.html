@@ -1,4 +1,9 @@
-<form [formGroup]="exerciseForm" class="row" (onChange)="updateExercise()">
+<form [formGroup]="exerciseForm" class="row" (onChange)="updateExercise()" cdkDrag cdkDragLockAxis="y">
+  <div class="col-1">
+    <button mat-icon-button cdkDragHandle>
+      <i class="fa fa-arrows"></i>
+    </button>
+  </div>
   <div class="col-1">
     <mat-form-field>
       <input readonly="true" [value]="(index ?? 0) + 1" matInput/>
@@ -17,13 +22,14 @@
     <input [readonly]="readonly" type="time" formControlName="rest" matInput/>
   </mat-form-field>
   <div class="col-1">
-    <button *ngIf="!readonly" mat-icon-button class="button">
-      <mat-icon>more_horiz</mat-icon>
+    <button *ngIf="!readonly" mat-icon-button [matMenuTriggerFor]="moreOptions">
+      <i class="fa fa-ellipsis-vertical"></i>
     </button>
-  </div>
-  <div class="col-1">
-    <button *ngIf="!readonly" mat-icon-button class="button" (click)="remove()">
-      <mat-icon>close</mat-icon>
-    </button>
+    <mat-menu #moreOptions>
+      <button mat-menu-item (click)="11+1">Set as circuit</button>
+      <button mat-menu-item (click)="remove()">
+        Remove
+      </button>
+    </mat-menu>
   </div>
 </form>

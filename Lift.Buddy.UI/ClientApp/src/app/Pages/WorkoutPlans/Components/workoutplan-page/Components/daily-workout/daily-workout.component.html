@@ -1,13 +1,18 @@
 <div class="container">
   <div class="row row-header">
+    <span class="col-1"></span>
     <span class="col-1">Index</span>
     <span [class]="'col-' + (readonly ? 5 : 3)">Exercise name</span>
     <span class="col-2">Repetition</span>
     <span class="col-2">Series</span>
     <span class="col-2">Rest</span>
-    <span class="col-1"></span>
   </div>
-  <div class="daily-exercise-container">
+  <div 
+    class="daily-exercise-container"
+    cdkDropList
+    [cdkDropListData]="exercises?.value"
+    (cdkDropListDropped)="onDrop($event)"
+  >
     <app-exercise-row
       *ngFor="let exercise of exercises?.value; let idx = index"
       [exercise]="exercise"
